@@ -3,6 +3,7 @@
 -- Insertar Roles
 INSERT INTO roles (name) VALUES
 ('Admin'),
+('Manager'),
 ('Technician'),
 ('User');
 
