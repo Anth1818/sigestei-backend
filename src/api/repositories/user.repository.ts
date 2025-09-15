@@ -1,5 +1,5 @@
 import {PrismaClient} from '@prisma/client';
-import {users as User} from '@prisma/client'; // Asumiendo que tienes una interfaz/tipo para el usuario
+import type { CreateUserInput } from "../../utils/types";
 
 
 const prisma = new PrismaClient();
@@ -14,7 +14,13 @@ const getUserByEmail = async (email: string) => {
   });
 };
 
-const createUser = async (userData: Omit<User, 'password'>, hashedPassword: string, ) => {
+const getUserByIdentityCard = async (identity_card: number) => {
+  return await prisma.users.findUnique({
+    where: { identity_card },
+  });
+};
+
+const createUser = async (userData: Omit<CreateUserInput, 'password_hash'>, hashedPassword: string, ) => {
   return await prisma.users.create({
     data: {
       ...userData,
@@ -23,4 +29,4 @@ const createUser = async (userData: Omit<User, 'password'>, hashedPassword: stri
   });
 }
 
-export { getAllUsers, getUserByEmail, createUser };
+export { getAllUsers, getUserByEmail, getUserByIdentityCard, createUser };

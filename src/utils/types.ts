@@ -1,3 +1,16 @@
+export type CreateUserInput = {
+  full_name: string;
+  identity_card: number;
+  email: string;
+  password_hash: string;
+  role_id: number;
+  position_id?: number | null;
+  gender_id?: number | null;
+};
+
+
+
+
 export interface LoginResponse {
   token: string;
   user: UserPayload;

@@ -77,15 +77,14 @@ INSERT INTO request_priorities (name) VALUES
 -- ========= INSERTAR DATOS EN TABLAS PRINCIPALES =========
 
 -- Insertar Usuarios (usando los IDs de las tablas de catálogo)
--- NOTA: Se usa un hash de contraseña genérico. En una aplicación real, cada uno sería único.
 INSERT INTO users (id, full_name, identity_card, email, password_hash, is_active, role_id, position_id, gender_id, created_at) VALUES
-(1, 'John Doe', 12345678, 'jdoe@mail.com', '$2b$10$fakedPasswordHash123', true, 1, 1, 1, '2025-08-01T10:00:00Z'),
-(2, 'Alice Smith', 87654321, 'asmith@mail.com', '$2b$10$fakedPasswordHash123', false, 2, 2, 2, '2025-08-02T11:00:00Z'),
-(3, 'Roberto Pérez', 55667788, 'r.perez@mail.com', '$2b$10$fakedPasswordHash123', true, 3, 3, 1, '2025-08-03T09:00:00Z'),
-(4, 'Laura Jiménez', 44556677, 'laura.jimenez@mail.com', '$2b$10$fakedPasswordHash123', true, 3, 7, 2, '2025-08-04T12:00:00Z'),
-(5, 'Carmen Ruiz', 99887766, 'carmen.ruiz@mail.com', '$2b$10$fakedPasswordHash123', true, 3, 5, 2, '2025-08-05T08:30:00Z'),
-(6, 'María González', 11223344, 'm.gonzalez@mail.com', '$2b$10$fakedPasswordHash123', true, 3, 6, 2, '2025-08-06T10:15:00Z'),
-(7, 'Anthony Ruiz', 27451286, 'anthonyruiz@gmail.com', '123456', true, 1, 1, 1, '2025-08-01T10:00:00Z');
+(1, 'John Doe', 12345678, 'jdoe@mail.com', '$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 1, 1, 1, '2025-08-01T10:00:00Z'),
+(2, 'Alice Smith', 87654321, 'asmith@mail.com', '$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', false, 2, 2, 2, '2025-08-02T11:00:00Z'),
+(3, 'Roberto Pérez', 55667788, 'r.perez@mail.com', '$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 3, 1, '2025-08-03T09:00:00Z'),
+(4, 'Laura Jiménez', 44556677, 'laura.jimenez@mail.com', '$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 7, 2, '2025-08-04T12:00:00Z'),
+(5, 'Carmen Ruiz', 99887766, 'carmen.ruiz@mail.com', '$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 5, 2, '2025-08-05T08:30:00Z'),
+(6, 'María González', 11223344, 'm.gonzalez@mail.com', '$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 6, 2, '2025-08-06T10:15:00Z'),
+(7, 'Anthony Ruiz', 27451286, 'anthonyruiz@gmail.com', '$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 1, 1, 1, '2025-08-01T10:00:00Z');
 -- NOTA: Se asume que 'Carlos Rodríguez', 'Ana García', 'Luis Martínez', 'Pedro Fernández' son también usuarios. 
 -- Para este ejemplo, usaremos a los existentes como técnicos.
 
