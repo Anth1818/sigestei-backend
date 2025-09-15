@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    /* --- Module System --- */
+    "module": "NodeNext", // Utiliza el sistema de módulos moderno de Node.js
+    "moduleResolution": "NodeNext", // Define cómo TypeScript busca los módulos
+    "target": "ES2022", // Compila a una versión moderna de JS que soporta import/export
+
+    /* --- Strictness & Best Practices --- */
+    "strict": true, // Habilita todas las comprobaciones estrictas de tipos
+    "esModuleInterop": true, // Mejora la compatibilidad al importar módulos CommonJS
+    "forceConsistentCasingInFileNames": true, // Evita problemas entre sistemas operativos
+    "skipLibCheck": true, // Omite la verificación de tipos en los archivos de declaración (.d.ts)
+
+    /* --- Project Structure --- */
+    "outDir": "./dist", // Carpeta donde se guardarán los archivos JS compilados
+    "rootDir": "./src", // Carpeta donde está tu código fuente de TypeScript
+    "sourceMap": true // Genera source maps para facilitar el debugging
+  },
+  "include": ["src/**/*"], // Incluye todos los archivos dentro de la carpeta src
+  "exclude": ["node_modules"] // Excluye la carpeta node_modules de la compilación
+}

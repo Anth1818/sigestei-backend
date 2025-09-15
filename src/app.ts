@@ -1,8 +1,10 @@
-const express = require('express');
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+
+
 const app = express();
 
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
 
 // Middlewares globales aquí
 app.use(cors({
@@ -15,15 +17,15 @@ app.use(cookieParser());
 // Rutas
 
 // Importar rutas de autenticación
-const authRoutes = require('./api/routes/authRoutes');
+import authRoutes from './api/routes/auth.routes';
 app.use('/api/auth', authRoutes);
 
 // Importar rutas de usuarios
-const userRoutes = require('./api/routes/userRoutes');
+import userRoutes from './api/routes/user.routes';
 app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => {
 	res.send('API funcionando');
 });
 
-module.exports = app;
+export default app;

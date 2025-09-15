@@ -1,6 +1,6 @@
-const PORT = 3001;
+import app from './app';
 
-const app = require('./app');
+const PORT = 3001;
 
 app.listen(PORT, () => {
 	console.log(`Servidor Express escuchando en el puerto ${PORT}`);
