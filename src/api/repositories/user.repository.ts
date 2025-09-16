@@ -20,7 +20,7 @@ const getUserByIdentityCard = async (identity_card: number) => {
   });
 };
 
-const createUser = async (userData: Omit<CreateUserInput, 'password_hash'>, hashedPassword: string, ) => {
+const createUser = async (userData: Omit<CreateUserInput, 'password'>, hashedPassword: string, ) => {
   return await prisma.users.create({
     data: {
       ...userData,

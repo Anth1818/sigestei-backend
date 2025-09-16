@@ -1,11 +1,12 @@
 export type CreateUserInput = {
-  full_name: string;
   identity_card: number;
+  full_name: string;
   email: string;
-  password_hash: string;
+  password: string;
   role_id: number;
   position_id?: number | null;
   gender_id?: number | null;
+  department_id?: number | null;
 };
 
 

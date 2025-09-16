@@ -6,6 +6,11 @@ CREATE TABLE roles (
     name VARCHAR(50) UNIQUE NOT NULL
 );
 
+CREATE TABLE genders (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE NOT NULL
+);
+
 CREATE TABLE departments (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) UNIQUE NOT NULL
@@ -17,10 +22,6 @@ CREATE TABLE positions (
     department_id INT REFERENCES departments(id)
 );
 
-CREATE TABLE genders (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(50) UNIQUE NOT NULL
-);
 
 CREATE TABLE equipment_types (
     id SERIAL PRIMARY KEY,
@@ -52,7 +53,6 @@ CREATE TABLE request_priorities (
     name VARCHAR(50) UNIQUE NOT NULL -- Ej: 'Alta', 'Media', 'Baja'
 );
 
-
 -- ========= TABLAS PRINCIPALES O DE HECHOS =========
 -- Estas tablas contienen el núcleo de la información del negocio.
 
@@ -63,10 +63,11 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL, -- NUNCA guardar contraseñas en texto plano
     is_active BOOLEAN DEFAULT true,
-    created_at TIMESTAMPTZ DEFAULT NOW(),
     role_id INT NOT NULL REFERENCES roles(id),
     position_id INT REFERENCES positions(id),
-    gender_id INT REFERENCES genders(id)
+    gender_id INT REFERENCES genders(id),
+    department_id INT REFERENCES departments(id), -- NOTA: Este campo es redundante ya que el departamento se puede obtener a través de 'position_id'. Se mantiene por conveniencia y para simplificar consultas (desnormalización).
+    created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE TABLE computer_equipment (
@@ -93,6 +94,7 @@ CREATE TABLE requests (
     requester_id INT NOT NULL REFERENCES users(id),         -- Quien crea la solicitud
     beneficiary_id INT REFERENCES users(id),                -- Para quien es la solicitud (tercero)
     technician_id INT REFERENCES users(id),                 -- Técnico asignado a la tarea
+    -- MEJORA SUGERIDA: Se podría agregar una restricción (CHECK o un TRIGGER) para asegurar que el 'technician_id' corresponda a un usuario con el rol de 'Technician'.
 
     -- IDs de los elementos
     computer_equipment_id INT REFERENCES computer_equipment(id),
