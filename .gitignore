@@ -4,3 +4,5 @@
 # Archivo de variables de entorno
 .env
 /src/generated/prisma
+
+/src/generated/prisma

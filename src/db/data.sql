@@ -146,7 +146,7 @@ INSERT INTO users (id, full_name, identity_card, email, password_hash, is_active
 (12, 'Isaac Usuario', 31111114, 'isaac.usuario@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 21, 1, 11, '2025-09-02T10:00:00Z'),
 
 -- ========= PERFILES DE ANTHONY (IDs 13-16) =========
-(13, 'Anthony Admin', 27451286, 'anthonyruiz@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 1, 3, 1, 3, '2025-08-01T10:00:00Z'),
+(13, 'Anthony Admin', 27451286, 'anthony.admin@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 1, 3, 1, 3, '2025-08-01T10:00:00Z'),
 (14, 'Anthony Coordinador', 27451287, 'anthony.coordinador@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 2, 15, 1, 9, '2025-09-03T11:00:00Z'),
 (15, 'Anthony Tecnico', 27451288, 'anthony.tecnico@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 16, 1, 9, '2025-09-03T11:00:00Z'),
 (16, 'Anthony Usuario', 27451289, 'anthony.usuario@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 22, 1, 12, '2025-09-03T11:00:00Z'),

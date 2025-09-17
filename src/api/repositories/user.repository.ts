@@ -23,7 +23,13 @@ const getUserByIdentityCard = async (identity_card: number) => {
 const createUser = async (userData: Omit<CreateUserInput, 'password'>, hashedPassword: string, ) => {
   return await prisma.users.create({
     data: {
-      ...userData,
+      full_name: userData.full_name,
+      identity_card: userData.identity_card,
+      email: userData.email,
+      role_id: userData.role_id,
+      position_id: userData.position_id,
+      gender_id: userData.gender_id,
+      department_id: userData.department_id,
       password_hash: hashedPassword,
     },
   });
