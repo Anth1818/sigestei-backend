@@ -1,8 +1,57 @@
-import { getUserByEmail, getUserByIdentityCard, createUser } from "../repositories/user.repository";
+import { getAllUsersRepository } from "../repositories/user.repository"
+import { getUserByEmailRepository,
+getUserByIdentityCardRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository } from "../repositories/user.repository";
 import bcrypt from "bcrypt";
 import { UserPayload } from "../../utils/types";
 import type { CreateUserInput } from "../../utils/types";
 
+
+export const getUserByIdentityCardService = async (identity_card: number) => {
+  const user = await getUserByIdentityCardRepository(identity_card);
+  if (!user) {
+    throw new Error("Usuario con la cédula proporcionada no fue encontrado.");
+  }
+  return user;
+};
+
+export const getAllUsersService = async () => {
+  return await getAllUsersRepository();
+}
+
+export const toggleActiveUserService = async (identity_card: number, isActive: boolean) => {
+  // Primero, verifica si el usuario existe
+  await getUserByIdentityCardService(identity_card);
+  
+  const toggleActiveUser = await toggleActiveUserRepository(identity_card, isActive);
+  return {
+    id: toggleActiveUser.id,
+    email: toggleActiveUser.email,
+    full_name: toggleActiveUser.full_name,
+    is_active: toggleActiveUser.is_active,
+  };
+};
+
+export const resetUserPasswordService = async (identity_card: number) => {
+  // Primero, verifica si el usuario existe
+  await getUserByIdentityCardService(identity_card);
+
+  const newPasswordHashed = await bcrypt.hash(String(identity_card), 10);
+  const resetPasswordUser = await resetUserPasswordRepository(identity_card, newPasswordHashed);
+  return {
+    id: resetPasswordUser.id,
+    email: resetPasswordUser.email,
+    full_name: resetPasswordUser.full_name,
+    is_active: resetPasswordUser.is_active,
+  };
+};
+
+export const updateUserService = async (identity_card: number, userData: Partial<CreateUserInput>) => {
+  // Primero, verifica si el usuario existe
+  await getUserByIdentityCardService(identity_card);
+
+  const updatedUser = await updateUserRepository(identity_card, userData);
+  return updatedUser;
+};
 
 export const registerUserService = async (
   userData: CreateUserInput
@@ -11,13 +60,13 @@ export const registerUserService = async (
     // Validar si el correo ya está registrado (ignorando mayúsculas y espacios)
     const email = userData.email?.trim().toLowerCase();
 
-    const existingUser = await getUserByEmail(email);
+    const existingUser = await getUserByEmailRepository(email);
     if (existingUser) {
       throw new Error("Este correo ya está registrado");
     }
 
     // Validar si la cédula ya está registrada
-    const existingIdentityCard = await getUserByIdentityCard(userData.identity_card);
+    const existingIdentityCard = await getUserByIdentityCardRepository(userData.identity_card);
     if (existingIdentityCard) {
       throw new Error("Esta cédula ya está registrada");
     }
@@ -27,7 +76,7 @@ export const registerUserService = async (
     const hashedPassword = await bcrypt.hash(userData.password!, 10);
 
     // Crear el usuario usando el userRepository
-    const newUser = await createUser(userData, hashedPassword);
+    const newUser = await createUserRepository(userData, hashedPassword);
 
     // Devolver el usuario creado (sin la contraseña)
     return {

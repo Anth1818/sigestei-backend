@@ -1,4 +1,4 @@
-import {getUserByEmail}from '../repositories/user.repository'; // Asumiendo que exportas una instancia
+import {getUserByEmailRepository}from '../repositories/user.repository'; // Asumiendo que exportas una instancia
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { users as User } from '@prisma/client'; // Asumiendo que tienes una interfaz/tipo para el usuario
@@ -19,7 +19,7 @@ export class AuthError extends Error {
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
 
 export const loginUser = async (email: string, password: string): Promise<LoginResponse> => {
-  const user: User | null = await getUserByEmail(email);
+  const user: User | null = await getUserByEmailRepository(email);
   if (!user) {
     throw new AuthError('Credenciales inválidas', 401);
   }
@@ -40,7 +40,7 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
     role_id: user.role_id,
   };
 
-  const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '3h' });
 
   return {
     token,

@@ -1,26 +1,47 @@
 import {PrismaClient} from '@prisma/client';
 import type { CreateUserInput } from "../../utils/types";
 
-
 const prisma = new PrismaClient();
 
-const getAllUsers = async () => {
+const getAllUsersRepository = async () => {
   return await prisma.users.findMany();
 };
 
-const getUserByEmail = async (email: string) => {
+
+const getUserByEmailRepository = async (email: string) => {
   return await prisma.users.findUnique({
     where: { email },
   });
 };
 
-const getUserByIdentityCard = async (identity_card: number) => {
+const getUserByIdentityCardRepository = async (identity_card: number) => {
   return await prisma.users.findUnique({
     where: { identity_card },
   });
 };
 
-const createUser = async (userData: Omit<CreateUserInput, 'password'>, hashedPassword: string, ) => {
+const updateUserRepository = async (identity_card: number, userData: Partial<CreateUserInput>) => {
+  return await prisma.users.update({
+    where: { identity_card },
+    data: userData,
+  });
+}
+
+const toggleActiveUserRepository = async (identity_card: number, isActive: boolean) => {
+  return await prisma.users.update({
+    where: { identity_card },
+    data: { is_active: isActive },
+  });
+}
+
+const resetUserPasswordRepository = async (identity_card: number, hashedPassword: string) => {
+  return await prisma.users.update({
+    where: { identity_card },
+    data: { password_hash: hashedPassword },
+  });
+}
+
+const createUserRepository = async (userData: Omit<CreateUserInput, 'password'>, hashedPassword: string, ) => {
   return await prisma.users.create({
     data: {
       full_name: userData.full_name,
@@ -35,4 +56,4 @@ const createUser = async (userData: Omit<CreateUserInput, 'password'>, hashedPas
   });
 }
 
-export { getAllUsers, getUserByEmail, getUserByIdentityCard, createUser };
+export { getAllUsersRepository, getUserByEmailRepository, getUserByIdentityCardRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository };
