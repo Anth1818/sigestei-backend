@@ -4,7 +4,9 @@ import type { CreateUserInput } from "../../utils/types";
 const prisma = new PrismaClient();
 
 const getAllUsersRepository = async () => {
-  return await prisma.users.findMany();
+  return await prisma.users.findMany({
+    orderBy: { id: 'asc' }
+  });
 };
 
 

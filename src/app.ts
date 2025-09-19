@@ -24,6 +24,10 @@ app.use('/api/auth', authRoutes);
 import userRoutes from './api/routes/user.routes';
 app.use('/api/users', userRoutes);
 
+// Importar rutas de catálogos
+import catalogRoutes from './api/routes/catalog.routes';
+app.use('/api/catalogs', catalogRoutes);
+
 app.get('/', (req, res) => {
 	res.send('API funcionando');
 });

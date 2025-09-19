@@ -6,6 +6,16 @@ import { UserPayload } from "../../utils/types";
 import type { CreateUserInput } from "../../utils/types";
 
 
+//  Clase de error personalizada
+// export class UserError extends Error {
+//   public statusCode: number;
+
+//   constructor(message: string, statusCode: number) {
+//     super(message);
+//     this.statusCode = statusCode;
+//   }
+// }
+
 export const getUserByIdentityCardService = async (identity_card: number) => {
   const user = await getUserByIdentityCardRepository(identity_card);
   if (!user) {

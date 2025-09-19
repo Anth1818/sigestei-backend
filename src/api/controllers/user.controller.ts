@@ -1,16 +1,6 @@
-import { registerUserService, getAllUsersService, getUserByIdentityCardService, updateUserService, toggleActiveUserService, resetUserPasswordService } from '../services/user.service';
+import { registerUserService, getAllUsersService, getUserByIdentityCardService, updateUserService, toggleActiveUserService, resetUserPasswordService} from '../services/user.service';
 import { Request, Response } from 'express';
 
-
-//  Clase de error personalizada
-export class UserError extends Error {
-  public statusCode: number;
-
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.statusCode = statusCode;
-  }
-}
 
 export const getUserByIdentityCardController = async (req: Request, res: Response) => {
   try {
