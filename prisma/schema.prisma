@@ -89,6 +89,7 @@ model requests {
   description                          String
   request_date                         DateTime?           @default(now()) @db.Timestamptz(6)
   resolution_date                      DateTime?           @db.Timestamptz(6)
+  comments_technician                  String?
   requester_id                         Int
   beneficiary_id                       Int?
   technician_id                        Int?

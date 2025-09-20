@@ -203,10 +203,10 @@ INSERT INTO computer_equipment (id, asset_number, serial_number, model, location
 (202, '100202', 'DL-LAP-002', 'XPS 13 9310', 'Oficina 202 - Ventas', '{"cpu": "Intel Core i7-1165G7", "ram": "16GB LPDDR4x", "storage": "1TB SSD", "gpu": "Intel Iris Xe", "network": "Wi-Fi, Bluetooth"}', '{"os": "Windows 10 Pro", "office": "Microsoft Office 2019", "antivirus": "McAfee"}', 5, 1, 2, 2);
 
 -- Insertar SOLICITUDES al final, ya que dependen de los usuarios y los equipos.
-INSERT INTO requests (id, description, request_date, requester_id, beneficiary_id, technician_id, computer_equipment_id, type_id, status_id, priority_id) VALUES
-(1, 'El equipo presenta pantalla azul constante y se reinicia automáticamente. Necesita revisión urgente.', '2025-08-01T09:30:00Z', 1, NULL, 2, 101, 4, 1, 1),
-(2, 'Solicitud de mantenimiento preventivo mensual. Limpieza de hardware y actualización de software.', '2025-08-02T14:15:00Z', 2, NULL, 2, 102, 1, 2, 2),
-(3, 'Instalación de nuevo software de diseño gráfico para el equipo de marketing.', '2025-08-03T10:45:00Z', 1, 6, 2, 103, 6, 3, 3),
-(4, 'Actualización del sistema operativo cancelada por incompatibilidad de hardware.', '2025-08-04T08:20:00Z', 3, NULL, 2, 104, 8, 4, 2),
-(5, 'Problema con conectividad de red. El equipo no puede acceder a recursos compartidos.', '2025-08-05T16:30:00Z', 2, 5, 2, 105, 9, 1, 1),
-(6, 'Limpieza de virus y malware detectado por el antivirus corporativo.', '2025-08-06T11:00:00Z', 4, NULL, 2, 106, 4, 2, 2);
+INSERT INTO requests (id, description, request_date, requester_id, comments_technician, beneficiary_id, technician_id, computer_equipment_id, type_id, status_id, priority_id) VALUES
+(1, 'El equipo presenta pantalla azul constante y se reinicia automáticamente. Necesita revisión urgente.', '2025-08-01T09:30:00Z', 1, NUll, 1, 2, 101, 4, 1, 1),
+(2, 'Solicitud de mantenimiento preventivo mensual. Limpieza de hardware y actualización de software.', '2025-08-02T14:15:00Z', 2, NUll, 2, 2, 102, 1, 2, 2),
+(3, 'Instalación de nuevo software de diseño gráfico para el equipo de marketing.', '2025-08-03T10:45:00Z', 1, NUll, 6, 2, 103, 6, 3, 3),
+(4, 'Actualización del sistema operativo cancelada por incompatibilidad de hardware.', '2025-08-04T08:20:00Z', 3, NUll, 3, 2, 104, 8, 4, 2),
+(5, 'Problema con conectividad de red. El equipo no puede acceder a recursos compartidos.', '2025-08-05T16:30:00Z', 2, NUll, 5, 2, 105, 9, 1, 1),
+(6, 'Limpieza de virus y malware detectado por el antivirus corporativo.', '2025-08-06T11:00:00Z', 4, NUll, 4, 2, 106, 4, 2, 2);

@@ -28,6 +28,14 @@ app.use('/api/users', userRoutes);
 import catalogRoutes from './api/routes/catalog.routes';
 app.use('/api/catalogs', catalogRoutes);
 
+// Importar rutas de solicitudes
+import requestRoutes from './api/routes/request.routes';
+// ...
+app.use('/api/requests', requestRoutes);
+
+
+
+// Ruta de prueba
 app.get('/', (req, res) => {
 	res.send('API funcionando');
 });

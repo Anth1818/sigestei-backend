@@ -9,6 +9,26 @@ export type CreateUserInput = {
   department_id?: number | null;
 };
 
+export interface CreateRequestInput {
+  description: string;
+  request_date?: Date;
+  resolution_date?: Date | null;
+  comments_technician?: string | null;
+  requester_id: number;
+  beneficiary_id?: number | null;
+  technician_id?: number | null;
+  computer_equipment_id?: number | null;
+  type_id: number;
+  status_id: number;
+  priority_id: number;
+}
+
+export interface ServiceResponse {
+  success: boolean | string;
+  data?: any;
+  error?: string;
+}
+
 
 export interface LoginResponse {
   token: string;

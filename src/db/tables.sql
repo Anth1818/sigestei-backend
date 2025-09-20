@@ -89,6 +89,7 @@ CREATE TABLE requests (
     description TEXT NOT NULL,
     request_date TIMESTAMPTZ DEFAULT NOW(),
     resolution_date TIMESTAMPTZ, -- Fecha en que se completó o canceló
+    comments_technician TEXT, -- Comentarios del técnico
 
     -- IDs de los involucrados
     requester_id INT NOT NULL REFERENCES users(id),         -- Quien crea la solicitud
