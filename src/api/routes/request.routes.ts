@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllRequestsController, registerRequestController } from '../controllers/request.controller';
+import { getAllRequestsController, registerRequestController,  updateRequestController } from '../controllers/request.controller';
 import authMiddleware from '../../middlewares/authMiddleware';
 import roleMiddleware from '../../middlewares/roleMiddleware';
 
@@ -10,5 +10,7 @@ router.use(roleMiddleware(1,2,3,4)); // Todos los roles
 router.get('/', getAllRequestsController);
 
 router.post('/register', registerRequestController);
+
+router.put('/updateRequest', updateRequestController);
 
 export default router;

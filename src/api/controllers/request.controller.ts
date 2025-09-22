@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { getAllRequestsService, registerRequestService } from '../services/request.service';
+import { getAllRequestsService, registerRequestService, updateRequestService } from '../services/request.service';
+import { CreateRequestInput } from '../../utils/types';
 
 export const getAllRequestsController = async (_req: Request, res: Response) => {
   try {
@@ -24,4 +25,23 @@ export const registerRequestController = async (req: Request, res: Response) => 
   } catch (error) {
     res.status(500).json({ message: 'Error al registrar la solicitud', error: error instanceof Error ? error.message : error });
   }
+};
+
+export const updateRequestController = async (req: Request, res: Response) => {
+  try {
+    const {id, ...dataToUpdate} = req.body;
+
+    if (!id) {
+      return res.status(400).json({ message: 'El ID de la solicitud es obligatorio' });
+    }
+
+    if (!dataToUpdate || Object.keys(dataToUpdate).length === 0) {
+      return res.status(400).json({ message: 'No se proporcionaron datos para actualizar' });
+    }
+
+    const result = await updateRequestService(Number(id), dataToUpdate);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar la solicitud', error: error instanceof Error ? error.message : error });
+  } 
 };

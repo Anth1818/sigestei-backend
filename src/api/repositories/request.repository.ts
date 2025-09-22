@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../../generated/prisma';
 import type { CreateRequestInput } from '../../utils/types';
 const prisma = new PrismaClient();
 
@@ -16,6 +16,13 @@ export const getAllRequestsRepository = async () => {
     },
   });
 };
+
+export const updateRequestRepository = async (id: number, data: Partial<CreateRequestInput>) => {
+  return await prisma.requests.update({
+    where: { id },
+    data,
+  });
+}
 
 export const registerRequestRepository = async (requestData: CreateRequestInput) => {
   return await prisma.requests.create({
