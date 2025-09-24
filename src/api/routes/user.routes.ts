@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { getAllUsersController, registerUserController, updateUserController, toggleActiveUserController, resetUserPasswordController} from '../controllers/user.controller';
 import authMiddleware from '../../middlewares/authMiddleware';
 import roleMiddleware from '../../middlewares/roleMiddleware';
+import { getUserByIdentityCardController } from '../controllers/user.controller';
 
 const router = Router();
 router.use(authMiddleware);
@@ -13,7 +14,6 @@ router.use(roleMiddleware(1)); // Solo administradores
 router.get('/', getAllUsersController);
 
 // GET /api/users/identity_card/:identity_card
-import { getUserByIdentityCardController } from '../controllers/user.controller';
 router.get('/identity_card/:identity_card', getUserByIdentityCardController);
 
 // POST /api/users/register

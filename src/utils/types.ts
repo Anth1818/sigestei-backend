@@ -23,6 +23,19 @@ export interface CreateRequestInput {
   priority_id: number;
 }
 
+export interface CreateComputerEquipmentInput {
+  asset_number: string;
+  serial_number: string;
+  model?: string | null;
+  location?: string | null;
+  hardware_specs?: any | null; // JSON field
+  software_specs?: any | null; // JSON field
+  assigned_user_id?: number | null;
+  type_id: number;
+  brand_id: number;
+  status_id: number;
+}
+
 export interface ServiceResponse {
   success: boolean | string;
   data?: any;

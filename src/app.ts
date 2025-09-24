@@ -33,6 +33,10 @@ import requestRoutes from './api/routes/request.routes';
 // ...
 app.use('/api/requests', requestRoutes);
 
+// Importar rutas de equipos de cómputo
+import computerEquipmentRoutes from './api/routes/computerEquipment.routes';
+app.use('/api/computer-equipment', computerEquipmentRoutes);
+
 
 
 // Ruta de prueba
