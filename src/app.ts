@@ -37,6 +37,10 @@ app.use('/api/requests', requestRoutes);
 import computerEquipmentRoutes from './api/routes/computerEquipment.routes';
 app.use('/api/computer-equipment', computerEquipmentRoutes);
 
+// Importar rutas del dashboard
+import dashboardRoutes from './api/routes/dashboard.routes';
+app.use('/api/dashboard', dashboardRoutes);
+
 
 
 // Ruta de prueba
