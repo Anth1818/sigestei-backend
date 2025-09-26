@@ -26,7 +26,7 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
 
   const isPasswordValid = await bcrypt.compare(password, user.password_hash);
   if (!isPasswordValid) {
-    throw new AuthError('Credenciales inválidas, contraseña', 401);
+    throw new AuthError('Credenciales inválidas', 401);
   }
 
   if (!user.is_active) {

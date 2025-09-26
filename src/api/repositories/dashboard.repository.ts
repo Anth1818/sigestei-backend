@@ -1,4 +1,3 @@
-import { requests } from "./../../generated/prisma/index.d";
 import { PrismaClient } from "../../generated/prisma";
 const prisma = new PrismaClient();
 
@@ -33,57 +32,45 @@ export const getRequestsCreatedAndResolvedByMonthRepository = async () => {
     _count: { id: true },
   });
 
-  // Formatear resultados a { [mes]: { id: mes, name: nombreMes, count: cantidad } }
+  // Meses en inglés
   const monthNames = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
   ];
 
-  const createdByMonth: Record<
-    number,
-    { id: number; name: string; count: number }
-  > = {};
-  created.forEach((item) => {
-    const month = (item.request_date as Date).getMonth() + 1;
-    if (!createdByMonth[month]) {
-      createdByMonth[month] = {
-        id: month,
-        name: monthNames[month - 1],
-        count: 0,
-      };
-    }
-    createdByMonth[month].count += item._count.id;
+  // Inicializar objetos con todos los meses en 0
+  const createdByMonth: Record<string, number> = {};
+  const resolvedByMonth: Record<string, number> = {};
+  monthNames.forEach((name) => {
+    createdByMonth[name] = 0;
+    resolvedByMonth[name] = 0;
   });
 
-  const resolvedByMonth: Record<
-    number,
-    { id: number; name: string; count: number }
-  > = {};
+  created.forEach((item) => {
+    const monthIdx = (item.request_date as Date).getMonth();
+    const monthName = monthNames[monthIdx];
+    createdByMonth[monthName] += item._count.id;
+  });
+
   resolved.forEach((item) => {
-    const month = (item.resolution_date as Date).getMonth() + 1;
-    if (!resolvedByMonth[month]) {
-      resolvedByMonth[month] = {
-        id: month,
-        name: monthNames[month - 1],
-        count: 0,
-      };
-    }
-    resolvedByMonth[month].count += item._count.id;
+    const monthIdx = (item.resolution_date as Date).getMonth();
+    const monthName = monthNames[monthIdx];
+    resolvedByMonth[monthName] += item._count.id;
   });
 
   return {
-    createdByMonth,
-    resolvedByMonth,
+    created: createdByMonth,
+    resolved: resolvedByMonth,
   };
 };
 
@@ -111,10 +98,19 @@ export const getRequestsByStatusCurrentMonthRepository = async () => {
     },
   });
 
-  // Formatear resultado para devolver un objeto { statusId: count }
-  const byStatus: Record<number, number> = {};
+  // Mapeo de ids a nombres de status
+  const statusNames: Record<number, string> = {
+    1: "pending",
+    2: "in_process",
+    3: "resolved",
+    4: "closed",
+  };
+
+  // Formatear resultado para devolver un objeto { nombreStatus: count }
+  const byStatus: Record<string, number> = {};
   grouped.forEach((item) => {
-    byStatus[item.status_id] = item._count.id;
+    const statusName = statusNames[item.status_id] || String(item.status_id);
+    byStatus[statusName] = item._count.id;
   });
 
   return byStatus;
@@ -136,10 +132,19 @@ export const getTotalEquipmentAndByStatusRepository = async () => {
     },
   });
 
-  // Formatear resultado para devolver un objeto { statusId: count }
-  const byStatus: Record<number, number> = {};
+  // Mapeo de ids a nombres de status
+  const statusNames: Record<number, string> = {
+    1: "operational",
+    2: "under_review",
+    3: "damaged",
+    4: "withdrawn",
+  };
+
+  // Formatear resultado para devolver un objeto { nombreStatus: count }
+  const byStatus: Record<string, number> = {};
   statusCounts.forEach((item) => {
-    byStatus[item.status_id] = item._count.status_id;
+    const statusName = statusNames[item.status_id] || String(item.status_id);
+    byStatus[statusName] = item._count.status_id;
   });
 
   return {
@@ -162,10 +167,19 @@ export const getTotalUsersAndByRoleRepository = async () => {
     },
   });
 
-  // Formatear resultado para devolver un objeto { RoleId: count }
-  const byRoles: Record<number, number> = {};
+  // Mapeo de ids a nombres de roles
+  const roleNames: Record<number, string> = {
+    1: "admin",
+    2: "manager",
+    3: "technician",
+    4: "user",
+  };
+
+  // Formatear resultado para devolver un objeto { nombreRol: count }
+  const byRoles: Record<string, number> = {};
   rolesCounts.forEach((item) => {
-    byRoles[item.role_id] = item._count.role_id;
+    const roleName = roleNames[item.role_id] || String(item.role_id);
+    byRoles[roleName] = item._count.role_id;
   });
 
   return {

@@ -2,10 +2,10 @@
 
 -- Insertar Roles
 INSERT INTO roles (name) VALUES
-('Admin'),
-('Manager'),
-('Technician'),
-('User');
+('admin'),
+('manager'),
+('technician'),
+('user');
 
 -- Insertar Géneros
 INSERT INTO genders (name) VALUES
@@ -92,10 +92,10 @@ INSERT INTO equipment_brands (name) VALUES
 
 -- Insertar Estados de Equipos
 INSERT INTO equipment_statuses (name) VALUES
-('Activo'),
-('En mantenimiento'),
-('En reparación'),
-('Inactivo');
+('operational'),
+('under_review'),
+('damaged'),
+('withdrawn');
 
 -- Insertar Tipos de Solicitudes
 INSERT INTO request_types (id, name) VALUES
@@ -112,16 +112,16 @@ INSERT INTO request_types (id, name) VALUES
 
 -- Insertar Estados de Solicitudes
 INSERT INTO request_statuses (name) VALUES
-('Pendiente'),
-('En progreso'),
-('Completada'),
-('Cancelada');
+('pending'),
+('in_progress'),
+('resolved'),
+('closed');
 
 -- Insertar Prioridades de Solicitudes
 INSERT INTO request_priorities (name) VALUES
-('Alta'),
-('Media'),
-('Baja');
+('High'),
+('Medium'),
+('Low');
 
 
 -- Insertar USUARIOS PRIMERO, ya que los equipos y solicitudes dependen de ellos.
