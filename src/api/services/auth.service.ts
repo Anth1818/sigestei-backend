@@ -40,7 +40,7 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
     role_id: user.role_id,
   };
 
-  const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '3h' });
+  const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '5h' });
 
   return {
     token,
