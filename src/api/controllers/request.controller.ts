@@ -1,47 +1,95 @@
-import { Request, Response } from 'express';
-import { getAllRequestsService, registerRequestService, updateRequestService } from '../services/request.service';
-import { CreateRequestInput } from '../../utils/types';
+import { Request, Response } from "express";
+import {
+  getAllRequestsService,
+  registerRequestService,
+  updateRequestService,
+} from "../services/request.service";
+import { CreateRequestInput } from "../../utils/types";
 
-export const getAllRequestsController = async (_req: Request, res: Response) => {
+export const getAllRequestsController = async (
+  _req: Request,
+  res: Response
+) => {
   try {
     const requests = await getAllRequestsService();
     res.json(requests);
   } catch (error) {
-    res.status(500).json({ message: 'Error al obtener las solicitudes', error: error instanceof Error ? error.message : error });
+    res
+      .status(500)
+      .json({
+        message: "Error al obtener las solicitudes",
+        error: error instanceof Error ? error.message : error,
+      });
   }
 };
 
-export const registerRequestController = async (req: Request, res: Response) => {
+export const registerRequestController = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const requestData = req.body;
     if (!requestData || Object.keys(requestData).length === 0) {
-      return res.status(400).json({ message: 'Datos de la solicitud no proporcionados' });
+      return res
+        .status(400)
+        .json({ message: "Datos de la solicitud no proporcionados" });
     }
-    if(!requestData.description || !requestData.request_date || !requestData.requester_id || !requestData.type_id || !requestData.status_id || !requestData.priority_id) {
-      return res.status(400).json({ message: 'Faltan campos obligatorios en los datos de la solicitud' });
+    if (
+      !requestData.description ||
+      !requestData.request_date ||
+      !requestData.requester_id ||
+      !requestData.type_id ||
+      !requestData.status_id ||
+      !requestData.priority_id
+    ) {
+      return res
+        .status(400)
+        .json({
+          message: "Faltan campos obligatorios en los datos de la solicitud",
+        });
     }
     const result = await registerRequestService(requestData);
     res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ message: 'Error al registrar la solicitud', error: error instanceof Error ? error.message : error });
+    res
+      .status(500)
+      .json({
+        message: "Error al registrar la solicitud",
+        error: error instanceof Error ? error.message : error,
+      });
   }
 };
 
 export const updateRequestController = async (req: Request, res: Response) => {
   try {
-    const {id, ...dataToUpdate} = req.body;
+    const id = req.params.id;
+    const {...dataToUpdate } = req.body;
+    if (!id || isNaN(Number(id))) {
+      return res
+        .status(400)
+        .json({ message: "ID de la solicitud inválido o no proporcionado" });
+    }
 
     if (!id) {
-      return res.status(400).json({ message: 'El ID de la solicitud es obligatorio' });
+      return res
+        .status(400)
+        .json({ message: "El ID de la solicitud es obligatorio" });
     }
 
     if (!dataToUpdate || Object.keys(dataToUpdate).length === 0) {
-      return res.status(400).json({ message: 'No se proporcionaron datos para actualizar' });
+      return res
+        .status(400)
+        .json({ message: "No se proporcionaron datos para actualizar" });
     }
 
     const result = await updateRequestService(Number(id), dataToUpdate);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ message: 'Error al actualizar la solicitud', error: error instanceof Error ? error.message : error });
-  } 
+    res
+      .status(500)
+      .json({
+        message: "Error al actualizar la solicitud",
+        error: error instanceof Error ? error.message : error,
+      });
+  }
 };

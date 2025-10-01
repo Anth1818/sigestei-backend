@@ -11,6 +11,6 @@ router.get('/', getAllRequestsController);
 
 router.post('/register', registerRequestController);
 
-router.put('/updateRequest', updateRequestController);
+router.put('/updateRequest/:id', updateRequestController);
 
 export default router;
