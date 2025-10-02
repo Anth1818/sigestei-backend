@@ -10,4 +10,5 @@ export const getTecniciansRepository = async () => prisma.users.findMany({
   orderBy: { full_name: 'asc' },
     select: { id: true, full_name: true },
 });
+export const getTypesOfRequestsRepository = async () => prisma.request_types.findMany();
 // Agrega más según tus catálogos

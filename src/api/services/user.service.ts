@@ -1,6 +1,6 @@
 import { getAllUsersRepository } from "../repositories/user.repository"
 import { getUserByEmailRepository,
-getUserByIdentityCardRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository } from "../repositories/user.repository";
+getUserByIdentityCardRepository, getAllUsersByAllDepartmentsRepository, getAllUsersByDepartmentRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository } from "../repositories/user.repository";
 import bcrypt from "bcrypt";
 import { UserPayload } from "../../utils/types";
 import type { CreateUserInput } from "../../utils/types";
@@ -26,6 +26,18 @@ export const getUserByIdentityCardService = async (identity_card: number) => {
 
 export const getAllUsersService = async () => {
   return await getAllUsersRepository();
+}
+
+export const getAllUsersByAllDepartmentsService = async () => {
+  return await getAllUsersByAllDepartmentsRepository();
+}
+
+export const getAllUsersByDepartmentsService = async (department_id: number) => {
+  const UsersBydepartment = await getAllUsersByDepartmentRepository(department_id);
+  if (UsersBydepartment.length === 0) {
+    throw new Error("No se encontraron usuarios en el departamento proporcionado.");
+  }
+  return UsersBydepartment
 }
 
 export const toggleActiveUserService = async (identity_card: number, isActive: boolean) => {

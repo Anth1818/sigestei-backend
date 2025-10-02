@@ -1,7 +1,7 @@
-import {getUserByEmailRepository}from '../repositories/user.repository'; // Asumiendo que exportas una instancia
+import {getUserByEmailRepository, updateLoginTimestampsRepository, updateLogoutTimestampRepository}from '../repositories/user.repository'; // Asumiendo que exportas una instancia
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { users as User } from '@prisma/client'; // Asumiendo que tienes una interfaz/tipo para el usuario
+import { users as User } from '../../generated/prisma'; // Asumiendo que tienes una interfaz/tipo para el usuario
 import { UserPayload, LoginResponse } from '../../utils/types';
 
 
@@ -33,11 +33,18 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
     throw new AuthError('El usuario se encuentra inactivo', 403);
   }
 
+  // Actualizar last_login y last_login_backup según la lógica
+  await updateLoginTimestampsRepository(user.id);
+
   const tokenPayload: UserPayload = {
     id: user.id,
     email: user.email,
     full_name: user.full_name,
     role_id: user.role_id,
+    department_id: user.department_id,
+    last_login: user.last_login || null,
+    last_login_backup: user.last_login_backup || null,
+    
   };
 
   const token = jwt.sign(tokenPayload, JWT_SECRET, { expiresIn: '5h' });
@@ -46,5 +53,9 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
     token,
     user: tokenPayload,
   };
+};
+
+export const logoutUser = async (userId: number) => {
+  await updateLogoutTimestampRepository(userId);
 };
 

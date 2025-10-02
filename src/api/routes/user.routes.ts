@@ -1,34 +1,63 @@
-import { Router } from 'express';
-import { getAllUsersController, registerUserController, updateUserController, toggleActiveUserController, resetUserPasswordController} from '../controllers/user.controller';
-import authMiddleware from '../../middlewares/authMiddleware';
-import roleMiddleware from '../../middlewares/roleMiddleware';
-import { getUserByIdentityCardController } from '../controllers/user.controller';
+import { Router } from "express";
+import {
+  getAllUsersController,
+  getUserByIdentityCardController,
+  getAllUsersByAllDepartmentsController,
+  getAllUsersByDepartmentController,
+  registerUserController,
+  updateUserController,
+  toggleActiveUserController,
+  resetUserPasswordController,
+} from "../controllers/user.controller";
+import authMiddleware from "../../middlewares/authMiddleware";
+import roleMiddleware from "../../middlewares/roleMiddleware";
 
 const router = Router();
 router.use(authMiddleware);
-router.use(roleMiddleware(1)); // Solo administradores
 
-
-//Rutas Listas 
+//Rutas Listas
 // GET /api/users
-router.get('/', getAllUsersController);
+router.get("/", roleMiddleware(1), getAllUsersController);
 
 // GET /api/users/identity_card/:identity_card
-router.get('/identity_card/:identity_card', getUserByIdentityCardController);
+router.get(
+  "/identity_card/:identity_card",
+  roleMiddleware(1),
+  getUserByIdentityCardController
+);
+
+// get all users by all departments
+
+router.get(
+  "/allUsersByAllDepartments",
+  roleMiddleware(1),
+  getAllUsersByAllDepartmentsController
+);
+
+router.get(
+  "/allUsersByDepartment/:department_id",
+  roleMiddleware(1, 2, 3, 4),
+  getAllUsersByDepartmentController
+);
 
 // POST /api/users/register
-router.post('/register', registerUserController);
-
+router.post("/register", roleMiddleware(1), registerUserController);
 
 // PUT /api/users/update/:identity_card
-router.put('/update/:identity_card', updateUserController);
+router.put("/update/:identity_card", roleMiddleware(1), updateUserController);
 
 // PUT /api/users/toggleactive/:identity_card
-router.put('/toggleactive/:identity_card', toggleActiveUserController);
-
+router.put(
+  "/toggleactive/:identity_card",
+  roleMiddleware(1),
+  toggleActiveUserController
+);
 
 // PUT /api/users/resetpassword/:identity_card
-router.put('/resetpassword/:identity_card', resetUserPasswordController);
-
+router.put(
+  "/resetpassword/:identity_card",
+  roleMiddleware(1),
+  resetUserPasswordController
+);
 
 export default router;

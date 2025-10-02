@@ -34,8 +34,16 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
-// 
-export const logout = (req: Request, res: Response): Response => {
-  res.clearCookie('auth-token');
-  return res.status(200).json({ message: 'Logout exitoso' });
+export const logout = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    // Suponiendo que tienes el userId en req.user (middleware de autenticación)
+    const userId = req.user?.id;
+    if (userId) {
+      await authService.logoutUser(userId);
+    }
+    res.clearCookie('auth-token');
+    return res.status(200).json({ message: 'Logout exitoso' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error al cerrar sesión' });
+  }
 };

@@ -53,6 +53,9 @@ export interface UserPayload {
   email: string;
   full_name: string;
   role_id: number;
+  department_id?: number | null;
+  last_login?: Date | null;
+  last_login_backup?: Date | null;
 }
 declare global {
   namespace Express {

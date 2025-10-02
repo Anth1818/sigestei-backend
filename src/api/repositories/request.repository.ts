@@ -73,14 +73,12 @@ export const registerRequestRepository = async (
   return await prisma.requests.create({
     data: {
       description: requestData.description,
-      request_date: requestData.request_date, // opcional, si no se pasa usa el default de la DB
-      resolution_date: requestData.resolution_date ?? null,
       requester_id: requestData.requester_id,
       beneficiary_id: requestData.beneficiary_id ?? null,
       computer_equipment_id: requestData.computer_equipment_id ?? null,
       type_id: requestData.type_id,
-      status_id: requestData.status_id,
-      priority_id: requestData.priority_id,
+      status_id: 1, // Nuevo request siempre inicia en 'pending'
+      priority_id: 1, // Nuevo request siempre inicia en 'low'
     },
   });
 };

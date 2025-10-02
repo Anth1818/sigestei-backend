@@ -1,4 +1,42 @@
-import {PrismaClient} from '@prisma/client';
+// Actualiza last_login y last_login_backup al hacer login
+export const updateLoginTimestampsRepository = async (userId: number) => {
+  const user = await prisma.users.findUnique({ where: { id: userId } });
+  if (!user) throw new Error('Usuario no encontrado');
+  if (!user.last_login) {
+    // Primer login: ambos campos se inicializan
+    const now = new Date();
+    await prisma.users.update({
+      where: { id: userId },
+      data: {
+        last_login: now,
+        last_login_backup: now,
+      },
+    });
+  } else {
+    // Logins siguientes: solo last_login
+    await prisma.users.update({
+      where: { id: userId },
+      data: {
+        last_login: new Date(),
+      },
+    });
+  }
+};
+
+// Actualiza last_login_backup al hacer logout
+export const updateLogoutTimestampRepository = async (userId: number) => {
+  const user = await prisma.users.findUnique({ where: { id: userId } });
+  if (!user) throw new Error('Usuario no encontrado');
+  if (user.last_login) {
+    await prisma.users.update({
+      where: { id: userId },
+      data: {
+        last_login_backup: user.last_login,
+      },
+    });
+  }
+};
+import { PrismaClient } from "../../generated/prisma";
 import type { CreateUserInput } from "../../utils/types";
 
 const prisma = new PrismaClient();
@@ -9,6 +47,19 @@ const getAllUsersRepository = async () => {
   });
 };
 
+const getAllUsersByAllDepartmentsRepository = async () => {
+  return await prisma.departments.findMany({
+    include: { users: true},
+    orderBy: { id: 'asc' }
+  });
+};
+
+const getAllUsersByDepartmentRepository = async (department_id: number) => {
+  return await prisma.users.findMany({
+    where: { department_id },
+    orderBy: { full_name: 'asc' }
+  });
+}
 
 const getUserByEmailRepository = async (email: string) => {
   return await prisma.users.findUnique({
@@ -43,6 +94,13 @@ const resetUserPasswordRepository = async (identity_card: number, hashedPassword
   });
 }
 
+const registerLoginDateRepository = async (identity_card: number, loginDate: Date) => {
+  return await prisma.users.update({
+    where: { identity_card },
+    data: { last_login: loginDate, last_login_backup: loginDate },
+  });
+}
+
 const createUserRepository = async (userData: Omit<CreateUserInput, 'password'>, hashedPassword: string, ) => {
   return await prisma.users.create({
     data: {
@@ -58,4 +116,4 @@ const createUserRepository = async (userData: Omit<CreateUserInput, 'password'>,
   });
 }
 
-export { getAllUsersRepository, getUserByEmailRepository, getUserByIdentityCardRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository };
+export { getAllUsersRepository, getAllUsersByAllDepartmentsRepository, getAllUsersByDepartmentRepository, getUserByEmailRepository, getUserByIdentityCardRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository };
