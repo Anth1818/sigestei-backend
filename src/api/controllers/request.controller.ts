@@ -36,11 +36,10 @@ export const registerRequestController = async (
     }
     if (
       !requestData.description ||
-      !requestData.request_date ||
       !requestData.requester_id ||
       !requestData.type_id ||
-      !requestData.status_id ||
-      !requestData.priority_id
+      !requestData.beneficiary_id ||
+      !requestData.computer_equipment_id 
     ) {
       return res
         .status(400)

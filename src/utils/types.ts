@@ -56,6 +56,7 @@ export interface UserPayload {
   department_id?: number | null;
   last_login?: Date | null;
   last_login_backup?: Date | null;
+  computer_equipment_id?: number | null;
 }
 declare global {
   namespace Express {

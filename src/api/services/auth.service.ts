@@ -1,4 +1,4 @@
-import {getUserByEmailRepository, updateLoginTimestampsRepository, updateLogoutTimestampRepository}from '../repositories/user.repository'; // Asumiendo que exportas una instancia
+import {getUserByEmailRepository, getCumputerEquipmentByUserIdRepository, updateLoginTimestampsRepository, updateLogoutTimestampRepository}from '../repositories/user.repository'; // Asumiendo que exportas una instancia
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { users as User } from '../../generated/prisma'; // Asumiendo que tienes una interfaz/tipo para el usuario
@@ -36,6 +36,12 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
   // Actualizar last_login y last_login_backup según la lógica
   await updateLoginTimestampsRepository(user.id);
 
+
+  // Obtener el equipo de cómputo asignado al usuario
+  const computer_equipment_id = await getCumputerEquipmentByUserIdRepository(user.id);
+  const id = computer_equipment_id ? computer_equipment_id.id : null;
+
+
   const tokenPayload: UserPayload = {
     id: user.id,
     email: user.email,
@@ -44,6 +50,7 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
     department_id: user.department_id,
     last_login: user.last_login || null,
     last_login_backup: user.last_login_backup || null,
+    computer_equipment_id: id || null,
     
   };
 

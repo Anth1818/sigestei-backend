@@ -94,10 +94,9 @@ const resetUserPasswordRepository = async (identity_card: number, hashedPassword
   });
 }
 
-const registerLoginDateRepository = async (identity_card: number, loginDate: Date) => {
-  return await prisma.users.update({
-    where: { identity_card },
-    data: { last_login: loginDate, last_login_backup: loginDate },
+const getCumputerEquipmentByUserIdRepository = async (userId: number) => {
+  return await prisma.computer_equipment.findFirst({
+    where: { assigned_user_id: userId },
   });
 }
 
@@ -116,4 +115,4 @@ const createUserRepository = async (userData: Omit<CreateUserInput, 'password'>,
   });
 }
 
-export { getAllUsersRepository, getAllUsersByAllDepartmentsRepository, getAllUsersByDepartmentRepository, getUserByEmailRepository, getUserByIdentityCardRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository };
+export { getAllUsersRepository, getCumputerEquipmentByUserIdRepository, getAllUsersByAllDepartmentsRepository, getAllUsersByDepartmentRepository, getUserByEmailRepository, getUserByIdentityCardRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository };

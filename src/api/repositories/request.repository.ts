@@ -78,7 +78,7 @@ export const registerRequestRepository = async (
       computer_equipment_id: requestData.computer_equipment_id ?? null,
       type_id: requestData.type_id,
       status_id: 1, // Nuevo request siempre inicia en 'pending'
-      priority_id: 1, // Nuevo request siempre inicia en 'low'
+      priority_id: 3, // Nuevo request siempre inicia en 'low'
     },
   });
 };
