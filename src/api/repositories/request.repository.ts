@@ -1,3 +1,4 @@
+import { computer_equipment } from './../../generated/prisma/index.d';
 import { PrismaClient } from "../../generated/prisma";
 import type { CreateRequestInput } from "../../utils/types";
 const prisma = new PrismaClient();
@@ -18,14 +19,22 @@ const fieldsToInclude = {
     departments: { select: { name: true } },
     genders: { select: { name: true } },
     roles: { select: { name: true } },
+    
   },
 };
+
+const fieldsToIncludeComputer = {
+  select: {
+    ...fieldsToInclude.select,
+    computer_equipment: true,
+  },
+}
 
 export const getAllRequestsRepository = async () => {
   const requests = await prisma.requests.findMany({
     orderBy: { id: "asc" },
     include: {
-      users_requests_beneficiary_idTousers: fieldsToInclude,
+      users_requests_beneficiary_idTousers: fieldsToIncludeComputer,
       users_requests_requester_idTousers: fieldsToInclude,
       users_requests_technician_idTousers: fieldsToInclude,
       computer_equipment: true,

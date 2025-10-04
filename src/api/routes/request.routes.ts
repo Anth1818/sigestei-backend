@@ -5,12 +5,11 @@ import roleMiddleware from '../../middlewares/roleMiddleware';
 
 const router = Router();
 router.use(authMiddleware);
-router.use(roleMiddleware(1,2,3,4)); // Todos los roles
 
-router.get('/', getAllRequestsController);
+router.get('/', roleMiddleware(1,2,3,4),  getAllRequestsController);
 
-router.post('/register', registerRequestController);
+router.post('/register',roleMiddleware(1,2,3,4), registerRequestController);
 
-router.put('/updateRequest/:id', updateRequestController);
+router.put('/updateRequest/:id', roleMiddleware(1,2,3), updateRequestController);
 
 export default router;
