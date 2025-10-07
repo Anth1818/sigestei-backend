@@ -22,7 +22,6 @@ CREATE TABLE positions (
     department_id INT REFERENCES departments(id)
 );
 
-
 CREATE TABLE equipment_types (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL -- Ej: 'Laptop', 'PC', 'Impresora'
@@ -67,7 +66,9 @@ CREATE TABLE users (
     position_id INT REFERENCES positions(id),
     gender_id INT REFERENCES genders(id),
     department_id INT REFERENCES departments(id), -- NOTA: Este campo es redundante ya que el departamento se puede obtener a través de 'position_id'. Se mantiene por conveniencia y para simplificar consultas (desnormalización).
-    created_at TIMESTAMPTZ DEFAULT NOW()
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    last_login TIMESTAMPTZ, -- FALTANTE EN EL SQL ORIGINAL
+    last_login_backup TIMESTAMPTZ -- FALTANTE EN EL SQL ORIGINAL
 );
 
 CREATE TABLE computer_equipment (
@@ -95,7 +96,6 @@ CREATE TABLE requests (
     requester_id INT NOT NULL REFERENCES users(id),         -- Quien crea la solicitud
     beneficiary_id INT REFERENCES users(id),                -- Para quien es la solicitud (tercero)
     technician_id INT REFERENCES users(id),                 -- Técnico asignado a la tarea
-    -- MEJORA SUGERIDA: Se podría agregar una restricción (CHECK o un TRIGGER) para asegurar que el 'technician_id' corresponda a un usuario con el rol de 'Technician'.
 
     -- IDs de los elementos
     computer_equipment_id INT REFERENCES computer_equipment(id),

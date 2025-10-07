@@ -18,7 +18,6 @@ export const getRequestsCreatedAndResolvedByMonthRepository = async () => {
   });
 
   // Agrupar solicitudes resueltas por mes basado en el status_id = 3
-  // Agrupar solicitudes resueltas por mes basado en el status_id = 3
   const resolved = await prisma.requests.groupBy({
     by: ["resolution_date"],
     where: {
@@ -74,9 +73,56 @@ export const getRequestsCreatedAndResolvedByMonthRepository = async () => {
   };
 };
 
+
+export const getRequestsCreatedAndResolvedSameMonthRepository = async () => {
+  const currentYear = new Date().getFullYear();
+  const requests = await prisma.requests.findMany({
+    where: {
+      request_date: {
+        gte: new Date(`${currentYear}-01-01`),
+        lt: new Date(`${currentYear + 1}-01-01`),
+      },
+      resolution_date: {
+        not: null,
+        gte: new Date(`${currentYear}-01-01`),
+        lt: new Date(`${currentYear + 1}-01-01`),
+      },
+      status_id: 3,
+    },
+    select: {
+      request_date: true,
+      resolution_date: true,
+    },
+  });
+
+  // Meses en inglés
+  const monthNames = [
+    "january", "february", "march", "april", "may", "june",
+    "july", "august", "september", "october", "november", "december"
+  ];
+
+  // Inicializar objeto con todos los meses en 0
+  const sameMonth: Record<string, number> = {};
+  monthNames.forEach((name) => {
+    sameMonth[name] = 0;
+  });
+
+  requests.forEach((item) => {
+    if (item.request_date && item.resolution_date) {
+      const reqMonth = new Date(item.request_date).getMonth();
+      const resMonth = new Date(item.resolution_date).getMonth();
+      if (reqMonth === resMonth) {
+        const monthName = monthNames[reqMonth];
+        sameMonth[monthName]++;
+      }
+    }
+  });
+
+  return sameMonth;
+};
+
 // Obtener solicitudes agrupadas por status (1: pendiente, 2: en proceso, 3: completada, 4: cerrada) solo del mes actual
 export const getRequestsByStatusCurrentMonthRepository = async () => {
-  const statusIds = [1, 2, 3, 4];
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -84,18 +130,32 @@ export const getRequestsByStatusCurrentMonthRepository = async () => {
   const startDate = new Date(year, month, 1);
   const endDate = new Date(year, month + 1, 0, 23, 59, 59, 999);
 
-  const grouped = await prisma.requests.groupBy({
+  // 1, 2, 4: creados en el mes actual
+  const createdStatuses = [1, 2, 4];
+  const createdRequests = await prisma.requests.groupBy({
     by: ["status_id"],
     where: {
-      status_id: { in: statusIds },
+      status_id: { in: createdStatuses },
       request_date: {
         gte: startDate,
         lte: endDate,
       },
     },
-    _count: {
-      id: true,
+    _count: { id: true },
+  });
+
+  // 3: resueltos en el mes actual (independiente de fecha de creación)
+  const resolvedRequests = await prisma.requests.groupBy({
+    by: ["status_id"],
+    where: {
+      status_id: 3,
+      resolution_date: {
+        not: null,
+        gte: startDate,
+        lte: endDate,
+      },
     },
+    _count: { id: true },
   });
 
   // Mapeo de ids a nombres de status
@@ -106,11 +166,21 @@ export const getRequestsByStatusCurrentMonthRepository = async () => {
     4: "closed",
   };
 
-  // Formatear resultado para devolver un objeto { nombreStatus: count }
-  const byStatus: Record<string, number> = {};
-  grouped.forEach((item) => {
-    const statusName = statusNames[item.status_id] || String(item.status_id);
-    byStatus[statusName] = item._count.id;
+  // Inicializar resultado
+  const byStatus: Record<string, number> = {
+    pending: 0,
+    in_process: 0,
+    resolved: 0,
+    closed: 0,
+  };
+
+  createdRequests.forEach((item) => {
+    const statusName = statusNames[item.status_id];
+    if (statusName) byStatus[statusName] = item._count.id;
+  });
+
+  resolvedRequests.forEach((item) => {
+    byStatus["resolved"] = item._count.id;
   });
 
   return byStatus;
