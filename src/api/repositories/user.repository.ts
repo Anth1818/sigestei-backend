@@ -1,3 +1,9 @@
+import { PrismaClient } from "../../generated/prisma";
+import type { CreateUserInput } from "../../utils/types";
+
+const prisma = new PrismaClient();
+
+
 // Actualiza last_login y last_login_backup al hacer login
 export const updateLoginTimestampsRepository = async (userId: number) => {
   const user = await prisma.users.findUnique({ where: { id: userId } });
@@ -36,13 +42,11 @@ export const updateLogoutTimestampRepository = async (userId: number) => {
     });
   }
 };
-import { PrismaClient } from "../../generated/prisma";
-import type { CreateUserInput } from "../../utils/types";
 
-const prisma = new PrismaClient();
 
 const getAllUsersRepository = async () => {
   return await prisma.users.findMany({
+    omit: {password_hash: true},
     orderBy: { id: 'asc' }
   });
 };

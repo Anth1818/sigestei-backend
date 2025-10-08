@@ -103,7 +103,8 @@ export const registerComputerEquipmentController = async (req: Request, res: Res
 
 export const updateComputerEquipmentController = async (req: Request, res: Response) => {
   try {
-    const { id, ...dataToUpdate } = req.body;
+    const id = req.params.id;
+    const { ...dataToUpdate } = req.body;
 
     if (!id) {
       return res.status(400).json({ message: 'El ID del equipo es obligatorio' });

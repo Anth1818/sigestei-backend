@@ -30,6 +30,6 @@ router.get('/serial/:serial_number', getComputerEquipmentBySerialNumberControlle
 router.post('/register', registerComputerEquipmentController);
 
 // Actualizar equipo de cómputo - requiere autenticación
-router.put('/update', updateComputerEquipmentController);
+router.put('/update/:id', updateComputerEquipmentController);
 
 export default router;

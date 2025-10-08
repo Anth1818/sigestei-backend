@@ -6,7 +6,7 @@ export const getAllComputerEquipmentRepository = async () => {
   const computers = await prisma.computer_equipment.findMany({
     orderBy: { id: 'asc' },
     include: {
-      users: true, // Usuario asignado
+      users: {omit: {password_hash: true}}, // Usuario asignado
       requests: { select: { id: true } }, // Solo IDs de las requests
       equipment_brands: true, // Marca
       equipment_statuses: true, // Estatus
@@ -25,7 +25,7 @@ export const getComputerEquipmentByIdRepository = async (id: number) => {
   return await prisma.computer_equipment.findUnique({
     where: { id },
     include: {
-      users: true,
+      users: {omit: {password_hash: true}},
       equipment_brands: true,
       equipment_statuses: true,
       equipment_types: true,
@@ -37,7 +37,7 @@ export const getComputerEquipmentByAssetNumberRepository = async (asset_number: 
   return await prisma.computer_equipment.findUnique({
     where: { asset_number },
     include: {
-      users: true,
+      users: {omit: {password_hash: true}},
       equipment_brands: true,
       equipment_statuses: true,
       equipment_types: true,
@@ -49,7 +49,7 @@ export const getComputerEquipmentBySerialNumberRepository = async (serial_number
   return await prisma.computer_equipment.findUnique({
     where: { serial_number },
     include: {
-      users: true,
+      users: {omit: {password_hash: true}},
       equipment_brands: true,
       equipment_statuses: true,
       equipment_types: true,
@@ -61,6 +61,8 @@ export const updateComputerEquipmentRepository = async (id: number, data: Partia
   return await prisma.computer_equipment.update({
     where: { id },
     data,
+    include: {
+      users: {select: {full_name: true}}}
   });
 };
 

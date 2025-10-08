@@ -95,7 +95,7 @@ export const updateComputerEquipmentService = async (
     const result = await updateComputerEquipmentRepository(id, dataToUpdate);
     return {
       success: "Actualización exitosa",
-      data: `ID del equipo actualizado: ${result.id}`,
+      data: result,
     };
   } catch (error) {
     return {

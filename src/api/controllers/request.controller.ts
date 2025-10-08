@@ -4,7 +4,6 @@ import {
   registerRequestService,
   updateRequestService,
 } from "../services/request.service";
-import { CreateRequestInput } from "../../utils/types";
 
 export const getAllRequestsController = async (
   _req: Request,
