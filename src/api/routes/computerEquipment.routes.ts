@@ -18,7 +18,7 @@ router.use(roleMiddleware(1, 2, 3)); // Solo administradores, coordinadores y t�
 router.get('/', getAllComputerEquipmentController);
 
 // Obtener equipo por ID - requiere autenticación
-router.get('/id/:id', getComputerEquipmentByIdController);
+router.get('/:id', getComputerEquipmentByIdController);
 
 // Obtener equipo por número de activo - requiere autenticación
 router.get('/asset/:asset_number', getComputerEquipmentByAssetNumberController);
