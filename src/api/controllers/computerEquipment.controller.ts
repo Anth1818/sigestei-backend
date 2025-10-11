@@ -91,7 +91,7 @@ export const registerComputerEquipmentController = async (req: Request, res: Res
 
     // Validar campos obligatorios
     if (!equipmentData.asset_number || !equipmentData.serial_number || !equipmentData.type_id || !equipmentData.brand_id || !equipmentData.status_id) {
-      return res.status(400).json({ message: 'Faltan campos obligatorios: asset_number, serial_number, type_id, brand_id, status_id' });
+      return res.status(400).json({ message: 'Faltan campos obligatorios: número de bien, número de serie, id del tipo de computador, id de la marca, id del estatus' });
     }
 
     const result = await registerComputerEquipmentService(equipmentData);
