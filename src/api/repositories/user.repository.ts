@@ -44,67 +44,94 @@ export const updateLogoutTimestampRepository = async (userId: number) => {
 };
 
 
-const getAllUsersRepository = async () => {
-  return await prisma.users.findMany({
-    omit: {password_hash: true},
-    orderBy: { id: 'asc' }
+export const getAllUsersRepository = async () => {
+  const users = await prisma.users.findMany({
+    orderBy: { id: 'asc' },
+    include: {
+      departments: { select: { id: true, name: true } },
+      roles: { select: { id: true, name: true } },
+      genders: { select: { id: true, name: true } },
+      positions: { select: { id: true, name: true } },
+      computer_equipment: { select: {id: true, asset_number: true} }
+    },
   });
+
+  // Mapear para devolver los names como campos planos
+  return users.map(u => ({
+    id: u.id,
+    full_name: u.full_name,
+    identity_card: u.identity_card,
+    email: u.email,
+    is_active: u.is_active,
+    role_id: u.role_id,
+    position_id: u.position_id,
+    department_id: u.department_id,
+    gender_id: u.gender_id,
+    created_at: u.created_at,
+    last_login: u.last_login,
+    last_login_backup: u.last_login_backup,
+    department_name: u.departments?.name ?? null,
+    role_name: u.roles?.name ?? null,
+    gender_name: u.genders?.name ?? null,
+    position_name: u.positions?.name ?? null,
+    computer_equipment_asset_number: u.computer_equipment[0]?.asset_number ?? null,
+  }));
 };
 
-const getAllUsersByAllDepartmentsRepository = async () => {
+export const getAllUsersByAllDepartmentsRepository = async () => {
   return await prisma.departments.findMany({
     include: { users: true},
     orderBy: { id: 'asc' }
   });
 };
 
-const getAllUsersByDepartmentRepository = async (department_id: number) => {
+export const getAllUsersByDepartmentRepository = async (department_id: number) => {
   return await prisma.users.findMany({
     where: { department_id },
     orderBy: { full_name: 'asc' }
   });
 }
 
-const getUserByEmailRepository = async (email: string) => {
+export const getUserByEmailRepository = async (email: string) => {
   return await prisma.users.findUnique({
     where: { email },
   });
 };
 
-const getUserByIdentityCardRepository = async (identity_card: number) => {
+export const getUserByIdentityCardRepository = async (identity_card: number) => {
   return await prisma.users.findUnique({
     where: { identity_card },
   });
 };
 
-const updateUserRepository = async (identity_card: number, userData: Partial<CreateUserInput>) => {
+export const updateUserRepository = async (identity_card: number, userData: Partial<CreateUserInput>) => {
   return await prisma.users.update({
     where: { identity_card },
     data: userData,
   });
 }
 
-const toggleActiveUserRepository = async (identity_card: number, isActive: boolean) => {
+export const toggleActiveUserRepository = async (identity_card: number, isActive: boolean) => {
   return await prisma.users.update({
     where: { identity_card },
     data: { is_active: isActive },
   });
 }
 
-const resetUserPasswordRepository = async (identity_card: number, hashedPassword: string) => {
+export const resetUserPasswordRepository = async (identity_card: number, hashedPassword: string) => {
   return await prisma.users.update({
     where: { identity_card },
     data: { password_hash: hashedPassword },
   });
 }
 
-const getCumputerEquipmentByUserIdRepository = async (userId: number) => {
+export const getCumputerEquipmentByUserIdRepository = async (userId: number) => {
   return await prisma.computer_equipment.findFirst({
     where: { assigned_user_id: userId },
   });
 }
 
-const createUserRepository = async (userData: Omit<CreateUserInput, 'password'>, hashedPassword: string, ) => {
+export const createUserRepository = async (userData: Omit<CreateUserInput, 'password'>, hashedPassword: string, ) => {
   return await prisma.users.create({
     data: {
       full_name: userData.full_name,
@@ -119,4 +146,3 @@ const createUserRepository = async (userData: Omit<CreateUserInput, 'password'>,
   });
 }
 
-export { getAllUsersRepository, getCumputerEquipmentByUserIdRepository, getAllUsersByAllDepartmentsRepository, getAllUsersByDepartmentRepository, getUserByEmailRepository, getUserByIdentityCardRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository };
