@@ -40,11 +40,11 @@ export const getAllUsersByDepartmentsService = async (department_id: number) => 
   return UsersBydepartment
 }
 
-export const toggleActiveUserService = async (identity_card: number, isActive: boolean) => {
+export const toggleActiveUserService = async (identity_card: number) => {
   // Primero, verifica si el usuario existe
   await getUserByIdentityCardService(identity_card);
   
-  const toggleActiveUser = await toggleActiveUserRepository(identity_card, isActive);
+  const toggleActiveUser = await toggleActiveUserRepository(identity_card);
   return {
     id: toggleActiveUser.id,
     email: toggleActiveUser.email,

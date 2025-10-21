@@ -111,10 +111,15 @@ export const updateUserRepository = async (identity_card: number, userData: Part
   });
 }
 
-export const toggleActiveUserRepository = async (identity_card: number, isActive: boolean) => {
+export const toggleActiveUserRepository = async (identity_card: number) => {
+  const user = await prisma.users.findUnique({
+    where: { identity_card },
+    select: { is_active: true }
+  });
+  if (!user) throw new Error('Usuario no encontrado');
   return await prisma.users.update({
     where: { identity_card },
-    data: { is_active: isActive },
+    data: { is_active: !user.is_active },
   });
 }
 

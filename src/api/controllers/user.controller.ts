@@ -79,8 +79,7 @@ export const toggleActiveUserController = async (req: Request, res: Response) =>
       return res.status(400).json({ message: "Formato de cédula inválido. Debe contener solo números y tener un máximo de 10 dígitos." });
     }
 
-    const { is_active } = req.body;
-    const userUpdate = await toggleActiveUserService(Number(identity_card), is_active);
+    const userUpdate = await toggleActiveUserService(Number(identity_card));
     return res.json({ message: "Usuario actualizado correctamente", user: userUpdate });
   } catch (error) {
     if (error instanceof Error) {

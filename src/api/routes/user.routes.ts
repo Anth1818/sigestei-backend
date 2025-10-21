@@ -46,9 +46,9 @@ router.post("/register", roleMiddleware(1), registerUserController);
 // PUT /api/users/update/:identity_card
 router.put("/update/:identity_card", roleMiddleware(1), updateUserController);
 
-// PUT /api/users/toggleactive/:identity_card
+// PUT /api/users/toggleActive/:identity_card
 router.put(
-  "/toggleactive/:identity_card",
+  "/toggleActive/:identity_card",
   roleMiddleware(1),
   toggleActiveUserController
 );
