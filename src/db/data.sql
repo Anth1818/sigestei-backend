@@ -57,10 +57,10 @@ INSERT INTO equipment_brands (name) VALUES
 
 -- Insertar Estados de Equipos
 INSERT INTO equipment_statuses (name) VALUES
-('operational'),
-('under_review'),
-('damaged'),
-('withdrawn');
+('Activo'),
+('En mantenimiento'),
+('Averiado'),
+('Inactivo');
 
 -- Insertar Tipos de Solicitudes
 INSERT INTO request_types (name) VALUES
@@ -84,7 +84,7 @@ INSERT INTO request_statuses (name) VALUES
 
 -- Insertar Prioridades de Solicitudes
 INSERT INTO request_priorities (name) VALUES
-('Alto'),
+('Alta'),
 ('Media'),
 ('Baja');
 
@@ -212,10 +212,10 @@ INSERT INTO computer_equipment (asset_number, serial_number, model, location, ha
 
 -- Insertar SOLICITUDES al final, ya que dependen de los usuarios y los equipos.
 INSERT INTO requests (description, request_date, requester_id, comments_technician, beneficiary_id, technician_id, computer_equipment_id, type_id, status_id, priority_id) VALUES
-('El equipo presenta pantalla azul constante y se reinicia automáticamente. Necesita revisión urgente.', '2025-08-01T09:30:00Z', 1, NUll, 1, 2, 1, 4, 1, 1),
-('Solicitud de mantenimiento preventivo mensual. Limpieza de hardware y actualización de software.', '2025-08-02T14:15:00Z', 2, NUll, 2, 2, 2, 1, 2, 2),
-('Instalación de nuevo software de diseño gráfico para el equipo de marketing.', '2025-08-03T10:45:00Z', 1, NUll, 6, 2, 3, 6, 3, 3),
-('Actualización del sistema operativo cancelada por incompatibilidad de hardware.', '2025-08-04T08:20:00Z', 3, NUll, 3, 2, 4, 8, 4, 2),
-('Problema con conectividad de red. El equipo no puede acceder a recursos compartidos.', '2025-08-05T16:30:00Z', 2, NUll, 5, 2, 5, 9, 1, 1),
-('Limpieza de virus y malware detectado por el antivirus corporativo.', '2025-08-06T11:00:00Z', 4, NUll, 4, 2, 6, 4, 2, 2);
+('El equipo presenta pantalla azul constante y se reinicia automáticamente. Necesita revisión urgente.', '2025-08-01T09:30:00Z', 1, NUll, 1, NULL, 1, 4, 1, 3),
+('Solicitud de mantenimiento preventivo mensual. Limpieza de hardware y actualización de software.', '2025-08-02T14:15:00Z', 2, NUll, 2, NULL, 2, 1, 1, 3),
+('Instalación de nuevo software de diseño gráfico para el equipo de marketing.', '2025-08-03T10:45:00Z', 1, NUll, 6, NULL, 3, 6, 1, 3),
+('Actualización del sistema operativo cancelada por incompatibilidad de hardware.', '2025-08-04T08:20:00Z', 3, NUll, 3, NULL, 4, 8, 1, 3),
+('Problema con conectividad de red. El equipo no puede acceder a recursos compartidos.', '2025-08-05T16:30:00Z', 2, NUll, 5, NULL, 5, 9, 1, 3),
+('Limpieza de virus y malware detectado por el antivirus corporativo.', '2025-08-06T11:00:00Z', 4, NUll, 4, NULL, 6, 4, 1, 3);
 -------------------------------------------Fin del segundo-----------------------------
