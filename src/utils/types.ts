@@ -49,7 +49,8 @@ export interface LoginResponse {
 }
 
 export interface UserPayload {
-  id?: number; // o string, dependiendo de tu BD
+  id?: number;
+  identity_card: number; 
   email: string;
   full_name: string;
   role_id: number;

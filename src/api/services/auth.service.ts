@@ -44,6 +44,7 @@ export const loginUser = async (email: string, password: string): Promise<LoginR
 
   const tokenPayload: UserPayload = {
     id: user.id,
+    identity_card: user.identity_card,
     email: user.email,
     full_name: user.full_name,
     role_id: user.role_id,

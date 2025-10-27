@@ -1,4 +1,4 @@
-import { registerUserService, getAllUsersService, getAllUsersByAllDepartmentsService, getAllUsersByDepartmentsService, getUserByIdentityCardService, updateUserService, toggleActiveUserService, resetUserPasswordService} from '../services/user.service';
+import { registerUserService, getAllUsersService, getAllUsersByAllDepartmentsService, getAllUsersByDepartmentsService, getUserByIdentityCardService, updateUserService, toggleActiveUserService, resetUserPasswordService, changeUserPasswordService} from '../services/user.service';
 import { Request, Response } from 'express';
 
 
@@ -103,6 +103,33 @@ export const resetUserPasswordController = async (req: Request, res: Response) =
 
     const userUpdate = await resetUserPasswordService(Number(identity_card));
     return res.json({ message: "Contraseña reseteada correctamente", user: userUpdate });
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes("no fue encontrado")) {
+        return res.status(404).json({ message: error.message });
+      }
+      return res.status(400).json({ message: error.message });
+    }
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+}
+
+export const changeUserPasswordController = async (req: Request, res: Response) => {
+  const { identity_card } = req.params;
+  const { new_password } = req.body;
+
+  if(new_password === undefined || new_password.trim().length === 0) {
+    return res.status(400).json({ message: "Nueva contraseña requerida" });
+  }
+
+  // Validación de formato
+  if (!/^\d{1,10}$/.test(identity_card)) {
+    return res.status(400).json({ message: "Formato de cédula inválido. Debe contener solo números y tener un máximo de 10 dígitos." });
+  }
+
+  try {
+    const changeUserPassword = await changeUserPasswordService(Number(identity_card), new_password);
+    return res.json({ message: "Contraseña cambiada correctamente", user: changeUserPassword });
   } catch (error) {
     if (error instanceof Error) {
       if (error.message.includes("no fue encontrado")) {

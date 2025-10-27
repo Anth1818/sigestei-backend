@@ -8,6 +8,7 @@ import {
   updateUserController,
   toggleActiveUserController,
   resetUserPasswordController,
+  changeUserPasswordController,
 } from "../controllers/user.controller";
 import authMiddleware from "../../middlewares/authMiddleware";
 import roleMiddleware from "../../middlewares/roleMiddleware";
@@ -22,7 +23,7 @@ router.get("/", roleMiddleware(1), getAllUsersController);
 // GET /api/users/identity_card/:identity_card
 router.get(
   "/identity_card/:identity_card",
-  roleMiddleware(1),
+  roleMiddleware(1,2,3,4),
   getUserByIdentityCardController
 );
 
@@ -53,11 +54,18 @@ router.put(
   toggleActiveUserController
 );
 
-// PUT /api/users/resetpassword/:identity_card
+// PUT /api/users/resetPassword/:identity_card
 router.put(
-  "/resetpassword/:identity_card",
+  "/resetPassword/:identity_card",
   roleMiddleware(1),
   resetUserPasswordController
+);
+
+
+// PUT /api/users/changePassword/:identity_card
+router.put("/changePassword/:identity_card",
+roleMiddleware(1, 2, 3, 4),
+changeUserPasswordController
 );
 
 export default router;

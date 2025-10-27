@@ -1,20 +1,10 @@
-import { getAllUsersRepository } from "../repositories/user.repository"
+import { ChangeUserPasswordRepository, getAllUsersRepository } from "../repositories/user.repository"
 import { getUserByEmailRepository,
 getUserByIdentityCardRepository, getAllUsersByAllDepartmentsRepository, getAllUsersByDepartmentRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository } from "../repositories/user.repository";
 import bcrypt from "bcrypt";
 import { UserPayload } from "../../utils/types";
 import type { CreateUserInput } from "../../utils/types";
 
-
-//  Clase de error personalizada
-// export class UserError extends Error {
-//   public statusCode: number;
-
-//   constructor(message: string, statusCode: number) {
-//     super(message);
-//     this.statusCode = statusCode;
-//   }
-// }
 
 export const getUserByIdentityCardService = async (identity_card: number) => {
   const user = await getUserByIdentityCardRepository(identity_card);
@@ -57,6 +47,7 @@ export const resetUserPasswordService = async (identity_card: number) => {
   // Primero, verifica si el usuario existe
   await getUserByIdentityCardService(identity_card);
 
+
   const newPasswordHashed = await bcrypt.hash(String(identity_card), 10);
   const resetPasswordUser = await resetUserPasswordRepository(identity_card, newPasswordHashed);
   return {
@@ -66,6 +57,20 @@ export const resetUserPasswordService = async (identity_card: number) => {
     is_active: resetPasswordUser.is_active,
   };
 };
+
+export const changeUserPasswordService = async (identity_card: number, newPassword: string) => {
+    await getUserByIdentityCardService(identity_card);
+
+  const newPasswordHashed = await bcrypt.hash(String(newPassword), 10);
+  const changeUserPassword = await ChangeUserPasswordRepository(identity_card, newPasswordHashed);
+  return {
+    id: changeUserPassword.id,
+    identity_card: changeUserPassword.identity_card,
+    email: changeUserPassword.email,
+    full_name: changeUserPassword.full_name,
+    is_active: changeUserPassword.is_active,
+  };
+}
 
 export const updateUserService = async (identity_card: number, userData: Partial<CreateUserInput>) => {
   // Primero, verifica si el usuario existe
@@ -103,6 +108,7 @@ export const registerUserService = async (
     // Devolver el usuario creado (sin la contraseña)
     return {
       id: newUser.id,
+      identity_card: newUser.identity_card,
       email: newUser.email,
       full_name: newUser.full_name,
       role_id: newUser.role_id,

@@ -78,6 +78,41 @@ export const getAllUsersRepository = async () => {
   }));
 };
 
+export const getUserByIdentityCardRepository = async (identity_card: number) => {
+  const user = await prisma.users.findUnique({
+    where: { identity_card },
+    include: {
+      departments: { select: { id: true, name: true } },
+      roles: { select: { id: true, name: true } },
+      genders: { select: { id: true, name: true } },
+      positions: { select: { id: true, name: true } },
+      computer_equipment: { select: { id: true, asset_number: true } }
+    },
+  });
+
+  if (!user) return null;
+
+  return {
+    id: user.id,
+    full_name: user.full_name,
+    identity_card: user.identity_card,
+    email: user.email,
+    is_active: user.is_active,
+    role_id: user.role_id,
+    position_id: user.position_id,
+    department_id: user.department_id,
+    gender_id: user.gender_id,
+    created_at: user.created_at,
+    last_login: user.last_login,
+    last_login_backup: user.last_login_backup,
+    department_name: user.departments?.name ?? null,
+    role_name: user.roles?.name ?? null,
+    gender_name: user.genders?.name ?? null,
+    position_name: user.positions?.name ?? null,
+    computer_equipment_asset_number: user.computer_equipment[0]?.asset_number ?? null,
+  };
+};
+
 export const getAllUsersByAllDepartmentsRepository = async () => {
   return await prisma.departments.findMany({
     include: { users: true},
@@ -98,16 +133,19 @@ export const getUserByEmailRepository = async (email: string) => {
   });
 };
 
-export const getUserByIdentityCardRepository = async (identity_card: number) => {
-  return await prisma.users.findUnique({
-    where: { identity_card },
-  });
-};
+
 
 export const updateUserRepository = async (identity_card: number, userData: Partial<CreateUserInput>) => {
   return await prisma.users.update({
     where: { identity_card },
     data: userData,
+  });
+}
+
+export const ChangeUserPasswordRepository = async (identity_card: number, hashedPassword: string) => {
+  return await prisma.users.update({
+    where: { identity_card },
+    data: { password_hash: hashedPassword },
   });
 }
 
