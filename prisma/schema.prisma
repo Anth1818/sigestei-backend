@@ -9,22 +9,25 @@ datasource db {
 }
 
 model computer_equipment {
-  id                 Int                @id @default(autoincrement())
-  asset_number       String             @unique @db.VarChar(100)
-  serial_number      String             @unique @db.VarChar(255)
-  model              String?            @db.VarChar(255)
-  location           String?            @db.VarChar(255)
-  hardware_specs     Json?
-  software_specs     Json?
-  assigned_user_id   Int?
-  type_id            Int
-  brand_id           Int
-  status_id          Int
-  users              users?             @relation(fields: [assigned_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  equipment_brands   equipment_brands   @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  equipment_statuses equipment_statuses @relation(fields: [status_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  equipment_types    equipment_types    @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  requests           requests[]
+  id                    Int                  @id @default(autoincrement())
+  asset_number          String               @unique @db.VarChar(100)
+  serial_number         String               @unique @db.VarChar(255)
+  model                 String?              @db.VarChar(255)
+  location              String?              @db.VarChar(255)
+  hardware_specs        Json?
+  software_specs        Json?
+  assigned_user_id      Int?
+  type_id               Int
+  brand_id              Int
+  status_id             Int
+  software_type_id      Int?
+  office_suite_id       Int?
+  antivirus_solution_id Int?
+  users                 users?               @relation(fields: [assigned_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  equipment_brands      equipment_brands     @relation(fields: [brand_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  equipment_statuses    equipment_statuses   @relation(fields: [status_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  equipment_types       equipment_types      @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  requests              requests[]
 }
 
 model departments {
@@ -82,6 +85,21 @@ model request_types {
   id       Int        @id @default(autoincrement())
   name     String     @unique @db.VarChar(50)
   requests requests[]
+}
+
+model os_options {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique @db.VarChar(50)
+}
+
+model office_suites {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique @db.VarChar(50)
+}
+
+model antivirus_solutions {
+  id                 Int                  @id @default(autoincrement())
+  name               String               @unique @db.VarChar(50)
 }
 
 model requests {

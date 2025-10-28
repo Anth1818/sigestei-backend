@@ -33,6 +33,12 @@ export const getComputerEquipmentByIdRepository = async (id: number) => {
   });
 };
 
+export const getCumputerEquipmentByUserIdRepository = async (user_id: number) => {
+  return await prisma.computer_equipment.findFirst({
+    where: { assigned_user_id: user_id },
+  });
+}
+
 export const getComputerEquipmentByAssetNumberRepository = async (asset_number: string) => {
   return await prisma.computer_equipment.findUnique({
     where: { asset_number },

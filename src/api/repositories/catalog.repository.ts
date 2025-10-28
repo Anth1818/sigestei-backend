@@ -1,7 +1,9 @@
 import { PrismaClient } from '../../generated/prisma';
 const prisma = new PrismaClient();
 
-
+export const getOsOptionsRepository = async () => prisma.os_options.findMany();
+export const getOfficeSuitesRepository = async () => prisma.office_suites.findMany();
+export const getAntivirusSolutionsRepository = async () => prisma.antivirus_solutions.findMany();
 export const getTypesOfRequestsRepository = async () => prisma.request_types.findMany();
 export const getComputersBrandsRepository = async () => prisma.equipment_brands.findMany();
 export const getComputersStatusesRepository = async () => prisma.equipment_statuses.findMany();

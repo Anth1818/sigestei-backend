@@ -88,6 +88,29 @@ INSERT INTO request_priorities (name) VALUES
 ('Media'),
 ('Baja');
 
+INSERT INTO antivirus_solutions (name) VALUES
+('Windows Defender'),
+('McAfee'),
+('Norton Antivirus'),
+('Kaspersky'),
+('Avast'),
+('ESET NOD32');
+
+INSERT INTO office_suites (name) VALUES
+('Microsoft Office'),
+('LibreOffice'),
+('Google Workspace'),
+('WPS Office'),
+('OnlyOffice');
+
+INSERT INTO os_options (name) VALUES
+('Windows 7 Professional'),
+('Windows 10 Pro'),
+('Windows 11 Pro'),
+('Ubuntu 20.04 LTS'),
+('macOS Monterey'),
+('Fedora 34');
+
 --------------------Fin del primero----------------------------------
 
 

@@ -8,10 +8,16 @@ import {
   getComputersBrandsRepository,
   getComputersStatusesRepository,
   getComputersTypesRepository,
+  getOsOptionsRepository,
+  getOfficeSuitesRepository,
+  getAntivirusSolutionsRepository,
 } from "../repositories/catalog.repository";
 
 export const getAllCatalogsService = async () => {
   const [
+    os_options,
+    office_suites,
+    antivirus_solutions,
     request_types,
     computer_brands,
     computer_statuses,
@@ -22,6 +28,9 @@ export const getAllCatalogsService = async () => {
     genders,
     technicians,
   ] = await Promise.all([
+    getOsOptionsRepository(),
+    getOfficeSuitesRepository(),
+    getAntivirusSolutionsRepository(),
     getTypesOfRequestsRepository(),
     getComputersBrandsRepository(),
     getComputersStatusesRepository(),
@@ -33,5 +42,5 @@ export const getAllCatalogsService = async () => {
     getTecniciansRepository(),
    
   ]);
-  return { request_types, computer_brands, computer_statuses, computer_types, roles, departments, positions, genders, technicians, };
+  return { os_options, office_suites, antivirus_solutions, request_types, computer_brands, computer_statuses, computer_types, roles, departments, positions, genders, technicians };
 };

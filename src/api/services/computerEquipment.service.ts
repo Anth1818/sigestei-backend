@@ -6,6 +6,7 @@ import {
   getComputerEquipmentBySerialNumberRepository,
   registerComputerEquipmentRepository,
   updateComputerEquipmentRepository,
+  getCumputerEquipmentByUserIdRepository,
 } from "../repositories/computerEquipment.repository";
 
 export const getAllComputerEquipmentService = async () => {
@@ -43,13 +44,21 @@ export const registerComputerEquipmentService = async (
     // Validar que el número de activo no exista
     const existingAsset = await getComputerEquipmentByAssetNumberRepository(equipmentData.asset_number);
     if (existingAsset) {
-      throw new Error("Este número de activo ya está registrado");
+      throw new Error("Este número de bien ya está registrado");
     }
 
     // Validar que el número de serie no exista
     const existingSerial = await getComputerEquipmentBySerialNumberRepository(equipmentData.serial_number);
     if (existingSerial) {
       throw new Error("Este número de serie ya está registrado");
+    }
+
+    // Validar que el usuario no tenga otro equipo asignado
+    if (equipmentData.assigned_user_id) {
+      const existingUserEquipment = await getCumputerEquipmentByUserIdRepository(equipmentData.assigned_user_id);
+      if (existingUserEquipment) {
+        throw new Error("Este usuario ya tiene un equipo asignado");
+      }
     }
 
     const result = await registerComputerEquipmentRepository(equipmentData);
@@ -89,6 +98,14 @@ export const updateComputerEquipmentService = async (
       const existingSerial = await getComputerEquipmentBySerialNumberRepository(dataToUpdate.serial_number);
       if (existingSerial && existingSerial.id !== id) {
         throw new Error("Este número de serie ya está registrado en otro equipo");
+      }
+    }
+
+    // Si se está actualizando el usuario asignado, validar que no tenga otro equipo
+    if (dataToUpdate.assigned_user_id) {
+      const existingUserEquipment = await getCumputerEquipmentByUserIdRepository(dataToUpdate.assigned_user_id);
+      if (existingUserEquipment && existingUserEquipment.id !== id) {
+        throw new Error("Este usuario ya tiene un equipo asignado");
       }
     }
 

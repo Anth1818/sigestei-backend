@@ -34,6 +34,9 @@ export interface CreateComputerEquipmentInput {
   type_id: number;
   brand_id: number;
   status_id: number;
+  software_type_id: number | null;
+  office_suite_id: number | null;
+  antivirus_solution_id: number | null;
 }
 
 export interface ServiceResponse {
