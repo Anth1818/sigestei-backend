@@ -142,7 +142,7 @@ export const registerComputerEquipmentController = async (
     if (!equipmentData.status_id) {
       return res.status(400).json({ message: "ID del estatus es obligatorio" });
     }
-    if (!equipmentData.assigned_user_id && equipmentData.status_id !== 4) {
+    if (!equipmentData.assigned_user_id && equipmentData.status_id !== 4 && equipmentData.type_id !== 3) {
       return res
         .status(400)
         .json({ message: "ID del usuario asignado es obligatorio" });
