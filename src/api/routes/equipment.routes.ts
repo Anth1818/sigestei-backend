@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import { 
-  getAllComputerEquipmentController,
-  getComputerEquipmentByIdController,
-  getComputerEquipmentByAssetNumberController,
-  getComputerEquipmentBySerialNumberController,
-  registerComputerEquipmentController,
-  updateComputerEquipmentController
-} from '../controllers/computerEquipment.controller';
+  getAllEquipmentController,
+  getEquipmentByIdController,
+  getEquipmentByAssetNumberController,
+  getEquipmentBySerialNumberController,
+  registerEquipmentController,
+  updateEquipmentController
+} from '../controllers/equipment.controller';
 import authMiddleware from '../../middlewares/authMiddleware';
 import roleMiddleware from '../../middlewares/roleMiddleware';
 
@@ -15,21 +15,21 @@ router.use(authMiddleware);
 router.use(roleMiddleware(1, 2, 3)); // Solo administradores, coordinadores y técnicos
 
 // Obtener todos los equipos de cómputo - requiere autenticación
-router.get('/', getAllComputerEquipmentController);
+router.get('/', getAllEquipmentController);
 
 // Obtener equipo por ID - requiere autenticación
-router.get('/:id', getComputerEquipmentByIdController);
+router.get('/:id', getEquipmentByIdController);
 
 // Obtener equipo por número de activo - requiere autenticación
-router.get('/asset/:asset_number', getComputerEquipmentByAssetNumberController);
+router.get('/asset/:asset_number', getEquipmentByAssetNumberController);
 
 // Obtener equipo por número de serie - requiere autenticación
-router.get('/serial/:serial_number', getComputerEquipmentBySerialNumberController);
+router.get('/serial/:serial_number', getEquipmentBySerialNumberController);
 
 // Registrar nuevo equipo de cómputo - requiere autenticación
-router.post('/register', registerComputerEquipmentController);
+router.post('/register', registerEquipmentController);
 
 // Actualizar equipo de cómputo - requiere autenticación
-router.put('/update/:id', updateComputerEquipmentController);
+router.put('/update/:id', updateEquipmentController);
 
 export default router;

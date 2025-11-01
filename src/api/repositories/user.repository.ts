@@ -52,7 +52,7 @@ export const getAllUsersRepository = async () => {
       roles: { select: { id: true, name: true } },
       genders: { select: { id: true, name: true } },
       positions: { select: { id: true, name: true } },
-      computer_equipment: { select: {id: true, asset_number: true} }
+      equipment: { select: {id: true, asset_number: true} }
     },
   });
 
@@ -74,7 +74,7 @@ export const getAllUsersRepository = async () => {
     role_name: u.roles?.name ?? null,
     gender_name: u.genders?.name ?? null,
     position_name: u.positions?.name ?? null,
-    computer_equipment_asset_number: u.computer_equipment[0]?.asset_number ?? null,
+    equipment_asset_number: u.equipment[0]?.asset_number ?? null,
   }));
 };
 
@@ -86,7 +86,7 @@ export const getUserByIdentityCardRepository = async (identity_card: number) => 
       roles: { select: { id: true, name: true } },
       genders: { select: { id: true, name: true } },
       positions: { select: { id: true, name: true } },
-      computer_equipment: { select: { id: true, asset_number: true } }
+      equipment: { select: { id: true, asset_number: true } }
     },
   });
 
@@ -109,7 +109,7 @@ export const getUserByIdentityCardRepository = async (identity_card: number) => 
     role_name: user.roles?.name ?? null,
     gender_name: user.genders?.name ?? null,
     position_name: user.positions?.name ?? null,
-    computer_equipment_asset_number: user.computer_equipment[0]?.asset_number ?? null,
+    equipment_asset_number: user.equipment[0]?.asset_number ?? null,
   };
 };
 

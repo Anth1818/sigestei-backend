@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
 import {
-  getAllComputerEquipmentService,
-  getComputerEquipmentByIdService,
-  getComputerEquipmentByAssetNumberService,
-  getComputerEquipmentBySerialNumberService,
-  registerComputerEquipmentService,
-  updateComputerEquipmentService,
-} from "../services/computerEquipment.service";
+  getAllEquipmentService,
+  getEquipmentByIdService,
+  getEquipmentByAssetNumberService,
+  getEquipmentBySerialNumberService,
+  registerEquipmentService,
+  updateEquipmentService,
+} from "../services/equipment.service";
 
-export const getAllComputerEquipmentController = async (
+export const getAllEquipmentController = async (
   _req: Request,
   res: Response
 ) => {
   try {
-    const equipment = await getAllComputerEquipmentService();
+    const equipment = await getAllEquipmentService();
     res.json(equipment);
   } catch (error) {
     res
@@ -25,7 +25,7 @@ export const getAllComputerEquipmentController = async (
   }
 };
 
-export const getComputerEquipmentByIdController = async (
+export const getEquipmentByIdController = async (
   req: Request,
   res: Response
 ) => {
@@ -39,7 +39,7 @@ export const getComputerEquipmentByIdController = async (
         .json({ message: "ID inválido. Debe ser un número entero." });
     }
 
-    const equipment = await getComputerEquipmentByIdService(Number(id));
+    const equipment = await getEquipmentByIdService(Number(id));
     return res.json(equipment);
   } catch (error) {
     if (error instanceof Error) {
@@ -52,7 +52,7 @@ export const getComputerEquipmentByIdController = async (
   }
 };
 
-export const getComputerEquipmentByAssetNumberController = async (
+export const getEquipmentByAssetNumberController = async (
   req: Request,
   res: Response
 ) => {
@@ -63,7 +63,7 @@ export const getComputerEquipmentByAssetNumberController = async (
       return res.status(400).json({ message: "Número de activo requerido" });
     }
 
-    const equipment = await getComputerEquipmentByAssetNumberService(
+    const equipment = await getEquipmentByAssetNumberService(
       asset_number.trim()
     );
     return res.json(equipment);
@@ -78,7 +78,7 @@ export const getComputerEquipmentByAssetNumberController = async (
   }
 };
 
-export const getComputerEquipmentBySerialNumberController = async (
+export const getEquipmentBySerialNumberController = async (
   req: Request,
   res: Response
 ) => {
@@ -89,7 +89,7 @@ export const getComputerEquipmentBySerialNumberController = async (
       return res.status(400).json({ message: "Número de serie requerido" });
     }
 
-    const equipment = await getComputerEquipmentBySerialNumberService(
+    const equipment = await getEquipmentBySerialNumberService(
       serial_number.trim()
     );
     return res.json(equipment);
@@ -104,7 +104,7 @@ export const getComputerEquipmentBySerialNumberController = async (
   }
 };
 
-export const registerComputerEquipmentController = async (
+export const registerEquipmentController = async (
   req: Request,
   res: Response
 ) => {
@@ -142,13 +142,15 @@ export const registerComputerEquipmentController = async (
     if (!equipmentData.status_id) {
       return res.status(400).json({ message: "ID del estatus es obligatorio" });
     }
-    if (!equipmentData.assigned_user_id && equipmentData.status_id !== 4 && equipmentData.type_id !== 3) {
-      return res
-        .status(400)
-        .json({ message: "ID del usuario asignado es obligatorio" });
-    }
 
-    const result = await registerComputerEquipmentService(equipmentData);
+    // Validaciones adicionales según reglas de negocio
+    // if (!equipmentData.assigned_user_id && equipmentData.status_id !== 4 && equipmentData.type_id !== 3) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "ID del usuario asignado es obligatorio" });
+    // }
+
+    const result = await registerEquipmentService(equipmentData);
     res.status(201).json(result);
   } catch (error) {
     res
@@ -160,7 +162,7 @@ export const registerComputerEquipmentController = async (
   }
 };
 
-export const updateComputerEquipmentController = async (
+export const updateEquipmentController = async (
   req: Request,
   res: Response
 ) => {
@@ -180,7 +182,7 @@ export const updateComputerEquipmentController = async (
         .json({ message: "No se proporcionaron datos para actualizar" });
     }
 
-    const result = await updateComputerEquipmentService(
+    const result = await updateEquipmentService(
       Number(id),
       dataToUpdate
     );

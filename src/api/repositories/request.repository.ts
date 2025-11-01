@@ -1,4 +1,3 @@
-import { computer_equipment } from './../../generated/prisma/index.d';
 import { PrismaClient } from "../../generated/prisma";
 import type { CreateRequestInput } from "../../utils/types";
 const prisma = new PrismaClient();
@@ -23,10 +22,10 @@ const fieldsToInclude = {
   },
 };
 
-const fieldsToIncludeComputer = {
+const fieldsToIncludeEquipment = {
   select: {
     ...fieldsToInclude.select,
-    computer_equipment: true,
+    equipment: true,
   },
 }
 
@@ -34,10 +33,28 @@ export const getAllRequestsRepository = async () => {
   const requests = await prisma.requests.findMany({
     orderBy: { id: "asc" },
     include: {
-      users_requests_beneficiary_idTousers: fieldsToIncludeComputer,
+      users_requests_beneficiary_idTousers: {
+        select: {
+          id: true,
+          full_name: true,
+          identity_card: true,
+          email: true,
+          is_active: true,
+          role_id: true,
+          position_id: true,
+          department_id: true,
+          gender_id: true,
+          created_at: true,
+          positions: { select: { name: true } },
+          departments: { select: { name: true } },
+          genders: { select: { name: true } },
+          roles: { select: { name: true } },
+          equipment: true, // Incluir equipos del usuario beneficiario
+        },
+      },
       users_requests_requester_idTousers: fieldsToInclude,
       users_requests_technician_idTousers: fieldsToInclude,
-      computer_equipment: true,
+      equipment: true, // Equipo asociado al request
       request_priorities: true,
       request_statuses: true,
       request_types: true,
@@ -84,7 +101,7 @@ export const registerRequestRepository = async (
       description: requestData.description,
       requester_id: requestData.requester_id,
       beneficiary_id: requestData.beneficiary_id ?? null,
-      computer_equipment_id: requestData.computer_equipment_id ?? null,
+      equipment_id: requestData.equipment_id ?? null, // Usando equipment_id en lugar de computer_equipment_id
       type_id: requestData.type_id,
       status_id: 1, // Nuevo request siempre inicia en 'pending'
       priority_id: 3, // Nuevo request siempre inicia en 'low'

@@ -5,9 +5,9 @@ import {
   getGendersRepository,
   getTecniciansRepository,
   getTypesOfRequestsRepository,
-  getComputersBrandsRepository,
-  getComputersStatusesRepository,
-  getComputersTypesRepository,
+  getEquipmentBrandsRepository,
+  getEquipmentStatusesRepository,
+  getEquipmentTypesRepository,
   getOsOptionsRepository,
   getOfficeSuitesRepository,
   getAntivirusSolutionsRepository,
@@ -19,9 +19,9 @@ export const getAllCatalogsService = async () => {
     office_suites,
     antivirus_solutions,
     request_types,
-    computer_brands,
-    computer_statuses,
-    computer_types,
+    equipment_brands,
+    equipment_statuses,
+    equipment_types,
     roles,
     departments,
     positions,
@@ -32,9 +32,9 @@ export const getAllCatalogsService = async () => {
     getOfficeSuitesRepository(),
     getAntivirusSolutionsRepository(),
     getTypesOfRequestsRepository(),
-    getComputersBrandsRepository(),
-    getComputersStatusesRepository(),
-    getComputersTypesRepository(),
+    getEquipmentBrandsRepository(),
+    getEquipmentStatusesRepository(),
+    getEquipmentTypesRepository(),
     getRolesRepository(),
     getDepartmentsRepository(),
     getPositionsRepository(),
@@ -42,5 +42,5 @@ export const getAllCatalogsService = async () => {
     getTecniciansRepository(),
    
   ]);
-  return { os_options, office_suites, antivirus_solutions, request_types, computer_brands, computer_statuses, computer_types, roles, departments, positions, genders, technicians };
+  return { os_options, office_suites, antivirus_solutions, request_types, equipment_brands, equipment_statuses, equipment_types, roles, departments, positions, genders, technicians };
 };

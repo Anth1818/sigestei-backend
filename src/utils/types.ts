@@ -17,13 +17,13 @@ export interface CreateRequestInput {
   requester_id: number;
   beneficiary_id?: number | null;
   technician_id?: number | null;
-  computer_equipment_id?: number | null;
+  equipment_id?: number | null;
   type_id: number;
   status_id: number;
   priority_id: number;
 }
 
-export interface CreateComputerEquipmentInput {
+export interface CreateEquipmentInput {
   asset_number: string;
   serial_number: string;
   model?: string | null;

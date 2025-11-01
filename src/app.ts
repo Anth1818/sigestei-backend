@@ -34,8 +34,8 @@ import requestRoutes from './api/routes/request.routes';
 app.use('/api/requests', requestRoutes);
 
 // Importar rutas de equipos de cómputo
-import computerEquipmentRoutes from './api/routes/computerEquipment.routes';
-app.use('/api/computerEquipment', computerEquipmentRoutes);
+import equipmentRoutes from './api/routes/equipment.routes';
+app.use('/api/equipment', equipmentRoutes);
 
 // Importar rutas del dashboard
 import dashboardRoutes from './api/routes/dashboard.routes';
