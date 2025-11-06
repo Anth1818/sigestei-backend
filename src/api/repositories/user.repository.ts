@@ -168,8 +168,8 @@ export const resetUserPasswordRepository = async (identity_card: number, hashedP
   });
 }
 
-export const getCumputerEquipmentByUserIdRepository = async (userId: number) => {
-  return await prisma.computer_equipment.findFirst({
+export const getEquipmentByUserIdRepository = async (userId: number) => {
+  return await prisma.equipment.findFirst({
     where: { assigned_user_id: userId },
   });
 }

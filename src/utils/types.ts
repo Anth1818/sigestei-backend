@@ -18,6 +18,7 @@ export interface CreateRequestInput {
   beneficiary_id?: number | null;
   technician_id?: number | null;
   equipment_id?: number | null;
+  type_equipment_id?: number | null;
   type_id: number;
   status_id: number;
   priority_id: number;
@@ -60,7 +61,7 @@ export interface UserPayload {
   department_id?: number | null;
   last_login?: Date | null;
   last_login_backup?: Date | null;
-  computer_equipment_id?: number | null;
+  equipment_id?: number | null;
 }
 declare global {
   namespace Express {

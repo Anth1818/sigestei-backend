@@ -28,6 +28,9 @@ export const registerRequestController = async (
 ) => {
   try {
     const requestData = req.body;
+    // Obtener el ID del usuario autenticado desde el token (si existe en req.user)
+    const userId = (req as any).user?.id;
+    
     if (!requestData || Object.keys(requestData).length === 0) {
       return res
         .status(400)
@@ -37,8 +40,7 @@ export const registerRequestController = async (
       !requestData.description ||
       !requestData.requester_id ||
       !requestData.type_id ||
-      !requestData.beneficiary_id ||
-      !requestData.computer_equipment_id 
+      !requestData.equipment_id 
     ) {
       return res
         .status(400)
@@ -46,7 +48,7 @@ export const registerRequestController = async (
           message: "Faltan campos obligatorios en los datos de la solicitud",
         });
     }
-    const result = await registerRequestService(requestData);
+    const result = await registerRequestService(requestData, userId);
     res.status(201).json(result);
   } catch (error) {
     res
@@ -62,6 +64,9 @@ export const updateRequestController = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const {...dataToUpdate } = req.body;
+    // Obtener el ID del usuario autenticado desde el token (si existe en req.user)
+    const userId = (req as any).user?.id;
+    
     if (!id || isNaN(Number(id))) {
       return res
         .status(400)
@@ -80,7 +85,7 @@ export const updateRequestController = async (req: Request, res: Response) => {
         .json({ message: "No se proporcionaron datos para actualizar" });
     }
 
-    const result = await updateRequestService(Number(id), dataToUpdate);
+    const result = await updateRequestService(Number(id), dataToUpdate, userId);
     res.json(result);
   } catch (error) {
     res

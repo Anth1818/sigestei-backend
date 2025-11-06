@@ -33,6 +33,10 @@ import requestRoutes from './api/routes/request.routes';
 // ...
 app.use('/api/requests', requestRoutes);
 
+// Importar rutas del historial de solicitudes
+import requestHistoryRoutes from './api/routes/requestHistory.routes';
+app.use('/api/request-history', requestHistoryRoutes);
+
 // Importar rutas de equipos de cómputo
 import equipmentRoutes from './api/routes/equipment.routes';
 app.use('/api/equipment', equipmentRoutes);

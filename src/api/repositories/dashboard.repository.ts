@@ -189,10 +189,10 @@ export const getRequestsByStatusCurrentMonthRepository = async () => {
 // Obtener el total de equipos y el total de equipos divididos por status (1,2,3,4)
 export const getTotalEquipmentAndByStatusRepository = async () => {
   // Total de equipos
-  const total = await prisma.computer_equipment.count();
+  const total = await prisma.equipment.count();
 
   // Totales por status (1,2,3,4)
-  const statusCounts = await prisma.computer_equipment.groupBy({
+  const statusCounts = await prisma.equipment.groupBy({
     by: ["status_id"],
     where: {
       status_id: { in: [1, 2, 3, 4] },
