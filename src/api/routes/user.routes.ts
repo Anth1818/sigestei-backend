@@ -4,6 +4,7 @@ import {
   getUserByIdentityCardController,
   getAllUsersByAllDepartmentsController,
   getAllUsersByDepartmentController,
+  getAllUsersEnabledToGetSupportByDepartmentController,
   registerUserController,
   updateUserController,
   toggleActiveUserController,
@@ -39,6 +40,13 @@ router.get(
   "/allUsersByDepartment/:department_id",
   roleMiddleware(1, 2, 3, 4),
   getAllUsersByDepartmentController
+);
+
+// GET /api/users/allUsersEnabledToGetSupport/department/:department_id
+router.get(
+  "/allUsersEnabledToGetSupport/department/:department_id",
+  roleMiddleware(1, 2, 3, 4),
+  getAllUsersEnabledToGetSupportByDepartmentController
 );
 
 // POST /api/users/register

@@ -127,6 +127,13 @@ export const getAllUsersByDepartmentRepository = async (department_id: number) =
   });
 }
 
+export const getAllUsersEnabledToGetSupportByDepartmentRepository = async (department_id: number) => {
+  return await prisma.users.findMany({
+    where: { is_active: true, equipment: { some: {} }, department_id },
+    orderBy: { full_name: 'asc' }
+  });
+}
+
 export const getUserByEmailRepository = async (email: string) => {
   return await prisma.users.findUnique({
     where: { email },

@@ -222,8 +222,8 @@ INSERT INTO users (full_name, identity_card, email, password_hash, is_active, ro
 ('Usuario Depto 17-A', 10000031, 'usuario.depto17.a@mail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 30, 1, 17, '2025-09-05T09:00:00Z'),
 ('Usuario Depto 17-B', 10000032, 'usuario.depto17.b@mail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 30, 2, 17, '2025-09-05T09:00:00Z');
 
--- Insertar EQUIPOS DE COMPUTACIÓN después de los usuarios.
-INSERT INTO computer_equipment (asset_number, serial_number, model, location, hardware_specs, software_specs, assigned_user_id, type_id, brand_id, status_id) VALUES
+-- Insertar equipos después de los usuarios.
+INSERT INTO equipment (asset_number, serial_number, model, location, hardware_specs, software_specs, assigned_user_id, type_id, brand_id, status_id) VALUES
 ('100101', 'DL001234', 'OptiPlex 7090', 'Oficina 101 - IT', '{"cpu": "Intel Core i7-10700", "ram": "16GB DDR4", "storage": "512GB SSD", "gpu": "Intel UHD Graphics 630", "network": "Ethernet, Wi-Fi"}', '{"os": "Windows 10 Pro", "office": "Microsoft Office 2019", "antivirus": "Windows Defender"}', 1, 2, 2, 1),
 ('100102', 'HP002345', 'ProDesk 400 G9', 'Oficina 102 - Support', '{"cpu": "Intel Core i5-11500", "ram": "8GB DDR4", "storage": "256GB SSD", "gpu": "Intel UHD Graphics 750", "network": "Ethernet, Wi-Fi"}', '{"os": "Windows 11 Pro", "office": "Microsoft Office 2021", "antivirus": "McAfee"}', 2, 2, 1, 2),
 ('100103', 'LN003456', 'ThinkStation P340', 'Oficina 103 - IT', '{"cpu": "Intel Xeon W-1250", "ram": "32GB DDR4", "storage": "1TB SSD", "gpu": "NVIDIA Quadro P620", "network": "Ethernet"}', '{"os": "Windows 10 Pro", "office": "Microsoft Office 2019", "antivirus": "ESET NOD32"}', 3, 2, 3, 1),

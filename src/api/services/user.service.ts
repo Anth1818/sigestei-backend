@@ -1,4 +1,4 @@
-import { ChangeUserPasswordRepository, getAllUsersRepository } from "../repositories/user.repository"
+import { ChangeUserPasswordRepository, getAllUsersEnabledToGetSupportByDepartmentRepository, getAllUsersRepository } from "../repositories/user.repository"
 import { getUserByEmailRepository,
 getUserByIdentityCardRepository, getAllUsersByAllDepartmentsRepository, getAllUsersByDepartmentRepository, createUserRepository, updateUserRepository, toggleActiveUserRepository, resetUserPasswordRepository } from "../repositories/user.repository";
 import bcrypt from "bcrypt";
@@ -20,6 +20,10 @@ export const getAllUsersService = async () => {
 
 export const getAllUsersByAllDepartmentsService = async () => {
   return await getAllUsersByAllDepartmentsRepository();
+}
+
+export const getAllUsersEnabledToGetSupportByDepartmentService = async (department_id: number) => {
+  return await getAllUsersEnabledToGetSupportByDepartmentRepository(department_id);
 }
 
 export const getAllUsersByDepartmentsService = async (department_id: number) => {

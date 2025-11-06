@@ -1,4 +1,4 @@
-import { registerUserService, getAllUsersService, getAllUsersByAllDepartmentsService, getAllUsersByDepartmentsService, getUserByIdentityCardService, updateUserService, toggleActiveUserService, resetUserPasswordService, changeUserPasswordService} from '../services/user.service';
+import { registerUserService, getAllUsersService, getAllUsersByAllDepartmentsService, getAllUsersByDepartmentsService, getUserByIdentityCardService, updateUserService, toggleActiveUserService, resetUserPasswordService, changeUserPasswordService, getAllUsersEnabledToGetSupportByDepartmentService } from '../services/user.service';
 import { Request, Response } from 'express';
 
 
@@ -41,7 +41,7 @@ export const getAllUsersController = async (req: Request, res: Response) => {
 
 export const getAllUsersByAllDepartmentsController = async (req: Request, res: Response) => {
   try {
-    const users = await getAllUsersByAllDepartmentsService();   
+    const users = await getAllUsersByAllDepartmentsService();
     return res.json(users);
   } catch (error) {
     if (error instanceof Error) {
@@ -52,12 +52,12 @@ export const getAllUsersByAllDepartmentsController = async (req: Request, res: R
 
 export const getAllUsersByDepartmentController = async (req: Request, res: Response) => {
   try {
-    const { department_id } = req.params; 
+    const { department_id } = req.params;
     // Validación de formato
     if (!/^\d+$/.test(department_id)) {
       return res.status(400).json({ message: "ID de departamento inválido. Debe ser un número entero." });
-    } 
-    const users = await getAllUsersByDepartmentsService(Number(department_id));   
+    }
+    const users = await getAllUsersByDepartmentsService(Number(department_id));
     return res.json(users);
   } catch (error) {
     if (error instanceof Error) {
@@ -69,6 +69,22 @@ export const getAllUsersByDepartmentController = async (req: Request, res: Respo
     }
   }
 }
+
+export const getAllUsersEnabledToGetSupportByDepartmentController = async (req: Request, res: Response) => {
+  try {
+    const { department_id } = req.params;
+    // Validación de formato
+    if (!/^\d+$/.test(department_id)) {
+      return res.status(400).json({ message: "ID de departamento inválido. Debe ser un número entero." });
+    }
+    const users = await getAllUsersEnabledToGetSupportByDepartmentService(Number(department_id));
+    return res.json(users);
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
+};
 
 export const toggleActiveUserController = async (req: Request, res: Response) => {
   try {
@@ -118,7 +134,7 @@ export const changeUserPasswordController = async (req: Request, res: Response) 
   const { identity_card } = req.params;
   const { new_password } = req.body;
 
-  if(new_password === undefined || new_password.trim().length === 0) {
+  if (new_password === undefined || new_password.trim().length === 0) {
     return res.status(400).json({ message: "Nueva contraseña requerida" });
   }
 
@@ -164,16 +180,16 @@ export const updateUserController = async (req: Request, res: Response) => {
 };
 
 export const registerUserController = async (req: Request, res: Response): Promise<Response> => {
-    try {
-        const newUser = await registerUserService(req.body);
-        return res.status(201).json({ message: 'Registro exitoso', user: newUser });
-    } catch (error) {
-        if (error instanceof Error) {
-            // Usar el mensaje específico del service
-            return res.status(400).json({ message: error.message });
-        }
-        return res.status(500).json({ message: 'Error interno del servidor' });
+  try {
+    const newUser = await registerUserService(req.body);
+    return res.status(201).json({ message: 'Registro exitoso', user: newUser });
+  } catch (error) {
+    if (error instanceof Error) {
+      // Usar el mensaje específico del service
+      return res.status(400).json({ message: error.message });
     }
+    return res.status(500).json({ message: 'Error interno del servidor' });
+  }
 };
 
 
