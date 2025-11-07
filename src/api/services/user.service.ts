@@ -4,6 +4,11 @@ getUserByIdentityCardRepository, getAllUsersByAllDepartmentsRepository, getAllUs
 import bcrypt from "bcrypt";
 import { UserPayload } from "../../utils/types";
 import type { CreateUserInput } from "../../utils/types";
+import { 
+  logUserActivationChange, 
+  logUserRoleChange,
+  createAuditLog 
+} from "../../middlewares/auditMiddleware";
 
 
 export const getUserByIdentityCardService = async (identity_card: number) => {
@@ -34,11 +39,23 @@ export const getAllUsersByDepartmentsService = async (department_id: number) => 
   return UsersBydepartment
 }
 
-export const toggleActiveUserService = async (identity_card: number) => {
-  // Primero, verifica si el usuario existe
-  await getUserByIdentityCardService(identity_card);
+export const toggleActiveUserService = async (identity_card: number, changedById?: number) => {
+  // Primero, verifica si el usuario existe y obtén el estado actual
+  const currentUser = await getUserByIdentityCardService(identity_card);
   
   const toggleActiveUser = await toggleActiveUserRepository(identity_card);
+
+  // Registrar el cambio en auditoría
+  if (changedById) {
+    await logUserActivationChange(
+      toggleActiveUser.id,
+      currentUser.is_active || false,
+      toggleActiveUser.is_active || false,
+      changedById,
+      toggleActiveUser.is_active ? 'Usuario activado' : 'Usuario desactivado'
+    );
+  }
+
   return {
     id: toggleActiveUser.id,
     email: toggleActiveUser.email,
@@ -76,11 +93,84 @@ export const changeUserPasswordService = async (identity_card: number, newPasswo
   };
 }
 
-export const updateUserService = async (identity_card: number, userData: Partial<CreateUserInput>) => {
-  // Primero, verifica si el usuario existe
-  await getUserByIdentityCardService(identity_card);
+export const updateUserService = async (
+  identity_card: number, 
+  userData: Partial<CreateUserInput>,
+  updatedById?: number
+) => {
+  // Primero, verifica si el usuario existe y obtén los datos actuales
+  const currentUser = await getUserByIdentityCardService(identity_card);
 
   const updatedUser = await updateUserRepository(identity_card, userData);
+
+  // Registrar cambios en auditoría
+  if (updatedById) {
+    const auditPromises = [];
+
+    // Cambio de rol
+    if (userData.role_id && userData.role_id !== currentUser.role_id) {
+      auditPromises.push(
+        logUserRoleChange(
+          updatedUser.id,
+          currentUser.role_id,
+          userData.role_id,
+          updatedById,
+          'Cambio de rol de usuario'
+        )
+      );
+    }
+
+    // Cambio de departamento
+    if (userData.department_id && userData.department_id !== currentUser.department_id) {
+      auditPromises.push(
+        createAuditLog(
+          'user',
+          updatedUser.id,
+          'department_changed',
+          'department_id',
+          currentUser.department_id,
+          userData.department_id,
+          updatedById,
+          'Cambio de departamento'
+        )
+      );
+    }
+
+    // Cambio de posición
+    if (userData.position_id && userData.position_id !== currentUser.position_id) {
+      auditPromises.push(
+        createAuditLog(
+          'user',
+          updatedUser.id,
+          'position_changed',
+          'position_id',
+          currentUser.position_id,
+          userData.position_id,
+          updatedById,
+          'Cambio de cargo'
+        )
+      );
+    }
+
+    // Otros cambios de perfil
+    if (userData.full_name || userData.email || userData.gender_id) {
+      auditPromises.push(
+        createAuditLog(
+          'user',
+          updatedUser.id,
+          'profile_updated',
+          null,
+          null,
+          null,
+          updatedById,
+          'Actualización de perfil de usuario'
+        )
+      );
+    }
+
+    await Promise.all(auditPromises);
+  }
+
   return updatedUser;
 };
 

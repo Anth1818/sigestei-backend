@@ -6,6 +6,11 @@ import {
 } from "../repositories/request.repository";
 import { createRequestHistoryRepository } from "../repositories/requestHistory.repository";
 import prisma from "../../config/db";
+import { 
+  logTechnicianAssignment, 
+  logRequestStatusChange, 
+  logRequestPriorityChange 
+} from "../../middlewares/auditMiddleware";
 
 export const getAllRequestsService = async () => {
   return await getAllRequestsRepository();
@@ -33,6 +38,15 @@ export const registerRequestService = async (
         changed_by_id: createdById,
         comments: 'Asignado al crear la solicitud',
       });
+
+      // Registrar asignación en la tabla específica de auditoría
+      await logTechnicianAssignment(
+        result.id,
+        requestData.technician_id,
+        null,
+        createdById,
+        'Asignado al crear la solicitud'
+      );
     }
     
     return {
@@ -93,6 +107,18 @@ export const updateRequestService = async (
           changed_by_id: updatedById,
         })
       );
+
+      // Registrar en audit_log genérico
+      if (updatedById) {
+        historyPromises.push(
+          logRequestPriorityChange(
+            id,
+            currentRequest.priority_id,
+            dataToUpdate.priority_id,
+            updatedById
+          )
+        );
+      }
     }
 
     // Cambio de estado
@@ -112,6 +138,18 @@ export const updateRequestService = async (
           changed_by_id: updatedById,
         })
       );
+
+      // Registrar en audit_log genérico
+      if (updatedById) {
+        historyPromises.push(
+          logRequestStatusChange(
+            id,
+            currentRequest.status_id,
+            dataToUpdate.status_id,
+            updatedById
+          )
+        );
+      }
     }
 
     // Asignación o reasignación de técnico
@@ -139,6 +177,19 @@ export const updateRequestService = async (
           changed_by_id: updatedById,
         })
       );
+
+      // Registrar en tabla específica de asignaciones de técnicos
+      if (updatedById) {
+        historyPromises.push(
+          logTechnicianAssignment(
+            id,
+            dataToUpdate.technician_id,
+            currentRequest.technician_id,
+            updatedById,
+            changeType === 'technician_reassigned' ? 'Reasignación de técnico' : 'Asignación de técnico'
+          )
+        );
+      }
     }
 
     // Ejecutar todos los registros de historial

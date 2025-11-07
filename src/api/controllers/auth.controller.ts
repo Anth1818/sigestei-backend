@@ -11,7 +11,11 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
   }
 
   try {
-    const { token, user } = await authService.loginUser(email, password);
+    // Extraer IP y User-Agent para auditoría
+    const ipAddress = req.ip || req.socket.remoteAddress || undefined;
+    const userAgent = req.get('User-Agent') || undefined;
+
+    const { token, user } = await authService.loginUser(email, password, ipAddress, userAgent);
 
     res.cookie('auth-token', token, {
       httpOnly: true,

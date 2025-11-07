@@ -28,6 +28,7 @@ model equipment {
   departments        departments?       @relation(fields: [department_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users              users?             @relation(fields: [assigned_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   requests           requests[]
+  equipment_assignments equipment_assignments[]
 }
 
 model departments {
@@ -128,6 +129,7 @@ model requests {
   users_requests_technician_idTousers  users?                 @relation("requests_technician_idTousers", fields: [technician_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   request_types                        request_types          @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   request_history                      request_history[]
+  technician_assignments               request_technician_assignments[]
 }
 
 model request_history {
@@ -146,6 +148,85 @@ model request_history {
   @@index([request_id])
   @@index([change_type])
   @@index([changed_at])
+}
+
+// Auditoría específica para asignaciones de técnicos a solicitudes
+model request_technician_assignments {
+  id                    Int       @id @default(autoincrement())
+  request_id            Int
+  technician_id         Int?      // NULL si se desasigna
+  previous_technician_id Int?
+  assigned_by_id        Int
+  assigned_at           DateTime  @default(now()) @db.Timestamptz(6)
+  reason                String?   // Motivo de asignación/reasignación
+  
+  requests              requests  @relation(fields: [request_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  technician            users?    @relation("assignment_technician", fields: [technician_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  previous_technician   users?    @relation("assignment_previous_technician", fields: [previous_technician_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  assigned_by           users     @relation("assignment_assigned_by", fields: [assigned_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  
+  @@index([request_id])
+  @@index([technician_id])
+  @@index([assigned_at])
+}
+
+// Auditoría para asignaciones de equipos a usuarios y cambios de ubicación
+model equipment_assignments {
+  id                  Int       @id @default(autoincrement())
+  equipment_id        Int
+  user_id             Int?      // NULL si se desasigna
+  previous_user_id    Int?
+  location            String?   @db.VarChar(255)
+  previous_location   String?   @db.VarChar(255)
+  assigned_by_id      Int
+  assigned_at         DateTime  @default(now()) @db.Timestamptz(6)
+  reason              String?
+  
+  equipment           equipment @relation(fields: [equipment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user                users?    @relation("equipment_assignment_user", fields: [user_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  previous_user       users?    @relation("equipment_assignment_previous_user", fields: [previous_user_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  assigned_by         users     @relation("equipment_assignment_assigned_by", fields: [assigned_by_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  
+  @@index([equipment_id])
+  @@index([user_id])
+  @@index([assigned_at])
+}
+
+// Auditoría para logins de usuarios
+model user_logins {
+  id            Int       @id @default(autoincrement())
+  user_id       Int
+  login_at      DateTime  @default(now()) @db.Timestamptz(6)
+  ip_address    String?   @db.VarChar(45)
+  user_agent    String?
+  success       Boolean   @default(true)
+  failure_reason String?  // Si success = false
+  
+  users         users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  
+  @@index([user_id])
+  @@index([login_at])
+}
+
+// Auditoría genérica para cambios en requests, equipment y users
+model audit_log {
+  id             Int       @id @default(autoincrement())
+  entity_type    String    @db.VarChar(50) // 'request', 'equipment', 'user'
+  entity_id      Int       // ID del registro afectado
+  change_type    String    @db.VarChar(50) // 'status', 'priority', 'profile_updated', etc.
+  field_name     String?   @db.VarChar(100) // Campo específico modificado
+  old_value      String?   @db.VarChar(500)
+  new_value      String?   @db.VarChar(500)
+  changed_by_id  Int?
+  changed_at     DateTime  @default(now()) @db.Timestamptz(6)
+  comments       String?
+  
+  changed_by     users?    @relation(fields: [changed_by_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  
+  @@index([entity_type, entity_id])
+  @@index([change_type])
+  @@index([changed_at])
+  @@index([changed_by_id])
 }
 
 model roles {
@@ -178,4 +259,14 @@ model users {
   genders                                 genders?          @relation(fields: [gender_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   positions                               positions?        @relation(fields: [position_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   roles                                   roles             @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  
+  // Relaciones de auditoría
+  user_logins                                          user_logins[]
+  audit_logs                                           audit_log[]
+  request_technician_assignments_technician            request_technician_assignments[] @relation("assignment_technician")
+  request_technician_assignments_previous_technician   request_technician_assignments[] @relation("assignment_previous_technician")
+  request_technician_assignments_assigned_by           request_technician_assignments[] @relation("assignment_assigned_by")
+  equipment_assignments_user                           equipment_assignments[] @relation("equipment_assignment_user")
+  equipment_assignments_previous_user                  equipment_assignments[] @relation("equipment_assignment_previous_user")
+  equipment_assignments_assigned_by                    equipment_assignments[] @relation("equipment_assignment_assigned_by")
 }

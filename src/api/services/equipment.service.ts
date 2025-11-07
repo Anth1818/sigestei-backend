@@ -8,6 +8,10 @@ import {
   updateEquipmentRepository,
   getPersonalEquipmentRepository,
 } from "../repositories/equipment.repository";
+import { 
+  logEquipmentAssignment, 
+  logEquipmentStatusChange 
+} from "../../middlewares/auditMiddleware";
 
 export const getAllEquipmentService = async () => {
   return await getAllEquipmentRepository();
@@ -103,11 +107,15 @@ export const registerEquipmentService = async (
 
 export const updateEquipmentService = async (
   id: number,
-  dataToUpdate: Partial<CreateEquipmentInput>
+  dataToUpdate: Partial<CreateEquipmentInput>,
+  updatedById?: number
 ): Promise<ServiceResponse> => {
   try {
-    // Verificar que el equipo existe
-    await getEquipmentByIdService(id);
+    // Verificar que el equipo existe y obtener datos actuales
+    const currentEquipment = await getEquipmentByIdRepository(id);
+    if (!currentEquipment) {
+      throw new Error('Equipo no encontrado');
+    }
 
     // Si se está actualizando el número de activo, validar que no exista
     if (dataToUpdate.asset_number) {
@@ -135,6 +143,7 @@ export const updateEquipmentService = async (
 
     // Construir el objeto de actualización
     const updateData: any = {};
+    const auditPromises = [];
     
     if (dataToUpdate.asset_number) updateData.asset_number = dataToUpdate.asset_number;
     if (dataToUpdate.serial_number) updateData.serial_number = dataToUpdate.serial_number;
@@ -154,16 +163,51 @@ export const updateEquipmentService = async (
     if (dataToUpdate.brand_id) {
       updateData.equipment_brands = { connect: { id: dataToUpdate.brand_id } };
     }
-    if (dataToUpdate.status_id) {
+    
+    // Registrar cambio de estado
+    if (dataToUpdate.status_id && dataToUpdate.status_id !== currentEquipment.status_id && updatedById) {
       updateData.equipment_statuses = { connect: { id: dataToUpdate.status_id } };
+      auditPromises.push(
+        logEquipmentStatusChange(
+          id,
+          currentEquipment.status_id,
+          dataToUpdate.status_id,
+          updatedById
+        )
+      );
     }
-    if (dataToUpdate.assigned_user_id !== undefined) {
-      updateData.users = dataToUpdate.assigned_user_id 
-        ? { connect: { id: dataToUpdate.assigned_user_id } }
-        : { disconnect: true };
+
+    // Registrar cambio de ubicación o asignación de usuario
+    if (
+      (dataToUpdate.assigned_user_id !== undefined && dataToUpdate.assigned_user_id !== currentEquipment.assigned_user_id) ||
+      (dataToUpdate.location && dataToUpdate.location !== currentEquipment.location)
+    ) {
+      if (dataToUpdate.assigned_user_id !== undefined) {
+        updateData.users = dataToUpdate.assigned_user_id 
+          ? { connect: { id: dataToUpdate.assigned_user_id } }
+          : { disconnect: true };
+      }
+
+      if (updatedById) {
+        auditPromises.push(
+          logEquipmentAssignment(
+            id,
+            dataToUpdate.assigned_user_id !== undefined ? dataToUpdate.assigned_user_id : currentEquipment.assigned_user_id,
+            currentEquipment.assigned_user_id,
+            dataToUpdate.location || currentEquipment.location,
+            currentEquipment.location,
+            updatedById,
+            dataToUpdate.assigned_user_id !== undefined ? 'Cambio de asignación de usuario' : 'Cambio de ubicación'
+          )
+        );
+      }
     }
 
     const result = await updateEquipmentRepository(id, updateData);
+
+    // Ejecutar todos los registros de auditoría
+    await Promise.all(auditPromises);
+
     return {
       success: "Actualización exitosa",
       data: result,

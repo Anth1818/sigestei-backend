@@ -169,6 +169,7 @@ export const updateEquipmentController = async (
   try {
     const id = req.params.id;
     const { ...dataToUpdate } = req.body;
+    const updatedById = req.user?.id; // Usuario autenticado
 
     if (!id) {
       return res
@@ -184,7 +185,8 @@ export const updateEquipmentController = async (
 
     const result = await updateEquipmentService(
       Number(id),
-      dataToUpdate
+      dataToUpdate,
+      updatedById
     );
     res.json(result);
   } catch (error) {

@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { users as User } from '../../generated/prisma'; // Asumiendo que tienes una interfaz/tipo para el usuario
 import { UserPayload, LoginResponse } from '../../utils/types';
+import { logUserLogin } from '../../middlewares/auditMiddleware';
 
 
 //  Clase de error personalizada
@@ -19,24 +20,37 @@ export class AuthError extends Error {
 // Lógica del servicio tipada
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecret';
 
-export const loginUser = async (email: string, password: string): Promise<LoginResponse> => {
+export const loginUser = async (
+  email: string, 
+  password: string,
+  ipAddress?: string,
+  userAgent?: string
+): Promise<LoginResponse> => {
   const user: User | null = await getUserByEmailRepository(email);
   if (!user) {
+    // Registrar intento fallido sin userId (usuario no existe)
+    await logUserLogin(0, ipAddress || null, userAgent || null, false, 'Usuario no encontrado');
     throw new AuthError('Credenciales inválidas', 401);
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password_hash);
   if (!isPasswordValid) {
+    // Registrar intento fallido con userId
+    await logUserLogin(user.id, ipAddress || null, userAgent || null, false, 'Contraseña incorrecta');
     throw new AuthError('Credenciales inválidas', 401);
   }
 
   if (!user.is_active) {
+    // Registrar intento fallido por usuario inactivo
+    await logUserLogin(user.id, ipAddress || null, userAgent || null, false, 'Usuario inactivo');
     throw new AuthError('El usuario se encuentra inactivo', 403);
   }
 
   // Actualizar last_login y last_login_backup según la lógica
   await updateLoginTimestampsRepository(user.id);
 
+  // Registrar login exitoso
+  await logUserLogin(user.id, ipAddress || null, userAgent || null, true);
 
   // Obtener el equipo de cómputo asignado al usuario
   const equipment_id = await getEquipmentByUserIdRepository(user.id);

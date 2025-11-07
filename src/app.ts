@@ -45,6 +45,10 @@ app.use('/api/equipment', equipmentRoutes);
 import dashboardRoutes from './api/routes/dashboard.routes';
 app.use('/api/dashboard', dashboardRoutes);
 
+// Importar rutas de auditoría
+import auditRoutes from './api/routes/audit.routes';
+app.use('/api/audit', auditRoutes);
+
 
 
 // Ruta de prueba

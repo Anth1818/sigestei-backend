@@ -89,13 +89,14 @@ export const getAllUsersEnabledToGetSupportByDepartmentController = async (req: 
 export const toggleActiveUserController = async (req: Request, res: Response) => {
   try {
     const { identity_card } = req.params;
+    const changedById = req.user?.id; // Usuario autenticado que hace el cambio
 
     // Validación de formato
     if (!/^\d{1,10}$/.test(identity_card)) {
       return res.status(400).json({ message: "Formato de cédula inválido. Debe contener solo números y tener un máximo de 10 dígitos." });
     }
 
-    const userUpdate = await toggleActiveUserService(Number(identity_card));
+    const userUpdate = await toggleActiveUserService(Number(identity_card), changedById);
     return res.json({ message: "Usuario actualizado correctamente", user: userUpdate });
   } catch (error) {
     if (error instanceof Error) {
@@ -160,13 +161,14 @@ export const changeUserPasswordController = async (req: Request, res: Response) 
 export const updateUserController = async (req: Request, res: Response) => {
   try {
     const { identity_card } = req.params;
+    const updatedById = req.user?.id; // Usuario autenticado que hace el cambio
 
     // Validación de formato
     if (!/^\d{1,10}$/.test(identity_card)) {
       return res.status(400).json({ message: "Formato de cédula inválido. Debe contener solo números y tener un máximo de 10 dígitos." });
     }
 
-    const userUpdate = await updateUserService(Number(identity_card), req.body);
+    const userUpdate = await updateUserService(Number(identity_card), req.body, updatedById);
     return res.json({ message: "Usuario actualizado correctamente", user: userUpdate });
   } catch (error) {
     if (error instanceof Error) {
