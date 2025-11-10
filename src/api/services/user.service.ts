@@ -151,22 +151,86 @@ export const updateUserService = async (
         )
       );
     }
-
-    // Otros cambios de perfil
-    if (userData.full_name || userData.email || userData.gender_id) {
+    //Cambio de genero 
+    if (userData.gender_id && userData.gender_id !== currentUser.gender_id) {
       auditPromises.push(
         createAuditLog(
           'user',
           updatedUser.id,
-          'profile_updated',
-          null,
-          null,
-          null,
+          'gender_changed',
+          'gender_id',
+          currentUser.gender_id,
+          userData.gender_id,
           updatedById,
-          'Actualización de perfil de usuario'
+          'Cambio de género'
         )
       );
     }
+
+    // Cambio de email
+    if (userData.email && userData.email !== currentUser.email) {
+      auditPromises.push(
+        createAuditLog(
+          'user',
+          updatedUser.id,
+          'email_changed',
+          'email',
+          currentUser.email,
+          userData.email,
+          updatedById,
+          'Cambio de correo electrónico'
+        )
+      );
+    }
+
+    //Cambio de nombre completo
+    if (userData.full_name && userData.full_name !== currentUser.full_name) {
+      auditPromises.push(
+        createAuditLog(
+          'user',
+          updatedUser.id,
+          'full_name_changed',
+          'full_name',
+          currentUser.full_name,
+          userData.full_name,
+          updatedById,
+          'Cambio de nombre completo'
+        )
+      );
+    }
+
+    //Cambio de cedula identidad
+    if (userData.identity_card && userData.identity_card !== currentUser.identity_card) {
+      auditPromises.push(
+        createAuditLog(
+          'user',
+          updatedUser.id,
+          'identity_card_changed',
+          'identity_card',
+          currentUser.identity_card,
+          userData.identity_card,
+          updatedById,
+          'Cambio de cédula de identidad'
+        )
+      );
+    }
+
+   //Cambio de contraseña (reseteo o cambio por el user)
+    if (userData.password) {
+      auditPromises.push(
+        createAuditLog(
+          'user',
+          updatedUser.id,
+          'password_changed',
+          'password_hash',
+          '********',
+          '********',
+          updatedById,
+          'Cambio de contraseña'
+        )
+      );
+    }
+
 
     await Promise.all(auditPromises);
   }

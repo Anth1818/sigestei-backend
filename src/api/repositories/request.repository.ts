@@ -32,7 +32,7 @@ const fieldsToIncludeEquipment = {
 
 export const getAllRequestsRepository = async () => {
   const requests = await prisma.requests.findMany({
-    orderBy: { id: "asc" },
+    orderBy: { id: "desc" },
     include: {
       users_requests_beneficiary_idTousers: {
         select: {

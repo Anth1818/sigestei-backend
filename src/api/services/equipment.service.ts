@@ -177,27 +177,51 @@ export const updateEquipmentService = async (
       );
     }
 
-    // Registrar cambio de ubicación o asignación de usuario
-    if (
-      (dataToUpdate.assigned_user_id !== undefined && dataToUpdate.assigned_user_id !== currentEquipment.assigned_user_id) ||
-      (dataToUpdate.location && dataToUpdate.location !== currentEquipment.location)
-    ) {
-      if (dataToUpdate.assigned_user_id !== undefined) {
-        updateData.users = dataToUpdate.assigned_user_id 
-          ? { connect: { id: dataToUpdate.assigned_user_id } }
-          : { disconnect: true };
-      }
+    // Registrar cambio de asignación de usuario (incluyendo desvinculación)
+    if (dataToUpdate.assigned_user_id !== undefined && dataToUpdate.assigned_user_id !== currentEquipment.assigned_user_id) {
+      updateData.users = dataToUpdate.assigned_user_id 
+        ? { connect: { id: dataToUpdate.assigned_user_id } }
+        : { disconnect: true };
 
       if (updatedById) {
+        // Determinar el tipo de cambio
+        let changeComment = 'Cambio de asignación de usuario';
+        if (dataToUpdate.assigned_user_id === null && currentEquipment.assigned_user_id !== null) {
+          changeComment = 'Desvinculación de usuario';
+        } else if (currentEquipment.assigned_user_id === null && dataToUpdate.assigned_user_id !== null) {
+          changeComment = 'Asignación de usuario';
+        }
+
         auditPromises.push(
           logEquipmentAssignment(
             id,
-            dataToUpdate.assigned_user_id !== undefined ? dataToUpdate.assigned_user_id : currentEquipment.assigned_user_id,
+            dataToUpdate.assigned_user_id,
             currentEquipment.assigned_user_id,
             dataToUpdate.location || currentEquipment.location,
             currentEquipment.location,
             updatedById,
-            dataToUpdate.assigned_user_id !== undefined ? 'Cambio de asignación de usuario' : 'Cambio de ubicación'
+            changeComment
+          )
+        );
+      }
+    }
+
+    // Registrar cambio de ubicación (sin cambio de usuario)
+    if (
+      dataToUpdate.location && 
+      dataToUpdate.location !== currentEquipment.location &&
+      (dataToUpdate.assigned_user_id === undefined || dataToUpdate.assigned_user_id === currentEquipment.assigned_user_id)
+    ) {
+      if (updatedById) {
+        auditPromises.push(
+          logEquipmentAssignment(
+            id,
+            currentEquipment.assigned_user_id,
+            currentEquipment.assigned_user_id,
+            dataToUpdate.location,
+            currentEquipment.location,
+            updatedById,
+            'Cambio de ubicación'
           )
         );
       }

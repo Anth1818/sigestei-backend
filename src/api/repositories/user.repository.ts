@@ -46,7 +46,7 @@ export const updateLogoutTimestampRepository = async (userId: number) => {
 
 export const getAllUsersRepository = async () => {
   const users = await prisma.users.findMany({
-    orderBy: { id: 'asc' },
+    orderBy: { id: 'desc' },
     include: {
       departments: { select: { id: true, name: true } },
       roles: { select: { id: true, name: true } },

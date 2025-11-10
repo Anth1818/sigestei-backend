@@ -95,7 +95,7 @@ export const getAllEquipmentRepository = async (filters?: {
       where,
       include: fieldsToInclude,
       orderBy: {
-        id: "asc",
+        id: "desc",
       },
     });
 
