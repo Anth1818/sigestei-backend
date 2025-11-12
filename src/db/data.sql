@@ -44,7 +44,7 @@ INSERT INTO departments (name) VALUES
 INSERT INTO equipment_types (name) VALUES
 ('Laptop'),
 ('PC'),
-('Impresora')
+('Impresora');
 
 -- Insertar Marcas de Equipos
 INSERT INTO equipment_brands (name) VALUES
