@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import {
+  getAllRequestsByUserIdService,
   getAllRequestsService,
   registerRequestService,
   updateRequestService,
@@ -17,6 +18,24 @@ export const getAllRequestsController = async (
       .status(500)
       .json({
         message: "Error al obtener las solicitudes",
+        error: error instanceof Error ? error.message : error,
+      });
+  }
+};
+
+export const getAllRequestsByUserIdController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const userId = Number(req.params.id);
+    const requests = await getAllRequestsByUserIdService(userId);
+    res.json(requests);
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        message: "Error al obtener las solicitudes del usuario",
         error: error instanceof Error ? error.message : error,
       });
   }
