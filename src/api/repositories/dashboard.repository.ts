@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../generated/prisma";
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Obtener solicitudes creadas y resueltas por mes

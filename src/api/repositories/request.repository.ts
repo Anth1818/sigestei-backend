@@ -1,5 +1,5 @@
-import { equipment } from './../../generated/prisma/index.d';
-import { PrismaClient } from "../../generated/prisma";
+import { equipment } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 import type { CreateRequestInput } from "../../utils/types";
 const prisma = new PrismaClient();
 

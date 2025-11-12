@@ -1,5 +1,9 @@
 # 🚀 Deployment Guide - Railway
 
+## ⚠️ Cambios Importantes Realizados
+
+**Prisma Client:** Se cambió de output personalizado (`src/generated/prisma`) a la ubicación estándar de node_modules (`@prisma/client`). Esto resuelve problemas de importación en producción.
+
 ## Variables de Entorno Necesarias
 
 Configura estas variables en Railway:

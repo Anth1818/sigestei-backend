@@ -6,9 +6,6 @@
 .env.local
 .env.production
 
-# Prisma generado
-/src/generated/prisma
-
 # Build output
 /dist
 

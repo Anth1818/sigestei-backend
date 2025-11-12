@@ -1,8 +1,7 @@
-import { equipment } from './../../generated/prisma/index.d';
+import { equipment, users as User } from '@prisma/client';
 import {getUserByEmailRepository, getEquipmentByUserIdRepository, updateLoginTimestampsRepository, updateLogoutTimestampRepository}from '../repositories/user.repository'; // Asumiendo que exportas una instancia
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { users as User } from '../../generated/prisma'; // Asumiendo que tienes una interfaz/tipo para el usuario
 import { UserPayload, LoginResponse } from '../../utils/types';
 import { logUserLogin } from '../../middlewares/auditMiddleware';
 

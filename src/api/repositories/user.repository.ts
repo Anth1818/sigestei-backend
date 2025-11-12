@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../generated/prisma";
+import { PrismaClient } from "@prisma/client";
 import type { CreateUserInput } from "../../utils/types";
 
 const prisma = new PrismaClient();

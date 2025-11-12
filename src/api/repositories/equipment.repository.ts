@@ -1,4 +1,4 @@
-import { Prisma } from "../../generated/prisma";
+import { Prisma } from "@prisma/client";
 import prisma from "../../config/db";
 
 // Fields to include in equipment queries
