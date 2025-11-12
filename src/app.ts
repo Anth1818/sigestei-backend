@@ -7,8 +7,21 @@ const app = express();
 
 
 // Middlewares globales aquí
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+	? process.env.ALLOWED_ORIGINS.split(',') 
+	: ['http://localhost:3000'];
+
 app.use(cors({
-	origin: 'http://localhost:3000', // Cambia esto por la URL de tu frontend
+	origin: (origin, callback) => {
+		// Permitir requests sin origin (como Postman, curl, etc.)
+		if (!origin) return callback(null, true);
+		
+		if (allowedOrigins.includes(origin)) {
+			callback(null, true);
+		} else {
+			callback(new Error('Not allowed by CORS'));
+		}
+	},
 	credentials: true
 }));
 app.use(express.json());
@@ -54,6 +67,20 @@ app.use('/api/audit', auditRoutes);
 // Ruta de prueba
 app.get('/', (req, res) => {
 	res.send('API funcionando');
+});
+
+// Health check para Railway/render/etc
+app.get('/health', (req, res) => {
+	res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Middleware de manejo de errores (debe ir al final)
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+	console.error('Error:', err);
+	res.status(500).json({
+		message: 'Error interno del servidor',
+		error: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message
+	});
 });
 
 export default app;

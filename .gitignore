@@ -3,8 +3,20 @@
 
 # Archivo de variables de entorno
 .env
+.env.local
+.env.production
+
+# Prisma generado
 /src/generated/prisma
 
-/src/generated/prisma
+# Build output
+/dist
 
-/src/generated/prisma
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
