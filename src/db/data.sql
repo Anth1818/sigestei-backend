@@ -4,10 +4,10 @@
 
 -- Insertar Roles
 INSERT INTO roles (name) VALUES
-('admin'),
-('manager'),
-('technician'),
-('user');
+('Administrador'),
+('Coordinador'),
+('Técnico'),
+('Usuario');
 
 -- Insertar Géneros
 INSERT INTO genders (name) VALUES
@@ -43,7 +43,8 @@ INSERT INTO departments (name) VALUES
 -- Insertar Tipos de Equipos
 INSERT INTO equipment_types (name) VALUES
 ('Laptop'),
-('PC');
+('PC'),
+('Impresora')
 
 -- Insertar Marcas de Equipos
 INSERT INTO equipment_brands (name) VALUES
@@ -59,7 +60,7 @@ INSERT INTO equipment_brands (name) VALUES
 INSERT INTO equipment_statuses (name) VALUES
 ('Activo'),
 ('En mantenimiento'),
-('Averiado'),
+('Defectuoso'),
 ('Inactivo');
 
 -- Insertar Tipos de Solicitudes
@@ -79,7 +80,7 @@ INSERT INTO request_types (name) VALUES
 INSERT INTO request_statuses (name) VALUES
 ('Pendiente'),
 ('En proceso'),
-('Resuelta'),
+('Completada'),
 ('Cancelada');
 
 -- Insertar Prioridades de Solicitudes
