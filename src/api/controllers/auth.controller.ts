@@ -17,16 +17,21 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
 
     const { token, user } = await authService.loginUser(email, password, ipAddress, userAgent);
 
+    // Configuración de cookie para producción
+    const isProduction = process.env.NODE_ENV === 'production';
+    
     res.cookie('auth-token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: isProduction, // Solo HTTPS en producción
       maxAge: 5 * 60 * 60 * 1000, // 5 horas
-      sameSite: 'strict',
+      sameSite: isProduction ? 'none' : 'lax', // 'none' para cross-site en producción
+      path: '/',
     });
 
     return res.status(200).json({
       message: 'Login exitoso',
       user,
+      token, // Enviar también el token en la respuesta como fallback
     });
   } catch (error) {
     if (error instanceof AuthError) {
@@ -45,7 +50,16 @@ export const logout = async (req: Request, res: Response): Promise<Response> => 
     if (userId) {
       await authService.logoutUser(userId);
     }
-    res.clearCookie('auth-token');
+    
+    const isProduction = process.env.NODE_ENV === 'production';
+    
+    res.clearCookie('auth-token', {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
+      path: '/',
+    });
+    
     return res.status(200).json({ message: 'Logout exitoso' });
   } catch (error) {
     return res.status(500).json({ message: 'Error al cerrar sesión' });
