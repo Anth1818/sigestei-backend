@@ -11,18 +11,28 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
 	? process.env.ALLOWED_ORIGINS.split(',') 
 	: ['http://localhost:3000'];
 
+console.log('🌐 Allowed Origins:', allowedOrigins);
+
 app.use(cors({
 	origin: (origin, callback) => {
 		// Permitir requests sin origin (como Postman, curl, etc.)
-		if (!origin) return callback(null, true);
+		if (!origin) {
+			console.log('✅ Request without origin (Postman, curl, etc.)');
+			return callback(null, true);
+		}
+		
+		console.log('🔍 Checking origin:', origin);
 		
 		if (allowedOrigins.includes(origin)) {
+			console.log('✅ Origin allowed:', origin);
 			callback(null, true);
 		} else {
+			console.log('❌ Origin blocked:', origin);
 			callback(new Error('Not allowed by CORS'));
 		}
 	},
-	credentials: true
+	credentials: true, // IMPORTANTE: permite enviar cookies
+	exposedHeaders: ['set-cookie'] // Expone el header de cookies
 }));
 app.use(express.json());
 app.use(cookieParser());
@@ -72,6 +82,31 @@ app.get('/', (req, res) => {
 // Health check para Railway/render/etc
 app.get('/health', (req, res) => {
 	res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Test endpoint para cookies
+app.get('/api/test-cookie', (req, res) => {
+	const isProduction = process.env.NODE_ENV === 'production';
+	
+	res.cookie('test-cookie', 'cookie-value-123', {
+		httpOnly: true,
+		secure: isProduction,
+		maxAge: 60000, // 1 minuto
+		sameSite: isProduction ? 'none' : 'lax',
+		path: '/',
+	});
+	
+	res.json({
+		message: 'Cookie de prueba establecida',
+		environment: process.env.NODE_ENV,
+		isProduction,
+		cookieConfig: {
+			httpOnly: true,
+			secure: isProduction,
+			sameSite: isProduction ? 'none' : 'lax',
+			path: '/',
+		}
+	});
 });
 
 // Middleware de manejo de errores (debe ir al final)

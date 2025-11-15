@@ -20,13 +20,21 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     // Configuración de cookie para producción
     const isProduction = process.env.NODE_ENV === 'production';
     
-    res.cookie('auth-token', token, {
+    // Configuración de cookie optimizada para cross-origin
+    const cookieOptions = {
       httpOnly: true,
       secure: isProduction, // Solo HTTPS en producción
       maxAge: 5 * 60 * 60 * 1000, // 5 horas
-      sameSite: isProduction ? 'none' : 'lax', // 'none' para cross-site en producción
+      sameSite: isProduction ? 'none' as const : 'lax' as const, // 'none' para cross-site en producción
       path: '/',
-    });
+    };
+    
+    console.log('🍪 Setting cookie with options:', cookieOptions);
+    console.log('🌍 NODE_ENV:', process.env.NODE_ENV);
+    console.log('🔒 Secure:', cookieOptions.secure);
+    console.log('🔗 SameSite:', cookieOptions.sameSite);
+    
+    res.cookie('auth-token', token, cookieOptions);
 
     return res.status(200).json({
       message: 'Login exitoso',
