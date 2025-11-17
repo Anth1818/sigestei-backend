@@ -279,11 +279,80 @@ INSERT INTO equipment (asset_number, serial_number, model, location, specificati
 ('100246', 'HP-PC-046', 'ProDesk 405 G8', 'Oficina 246', '{"hardware": {"cpu": "AMD Ryzen 5 PRO 4650G", "ram": "8GB DDR4", "storage": "256GB SSD", "gpu": "AMD Radeon Graphics", "network": "Ethernet, Wi-Fi"}, "software": {"os": "Windows 10 Pro", "office": "Microsoft Office 2019", "antivirus": "Windows Defender"}}', 52, 2, 1, 1, NULL);
 
 -- Insertar SOLICITUDES al final, ya que dependen de los usuarios y los equipos.
-INSERT INTO requests (description, request_date, requester_id, comments_technician, beneficiary_id, technician_id, equipment_id, type_equipment_id, type_id, status_id, priority_id) VALUES
-('El equipo presenta pantalla azul constante y se reinicia automáticamente. Necesita revisión urgente.', '2025-08-01T09:30:00Z', 1, NULL, 1, NULL, 1, 2, 4, 1, 3),
-('Solicitud de mantenimiento preventivo mensual. Limpieza de hardware y actualización de software.', '2025-08-02T14:15:00Z', 2, NULL, 2, NULL, 2, 2, 1, 1, 3),
-('Instalación de nuevo software de diseño gráfico para el equipo de marketing.', '2025-08-03T10:45:00Z', 1, NULL, 6, NULL, 3, 2, 6, 1, 3),
-('Actualización del sistema operativo cancelada por incompatibilidad de hardware.', '2025-08-04T08:20:00Z', 3, NULL, 3, NULL, 4, 2, 8, 1, 3),
-('Problema con conectividad de red. El equipo no puede acceder a recursos compartidos.', '2025-08-05T16:30:00Z', 2, NULL, 5, NULL, 5, 2, 9, 1, 3),
-('Limpieza de virus y malware detectado por el antivirus corporativo.', '2025-08-06T11:00:00Z', 4, NULL, 4, NULL, 6, 2, 4, 1, 3);
+INSERT INTO requests (description, request_date, requester_id, comments_technician, beneficiary_id, technician_id, equipment_id, type_equipment_id, type_id, status_id, priority_id, resolution_date) VALUES
+-- Enero 2025 - Solicitudes completadas
+('El equipo presenta pantalla azul constante y se reinicia automáticamente. Necesita revisión urgente.', '2025-01-05T09:30:00Z', 1, 'Memoria RAM defectuosa reemplazada. Sistema estable.', 1, 3, 1, 2, 4, 3, 1, '2025-01-06T15:20:00Z'),
+('Solicitud de mantenimiento preventivo mensual. Limpieza de hardware y actualización de software.', '2025-01-08T14:15:00Z', 2, 'Mantenimiento completado. Actualizaciones de seguridad instaladas.', 2, 7, 2, 2, 1, 3, 2, '2025-01-09T11:30:00Z'),
+('Instalación de nuevo software de diseño gráfico Adobe Creative Suite.', '2025-01-12T10:45:00Z', 1, 'Software instalado y configurado correctamente.', 6, 11, 3, 2, 6, 3, 2, '2025-01-12T16:00:00Z'),
+('Actualización del sistema operativo cancelada por incompatibilidad de hardware.', '2025-01-15T08:20:00Z', 3, NULL, 3, NULL, 4, 2, 8, 4, 3, NULL),
+('Problema con conectividad de red. El equipo no puede acceder a recursos compartidos.', '2025-01-18T16:30:00Z', 2, 'Cable de red dañado reemplazado. Conexión restaurada.', 5, 3, 5, 2, 9, 3, 1, '2025-01-18T18:00:00Z'),
+
+-- Febrero 2025 - Mix de estados
+('Limpieza de virus y malware detectado por el antivirus corporativo.', '2025-02-02T11:00:00Z', 4, 'Sistema limpio. Antivirus actualizado y configurado.', 4, 17, 6, 2, 4, 3, 1, '2025-02-03T10:15:00Z'),
+('La impresora no responde y necesita configuración urgente.', '2025-02-05T09:15:00Z', 8, NULL, 8, 18, NULL, NULL, 5, 2, 1, NULL),
+('Solicitud de instalación de Office 365 en equipo nuevo.', '2025-02-10T13:20:00Z', 12, 'Office instalado y activado con licencia corporativa.', 12, 19, 12, 2, 6, 3, 2, '2025-02-10T15:45:00Z'),
+('Actualización de drivers de tarjeta gráfica para mejor rendimiento.', '2025-02-14T10:30:00Z', 15, NULL, 15, 20, 15, 1, 7, 2, 3, NULL),
+('Equipo se sobrecalienta y apaga automáticamente.', '2025-02-18T14:45:00Z', 20, 'Ventiladores limpiados y pasta térmica renovada.', 20, 3, 20, 2, 2, 3, 1, '2025-02-19T12:30:00Z'),
+
+-- Marzo 2025 - Solicitudes pendientes y en proceso
+('Problema con el teclado, varias teclas no funcionan correctamente.', '2025-03-01T08:00:00Z', 22, NULL, 22, NULL, 22, 2, 3, 1, 2, NULL),
+('Instalación de software de contabilidad QuickBooks.', '2025-03-05T11:20:00Z', 25, NULL, 25, 7, 25, 1, 6, 2, 2, NULL),
+('El disco duro está haciendo ruidos extraños y el sistema va lento.', '2025-03-08T15:30:00Z', 28, NULL, 28, NULL, 28, 1, 3, 1, 1, NULL),
+('Actualización de RAM para mejorar el rendimiento del equipo.', '2025-03-12T09:45:00Z', 30, 'RAM ampliada de 8GB a 16GB. Sistema más fluido.', 30, 11, 30, 2, 7, 3, 2, '2025-03-13T14:00:00Z'),
+('Monitor presenta líneas verticales y parpadeos intermitentes.', '2025-03-15T13:00:00Z', 33, NULL, 33, 3, 33, 1, 3, 2, 1, NULL),
+
+-- Abril 2025 - Variedad de tipos
+('Solicitud de mantenimiento preventivo trimestral.', '2025-04-02T10:00:00Z', 5, 'Limpieza completa, actualización de sistema y respaldo realizado.', 5, 17, 5, 2, 1, 3, 3, '2025-04-03T16:30:00Z'),
+('Instalación de AutoCAD para proyectos de diseño.', '2025-04-07T14:20:00Z', 35, 'Software instalado con licencia educativa.', 35, 18, 35, 1, 6, 3, 2, '2025-04-08T11:00:00Z'),
+('El equipo no enciende, sin señales de vida.', '2025-04-10T08:30:00Z', 38, NULL, 38, 19, 38, 2, 3, 2, 1, NULL),
+('Problema con el sonido, no se escucha audio en el equipo.', '2025-04-15T11:45:00Z', 40, NULL, 40, NULL, 40, 2, 9, 1, 3, NULL),
+('Actualización de sistema operativo Windows 10 a Windows 11.', '2025-04-20T09:00:00Z', 42, 'Sistema actualizado exitosamente. Drivers verificados.', 42, 20, 42, 2, 8, 3, 2, '2025-04-21T13:20:00Z'),
+
+-- Mayo 2025 - Solicitudes recientes
+('Puerto USB no reconoce dispositivos externos.', '2025-05-03T10:30:00Z', 45, NULL, 45, 3, 45, 2, 3, 2, 2, NULL),
+('Instalación de software antivirus corporativo ESET.', '2025-05-08T13:15:00Z', 48, 'Antivirus instalado y configurado con políticas corporativas.', 48, 7, 48, 2, 6, 3, 2, '2025-05-08T15:00:00Z'),
+('Laptop no carga la batería, solo funciona conectada.', '2025-05-12T14:00:00Z', 50, NULL, 50, NULL, 50, 1, 3, 1, 1, NULL),
+('Configuración de correo corporativo en Outlook.', '2025-05-15T09:30:00Z', 52, NULL, 52, 11, 52, 2, 10, 2, 3, NULL),
+('Solicitud de respaldo completo del sistema antes de formateo.', '2025-05-18T11:00:00Z', 10, NULL, 10, 3, 10, 2, 10, 2, 2, NULL),
+
+-- Junio 2025 - Más variedad
+('El equipo presenta lentitud extrema al abrir programas.', '2025-06-02T08:45:00Z', 14, NULL, 14, NULL, 14, 2, 2, 1, 2, NULL),
+('Instalación de Python y herramientas de desarrollo.', '2025-06-05T10:00:00Z', 17, 'Ambiente de desarrollo configurado con VS Code y Python 3.11.', 17, 17, 17, 1, 6, 3, 3, '2025-06-06T12:00:00Z'),
+('Problema con la conexión WiFi, se desconecta constantemente.', '2025-06-10T15:20:00Z', 19, NULL, 19, 18, 19, 1, 9, 2, 1, NULL),
+('Actualización de firmware de BIOS del equipo.', '2025-06-14T09:15:00Z', 23, NULL, 23, NULL, 23, 2, 8, 1, 2, NULL),
+('Formateo completo e instalación limpia de Windows.', '2025-06-18T13:30:00Z', 26, NULL, 26, 19, 26, 2, 4, 2, 1, NULL),
+
+-- Julio 2025 - Solicitudes de verano
+('Solicitud de cambio de disco HDD a SSD para mejor velocidad.', '2025-07-01T10:00:00Z', 29, 'SSD instalado, sistema clonado exitosamente. Mejora notable.', 29, 20, 29, 1, 7, 3, 2, '2025-07-02T16:00:00Z'),
+('El trackpad de la laptop no responde correctamente.', '2025-07-05T11:30:00Z', 31, NULL, 31, 3, 31, 1, 3, 2, 2, NULL),
+('Instalación de servidor local para desarrollo web.', '2025-07-10T14:00:00Z', 34, NULL, 34, NULL, 34, 2, 6, 1, 3, NULL),
+('Problema con licencia de Office, solicita activación constante.', '2025-07-15T09:00:00Z', 37, 'Licencia reactivada correctamente desde servidor corporativo.', 37, 7, 37, 1, 10, 3, 2, '2025-07-15T11:30:00Z'),
+('Mantenimiento preventivo y actualización de antivirus.', '2025-07-20T10:30:00Z', 41, NULL, 41, 11, 41, 1, 1, 2, 3, NULL),
+
+-- Agosto 2025 - Solicitudes actuales
+('Instalación de software de videoconferencia Zoom y Teams.', '2025-08-02T13:00:00Z', 43, 'Software instalado y probado exitosamente.', 43, 3, 43, 1, 6, 3, 3, '2025-08-02T15:00:00Z'),
+('El sistema operativo no arranca, muestra error de booteo.', '2025-08-07T08:30:00Z', 46, NULL, 46, NULL, 46, 2, 4, 1, 1, NULL),
+('Configuración de impresora de red compartida.', '2025-08-12T11:00:00Z', 49, NULL, 49, 17, NULL, NULL, 5, 2, 2, NULL),
+('Solicitud de aumento de almacenamiento en disco.', '2025-08-16T14:30:00Z', 51, NULL, 51, 18, 51, 1, 7, 2, 3, NULL),
+('Problema con la cámara web integrada en videollamadas.', '2025-08-20T10:00:00Z', 9, NULL, 9, NULL, 9, 1, 9, 1, 2, NULL),
+
+-- Septiembre 2025 - Solicitudes recientes
+('Actualización de navegadores web y extensiones de seguridad.', '2025-09-03T09:30:00Z', 13, 'Navegadores actualizados: Chrome, Firefox y Edge.', 13, 19, 13, 1, 8, 3, 3, '2025-09-03T11:00:00Z'),
+('El equipo se congela frecuentemente durante el trabajo.', '2025-09-08T15:00:00Z', 18, NULL, 18, NULL, 18, 2, 2, 1, 1, NULL),
+('Instalación de software de gestión de proyectos Jira.', '2025-09-12T10:30:00Z', 21, NULL, 21, 20, 21, 2, 6, 2, 2, NULL),
+('Cambio de monitor por problemas de visualización.', '2025-09-17T13:45:00Z', 24, NULL, 24, 3, 24, 2, 3, 2, 1, NULL),
+('Configuración de VPN corporativa para trabajo remoto.', '2025-09-22T11:00:00Z', 27, NULL, 27, NULL, 27, 1, 10, 1, 2, NULL),
+
+-- Octubre 2025 - Mix final
+('Limpieza profunda de malware y optimización del sistema.', '2025-10-01T08:00:00Z', 32, 'Sistema limpio, optimizado y protegido.', 32, 7, 32, 1, 4, 3, 1, '2025-10-02T14:00:00Z'),
+('Instalación de software de edición de video Adobe Premiere.', '2025-10-07T14:00:00Z', 36, NULL, 36, 11, 36, 2, 6, 2, 2, NULL),
+('El teclado derrama líquido, necesita limpieza urgente.', '2025-10-12T09:30:00Z', 39, NULL, 39, NULL, 39, 1, 2, 1, 1, NULL),
+('Migración de datos del equipo antiguo al nuevo.', '2025-10-16T10:00:00Z', 44, 'Migración completada. Todos los datos transferidos.', 44, 3, 44, 2, 10, 3, 2, '2025-10-17T16:30:00Z'),
+('Solicitud de formateo y reinstalación por rendimiento bajo.', '2025-10-22T13:00:00Z', 47, NULL, 47, 17, 47, 1, 4, 2, 2, NULL),
+
+-- Noviembre 2025 - Solicitudes más recientes (mes actual)
+('Problema con puertos HDMI, no detecta monitor externo.', '2025-11-01T09:00:00Z', 11, NULL, 11, NULL, 11, 1, 3, 1, 2, NULL),
+('Actualización masiva de seguridad de Windows y parches.', '2025-11-05T11:30:00Z', 3, NULL, 16, 18, 16, 1, 8, 2, 2, NULL),
+('Instalación de certificados digitales para firma electrónica.', '2025-11-08T14:00:00Z', 6, NULL, 6, NULL, 6, 2, 6, 1, 3, NULL),
+('El equipo emite pitidos al encender y no arranca.', '2025-11-12T08:30:00Z', 4, NULL, 4, 19, 4, 2, 3, 2, 1, NULL);
 -------------------------------------------Fin del segundo-----------------------------
