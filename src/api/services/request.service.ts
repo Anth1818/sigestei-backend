@@ -1,5 +1,6 @@
 import { CreateRequestInput, ServiceResponse } from "../../utils/types";
 import {
+  getAllRequestsForTechnicianRepository,
   getAllRequestsByUserIdRepository,
   getAllRequestsRepository,
   registerRequestRepository,
@@ -19,6 +20,9 @@ export const getAllRequestsService = async () => {
 
 export const getAllRequestsByUserIdService = async (UserId: number) => {
   return await getAllRequestsByUserIdRepository(UserId);
+}
+export const getAllRequestsForTechnicianService = async (UserId: number) => {
+  return await getAllRequestsForTechnicianRepository(UserId);
 }
 
 export const registerRequestService = async (

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllRequestsByUserIdController, getAllRequestsController, registerRequestController,  updateRequestController } from '../controllers/request.controller';
+import { getAllRequestsByUserIdController, getAllRequestsController, getAllRequestsForTechnicianController, registerRequestController,  updateRequestController } from '../controllers/request.controller';
 import authMiddleware from '../../middlewares/authMiddleware';
 import roleMiddleware from '../../middlewares/roleMiddleware';
 
@@ -9,6 +9,8 @@ router.use(authMiddleware);
 router.get('/', roleMiddleware(1,2,3,4),  getAllRequestsController);
 
 router.get('/getAllByUser/:id', roleMiddleware(1,2,3,4), getAllRequestsByUserIdController);
+
+router.get('/getAllForTechnician/:id', roleMiddleware(1,2,3), getAllRequestsForTechnicianController);
 
 router.post('/register',roleMiddleware(1,2,3,4), registerRequestController);
 

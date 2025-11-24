@@ -1,108 +1,21 @@
-import { equipment } from '@prisma/client';
-import { PrismaClient } from "@prisma/client";
+import prisma from "../../config/db";
 import type { CreateRequestInput } from "../../utils/types";
-const prisma = new PrismaClient();
-
-const fieldsToInclude = {
-  select: {
-    id: true,
-    full_name: true,
-    identity_card: true,
-    email: true,
-    is_active: true,
-    role_id: true,
-    position_id: true,
-    department_id: true,
-    gender_id: true,
-    created_at: true,
-    positions: { select: { name: true } },
-    departments: { select: { name: true } },
-    genders: { select: { name: true } },
-    roles: { select: { name: true } },
-    
-  },
-};
+import { 
+  mapUserFields, 
+  mapEquipmentFields, 
+  getRequestIncludeConfig 
+} from "../../utils/queryHelpers";
 
 
-export const getAllRequestsByUserIdRepository = async (UserId: number) => {
+/**
+ * Función base reutilizable para consultas de requests con filtros dinámicos
+ */
+const getRequestsWithFilter = async (whereClause: any = {}) => {
   const requests = await prisma.requests.findMany({
-    where: {
-     requester_id: UserId
-    },
+    where: whereClause,
     orderBy: { id: "desc" },
-    include: {
-      users_requests_beneficiary_idTousers: {
-        select: {
-          id: true,
-          full_name: true,
-          identity_card: true,
-          email: true,
-          is_active: true,
-          role_id: true,
-          position_id: true,
-          department_id: true,
-          gender_id: true,
-          created_at: true,
-          positions: { select: { name: true } },
-          departments: { select: { name: true } },
-          genders: { select: { name: true } },
-          roles: { select: { name: true } },
-          equipment: true, // Incluir equipos del usuario beneficiario
-        },
-      },
-      users_requests_requester_idTousers: fieldsToInclude,
-      users_requests_technician_idTousers: fieldsToInclude,
-      equipment: {
-        include: {
-          equipment_types: {
-            select: {
-              name: true,
-            },
-          },
-          equipment_brands: {
-            select: {
-              name: true,
-            },
-          },
-          equipment_statuses: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
-      request_priorities: true,
-      request_statuses: true,
-      request_types: true,
-    },
+    include: getRequestIncludeConfig(),
   });
-
-  // Mapear los campos relacionados para devolver solo el texto del nombre
-  const mapUserFields = (user: any) => user && {
-    ...user,
-    position: user.positions?.name ?? null,
-    department: user.departments?.name ?? null,
-    gender: user.genders?.name ?? null,
-    role: user.roles?.name ?? null,
-
-    // Elimina los objetos anidados originales
-    positions: undefined,
-    departments: undefined,
-    genders: undefined,
-    roles: undefined,
-  };
-
-  // Mapear equipment para incluir nombres de relaciones
-  const mapEquipmentFields = (equipment: any) => equipment && {
-    ...equipment,
-    type_name: equipment.equipment_types?.name ?? null,
-    brand_name: equipment.equipment_brands?.name ?? null,
-    status_name: equipment.equipment_statuses?.name ?? null,
-    // Eliminar objetos anidados
-    equipment_types: undefined,
-    equipment_brands: undefined,
-    equipment_statuses: undefined,
-  };
 
   return requests.map(req => ({
     ...req,
@@ -112,92 +25,22 @@ export const getAllRequestsByUserIdRepository = async (UserId: number) => {
     equipment: mapEquipmentFields(req.equipment),
   }));
 };
-
 
 export const getAllRequestsRepository = async () => {
-  const requests = await prisma.requests.findMany({
-    orderBy: { id: "desc" },
-    include: {
-      users_requests_beneficiary_idTousers: {
-        select: {
-          id: true,
-          full_name: true,
-          identity_card: true,
-          email: true,
-          is_active: true,
-          role_id: true,
-          position_id: true,
-          department_id: true,
-          gender_id: true,
-          created_at: true,
-          positions: { select: { name: true } },
-          departments: { select: { name: true } },
-          genders: { select: { name: true } },
-          roles: { select: { name: true } },
-          equipment: true, // Incluir equipos del usuario beneficiario
-        },
-      },
-      users_requests_requester_idTousers: fieldsToInclude,
-      users_requests_technician_idTousers: fieldsToInclude,
-      equipment: {
-        include: {
-          equipment_types: {
-            select: {
-              name: true,
-            },
-          },
-          equipment_brands: {
-            select: {
-              name: true,
-            },
-          },
-          equipment_statuses: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      },
-      request_priorities: true,
-      request_statuses: true,
-      request_types: true,
-    },
+  return getRequestsWithFilter();
+};
+
+export const getAllRequestsByUserIdRepository = async (userId: number) => {
+  return getRequestsWithFilter({ requester_id: userId });
+};
+
+export const getAllRequestsForTechnicianRepository = async (userId: number) => {
+  return getRequestsWithFilter({
+    OR: [
+      { requester_id: userId },
+      { technician_id: userId }
+    ]
   });
-
-  // Mapear los campos relacionados para devolver solo el texto del nombre
-  const mapUserFields = (user: any) => user && {
-    ...user,
-    position: user.positions?.name ?? null,
-    department: user.departments?.name ?? null,
-    gender: user.genders?.name ?? null,
-    role: user.roles?.name ?? null,
-
-    // Elimina los objetos anidados originales
-    positions: undefined,
-    departments: undefined,
-    genders: undefined,
-    roles: undefined,
-  };
-
-  // Mapear equipment para incluir nombres de relaciones
-  const mapEquipmentFields = (equipment: any) => equipment && {
-    ...equipment,
-    type_name: equipment.equipment_types?.name ?? null,
-    brand_name: equipment.equipment_brands?.name ?? null,
-    status_name: equipment.equipment_statuses?.name ?? null,
-    // Eliminar objetos anidados
-    equipment_types: undefined,
-    equipment_brands: undefined,
-    equipment_statuses: undefined,
-  };
-
-  return requests.map(req => ({
-    ...req,
-    users_requests_beneficiary_idTousers: mapUserFields(req.users_requests_beneficiary_idTousers),
-    users_requests_requester_idTousers: mapUserFields(req.users_requests_requester_idTousers),
-    users_requests_technician_idTousers: mapUserFields(req.users_requests_technician_idTousers),
-    equipment: mapEquipmentFields(req.equipment),
-  }));
 };
 
 export const updateRequestRepository = async (

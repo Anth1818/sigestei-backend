@@ -1,10 +1,24 @@
 import { Request, Response } from "express";
 import {
   getAllRequestsByUserIdService,
+  getAllRequestsForTechnicianService,
   getAllRequestsService,
   registerRequestService,
   updateRequestService,
 } from "../services/request.service";
+
+import { createGetByIdController } from "../../utils/controllerFactory";
+
+export const getAllRequestsByUserIdController = createGetByIdController(
+  getAllRequestsByUserIdService,
+  "Error al obtener las solicitudes por ID de usuario"
+);
+
+export const getAllRequestsForTechnicianController = createGetByIdController(
+  getAllRequestsForTechnicianService,
+  "Error al obtener las solicitudes para el técnico"
+);
+
 
 export const getAllRequestsController = async (
   _req: Request,
@@ -23,23 +37,7 @@ export const getAllRequestsController = async (
   }
 };
 
-export const getAllRequestsByUserIdController = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const userId = Number(req.params.id);
-    const requests = await getAllRequestsByUserIdService(userId);
-    res.json(requests);
-  } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: "Error al obtener las solicitudes del usuario",
-        error: error instanceof Error ? error.message : error,
-      });
-  }
-};
+
 
 export const registerRequestController = async (
   req: Request,
