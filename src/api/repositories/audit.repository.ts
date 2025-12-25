@@ -1,4 +1,4 @@
-import prisma from "../../config/db";
+import {prisma} from "../../config/prisma";
 
 /**
  * Obtener cambios generales de audit_log por entidad

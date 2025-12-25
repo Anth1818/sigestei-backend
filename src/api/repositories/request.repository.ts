@@ -1,4 +1,4 @@
-import prisma from "../../config/db";
+import {prisma} from "../../config/prisma";
 import type { CreateRequestInput } from "../../utils/types";
 import { 
   mapUserFields, 

@@ -1,4 +1,4 @@
-import prisma from "../../config/db";
+import {prisma} from "../../config/prisma";
 
 /**
  * Create a history record for a request change

@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import {prisma}  from "../../config/prisma";
 import type { CreateUserInput } from "../../utils/types";
-
-const prisma = new PrismaClient();
 
 
 // Actualiza last_login y last_login_backup al hacer login

@@ -1,6 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
-
+import {prisma}  from "../../config/prisma";
 export const getOsOptionsRepository = async () => prisma.os_options.findMany();
 export const getOfficeSuitesRepository = async () => prisma.office_suites.findMany();
 export const getAntivirusSolutionsRepository = async () => prisma.antivirus_solutions.findMany();

@@ -7,7 +7,7 @@ import {
   updateRequestRepository,
 } from "../repositories/request.repository";
 import { createRequestHistoryRepository } from "../repositories/requestHistory.repository";
-import prisma from "../../config/db";
+import {prisma} from "../../config/prisma";
 import { 
   logTechnicianAssignment, 
   logRequestStatusChange, 

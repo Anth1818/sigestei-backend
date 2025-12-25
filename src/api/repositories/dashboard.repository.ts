@@ -1,5 +1,4 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import {prisma}  from "../../config/prisma";
 
 // Obtener solicitudes creadas y resueltas por mes
 export const getRequestsCreatedAndResolvedByMonthRepository = async () => {
