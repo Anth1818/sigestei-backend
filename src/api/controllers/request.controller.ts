@@ -5,9 +5,12 @@ import {
   getAllRequestsService,
   registerRequestService,
   updateRequestService,
+  getRequestsPaginatedService,
+  getRequestsByFiltersService,
 } from "../services/request.service";
 
 import { createGetByIdController } from "../../utils/controllerFactory";
+import { RequestFilters } from "../../utils/types";
 
 export const getAllRequestsByUserIdController = createGetByIdController(
   getAllRequestsByUserIdService,
@@ -111,5 +114,110 @@ export const updateRequestController = async (req: Request, res: Response) => {
         message: "Error al actualizar la solicitud",
         error: error instanceof Error ? error.message : error,
       });
+  }
+};
+
+/**
+ * Controlador para obtener requests con paginación
+ * Query params: page (default: 1), limit (default: 100)
+ */
+export const getRequestsPaginatedController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.min(500, Math.max(1, parseInt(req.query.limit as string) || 10));
+
+    const result = await getRequestsPaginatedService({ page, limit });
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener las solicitudes paginadas",
+      error: error instanceof Error ? error.message : error,
+    });
+  }
+};
+
+/**
+ * Controlador para obtener requests filtrados
+ * Query params:
+ *   - request_id: ID de la solicitud específica (ej: "123")
+ *   - technician_ids: string de IDs separados por coma (ej: "1,2,3")
+ *   - status_ids: string de IDs separados por coma (ej: "1,2")
+ *   - priority_ids: string de IDs separados por coma (ej: "1,2,3")
+ *   - type_ids: string de IDs separados por coma (ej: "1,2")
+ *   - date_from: fecha ISO (ej: "2024-01-01")
+ *   - date_to: fecha ISO (ej: "2024-12-31")
+ *   - page: número de página (opcional, default: 1)
+ *   - limit: límite por página (opcional, default: 100)
+ */
+export const getRequestsByFiltersController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const filters: RequestFilters = {};
+
+    // Parsear ID de request
+    if (req.query.request_id) {
+      const id = parseInt(req.query.request_id as string);
+      if (!isNaN(id)) filters.request_id = id;
+    }
+
+    // Parsear IDs de técnicos
+    if (req.query.technician_ids) {
+      const ids = (req.query.technician_ids as string).split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+      if (ids.length > 0) filters.technician_ids = ids;
+    }
+
+    // Parsear IDs de estados
+    if (req.query.status_ids) {
+      const ids = (req.query.status_ids as string).split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+      if (ids.length > 0) filters.status_ids = ids;
+    }
+
+    // Parsear IDs de prioridades
+    if (req.query.priority_ids) {
+      const ids = (req.query.priority_ids as string).split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+      if (ids.length > 0) filters.priority_ids = ids;
+    }
+
+    // Parsear IDs de tipos
+    if (req.query.type_ids) {
+      const ids = (req.query.type_ids as string).split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id));
+      if (ids.length > 0) filters.type_ids = ids;
+    }
+
+    // Parsear rango de fechas
+    if (req.query.date_from) {
+      const dateFrom = new Date(req.query.date_from as string);
+      if (!isNaN(dateFrom.getTime())) filters.date_from = dateFrom;
+    }
+
+    if (req.query.date_to) {
+      const dateTo = new Date(req.query.date_to as string);
+      if (!isNaN(dateTo.getTime())) {
+        // Ajustar al final del día
+        dateTo.setHours(23, 59, 59, 999);
+        filters.date_to = dateTo;
+      }
+    }
+
+    // Paginación opcional
+    let pagination;
+    if (req.query.page || req.query.limit) {
+      const page = Math.max(1, parseInt(req.query.page as string) || 1);
+      const limit = Math.min(500, Math.max(1, parseInt(req.query.limit as string) || 100));
+      pagination = { page, limit };
+    }
+
+    const result = await getRequestsByFiltersService(filters, pagination);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al obtener las solicitudes filtradas",
+      error: error instanceof Error ? error.message : error,
+    });
   }
 };

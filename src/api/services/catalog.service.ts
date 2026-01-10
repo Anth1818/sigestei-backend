@@ -1,4 +1,5 @@
 import {
+  getPriorityRequestsRepository,
   getRolesRepository,
   getDepartmentsRepository,
   getPositionsRepository,
@@ -16,6 +17,7 @@ import {
 
 export const getAllCatalogsService = async () => {
   const [
+    priority_requests,
     os_options,
     office_suites,
     antivirus_solutions,
@@ -30,6 +32,7 @@ export const getAllCatalogsService = async () => {
     request_statuses,
     technicians,
   ] = await Promise.all([
+    getPriorityRequestsRepository(),
     getOsOptionsRepository(),
     getOfficeSuitesRepository(),
     getAntivirusSolutionsRepository(),
@@ -45,5 +48,5 @@ export const getAllCatalogsService = async () => {
     getTecniciansRepository(),
    
   ]);
-  return { os_options, office_suites, antivirus_solutions, request_types, equipment_brands, equipment_statuses, equipment_types, roles, departments, positions, genders, request_statuses, technicians };
+  return { priority_requests, os_options, office_suites, antivirus_solutions, request_types, equipment_brands, equipment_statuses, equipment_types, roles, departments, positions, genders, request_statuses, technicians };
 };

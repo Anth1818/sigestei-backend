@@ -46,6 +46,33 @@ export interface ServiceResponse {
   error?: string;
 }
 
+export interface PaginationParams {
+  page: number;
+  limit: number;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+}
+
+export interface RequestFilters {
+  request_id?: number;
+  technician_ids?: number[];
+  status_ids?: number[];
+  priority_ids?: number[];
+  type_ids?: number[];
+  date_from?: Date;
+  date_to?: Date;
+}
+
 
 export interface LoginResponse {
   token: string;

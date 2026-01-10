@@ -1,10 +1,12 @@
-import { CreateRequestInput, ServiceResponse } from "../../utils/types";
+import { CreateRequestInput, PaginationParams, PaginatedResponse, RequestFilters, ServiceResponse } from "../../utils/types";
 import {
   getAllRequestsForTechnicianRepository,
   getAllRequestsByUserIdRepository,
   getAllRequestsRepository,
   registerRequestRepository,
   updateRequestRepository,
+  getRequestsPaginatedRepository,
+  getRequestsByFiltersRepository,
 } from "../repositories/request.repository";
 import { createRequestHistoryRepository } from "../repositories/requestHistory.repository";
 import {prisma} from "../../config/prisma";
@@ -217,4 +219,23 @@ export const updateRequestService = async (
           : "No se pudo actualizar la solicitud",
     };
   }
+};
+
+/**
+ * Obtener requests con paginación
+ */
+export const getRequestsPaginatedService = async (
+  params: PaginationParams
+): Promise<PaginatedResponse<any>> => {
+  return await getRequestsPaginatedRepository(params);
+};
+
+/**
+ * Obtener requests con filtros y paginación opcional
+ */
+export const getRequestsByFiltersService = async (
+  filters: RequestFilters,
+  pagination?: PaginationParams
+): Promise<PaginatedResponse<any>> => {
+  return await getRequestsByFiltersRepository(filters, pagination);
 };

@@ -1,4 +1,5 @@
 import {prisma}  from "../../config/prisma";
+export const getPriorityRequestsRepository = async () => prisma.request_priorities.findMany();
 export const getOsOptionsRepository = async () => prisma.os_options.findMany();
 export const getOfficeSuitesRepository = async () => prisma.office_suites.findMany();
 export const getAntivirusSolutionsRepository = async () => prisma.antivirus_solutions.findMany();
