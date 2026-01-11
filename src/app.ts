@@ -11,23 +11,23 @@ const allowedOrigins = process.env.ALLOWED_ORIGINS
 	? process.env.ALLOWED_ORIGINS.split(',') 
 	: ['http://localhost:3000'];
 
-console.log('🌐 Allowed Origins:', allowedOrigins);
+// console.log('🌐 Allowed Origins:', allowedOrigins);
 
 app.use(cors({
 	origin: (origin, callback) => {
 		// Permitir requests sin origin (como Postman, curl, etc.)
 		if (!origin) {
-			console.log('✅ Request without origin (Postman, curl, etc.)');
+			// console.log('✅ Request without origin (Postman, curl, etc.)');
 			return callback(null, true);
 		}
 		
-		console.log('🔍 Checking origin:', origin);
+		// console.log('🔍 Checking origin:', origin);
 		
 		if (allowedOrigins.includes(origin)) {
-			console.log('✅ Origin allowed:', origin);
+			// console.log('✅ Origin allowed:', origin);
 			callback(null, true);
 		} else {
-			console.log('❌ Origin blocked:', origin);
+			// console.log('❌ Origin blocked:', origin);
 			callback(new Error('Not allowed by CORS'));
 		}
 	},
