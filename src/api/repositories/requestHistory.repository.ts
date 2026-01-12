@@ -19,7 +19,7 @@ export const createRequestHistoryRepository = async (data: {
         old_value: data.old_value,
         new_value: data.new_value,
         changed_by_id: data.changed_by_id || null,
-        comments: data.comments || null,
+        comments: data.comments || "",
       },
     });
 

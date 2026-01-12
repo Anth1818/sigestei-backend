@@ -84,6 +84,9 @@ export const updateRequestController = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const {...dataToUpdate } = req.body;
+  // ...existing code...
+console.log("Datos a actualizar:", JSON.stringify(dataToUpdate, null, 2));
+// ...existing code...
     // Obtener el ID del usuario autenticado desde el token (si existe en req.user)
     const userId = (req as any).user?.id;
     

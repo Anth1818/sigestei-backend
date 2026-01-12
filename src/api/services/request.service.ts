@@ -186,6 +186,7 @@ export const updateRequestService = async (
           old_value: oldValue,
           new_value: newTechnicianName,
           changed_by_id: updatedById,
+          comments: changeType === 'technician_reassigned' ? dataToUpdate.reassignment_reason : "",
         })
       );
 
@@ -197,7 +198,8 @@ export const updateRequestService = async (
             dataToUpdate.technician_id,
             currentRequest.technician_id,
             updatedById,
-            changeType === 'technician_reassigned' ? 'Reasignación de técnico' : 'Asignación de técnico'
+            changeType === 'technician_reassigned' ? dataToUpdate.reassignment_reason : 'Asignación de técnico'
+          
           )
         );
       }

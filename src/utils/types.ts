@@ -14,6 +14,7 @@ export interface CreateRequestInput {
   request_date?: Date;
   resolution_date?: Date | null;
   comments_technician?: string | null;
+  reassignment_reason?: string | null;
   requester_id: number;
   beneficiary_id?: number | null;
   technician_id?: number | null;
