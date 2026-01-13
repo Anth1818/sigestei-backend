@@ -187,7 +187,7 @@ INSERT INTO users (full_name, identity_card, email, password_hash, is_active, ro
 ('Carlos Pérez', 18123456, 'carlos.perez.ti@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 16, 1, 9, '2025-09-04T08:00:00Z'),
 ('Ana Martínez', 19789012, 'ana.martinez.ti@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 16, 2, 9, '2025-09-04T08:00:00Z'),
 ('Luis Rodriguez', 20345678, 'luis.rodriguez.ti@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 17, 1, 9, '2025-09-04T08:00:00Z'),
-('Sofía Gómez', 22901234, 'sofia.gomez.ti@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 17, 2, 9, '2025-09-04T08:00:00Z'),
+('Sofía Gómez', 22901234, 'sofia.gomez.ti@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', false, 3, 17, 2, 9, '2025-09-04T08:00:00Z'),
 
 -- ========= USUARIOS GENERALES (2 POR CADA UNO DE LOS 16 DEPTOS RESTANTES) (IDs 21-52) =========
 ('Usuario Depto 1-A', 10000001, 'usuario.depto1.a@mail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 1, 1, 1, '2025-09-05T09:00:00Z'),
@@ -354,5 +354,38 @@ INSERT INTO requests (description, request_date, requester_id, comments_technici
 ('Problema con puertos HDMI, no detecta monitor externo.', '2025-11-01T09:00:00Z', 11, NULL, 11, NULL, 11, 1, 3, 1, 2, NULL),
 ('Actualización masiva de seguridad de Windows y parches.', '2025-11-05T11:30:00Z', 3, NULL, 16, 18, 16, 1, 8, 2, 2, NULL),
 ('Instalación de certificados digitales para firma electrónica.', '2025-11-08T14:00:00Z', 6, NULL, 6, NULL, 6, 2, 6, 1, 3, NULL),
-('El equipo emite pitidos al encender y no arranca.', '2025-11-12T08:30:00Z', 4, NULL, 4, 19, 4, 2, 3, 2, 1, NULL);
+('El equipo emite pitidos al encender y no arranca.', '2025-11-12T08:30:00Z', 4, NULL, 4, 19, 4, 2, 3, 2, 1, NULL),
+
+-- Diciembre 2025 - Solicitudes de fin de año
+('Mantenimiento preventivo de fin de año, limpieza completa.', '2025-12-02T10:00:00Z', 7, 'Mantenimiento completado. Sistema listo para el nuevo año.', 7, 3, 7, 1, 1, 3, 2, '2025-12-03T15:00:00Z'),
+('La pantalla de la laptop presenta manchas y pixeles muertos.', '2025-12-05T09:30:00Z', 12, NULL, 12, NULL, 12, 1, 3, 1, 1, NULL),
+('Instalación de software de backup automático Acronis.', '2025-12-08T11:00:00Z', 15, 'Software instalado y configurado para respaldos diarios.', 15, 7, 15, 1, 6, 3, 2, '2025-12-09T14:00:00Z'),
+('Actualización de drivers de impresora y scanner.', '2025-12-10T13:45:00Z', 20, NULL, 20, 11, NULL, NULL, 8, 2, 3, NULL),
+('El equipo presenta error de disco duro inminente (S.M.A.R.T).', '2025-12-12T08:00:00Z', 23, NULL, 23, 3, 23, 2, 3, 2, 1, NULL),
+('Configuración de políticas de seguridad y firewall.', '2025-12-15T10:30:00Z', 28, 'Firewall configurado con reglas corporativas actualizadas.', 28, 17, 28, 1, 10, 3, 1, '2025-12-15T16:00:00Z'),
+('Instalación de actualización de Office 2019 a Office 2021.', '2025-12-17T14:00:00Z', 31, NULL, 31, 18, 31, 1, 6, 2, 2, NULL),
+('Problema con ventiladores del equipo, hace mucho ruido.', '2025-12-19T09:15:00Z', 34, NULL, 34, NULL, 34, 2, 2, 1, 2, NULL),
+('Solicitud de respaldo completo antes de vacaciones.', '2025-12-20T11:00:00Z', 37, 'Respaldo completo realizado en servidor corporativo.', 37, 19, 37, 1, 10, 3, 2, '2025-12-21T10:00:00Z'),
+('El equipo no reconoce la tarjeta SD, puerto dañado.', '2025-12-22T15:30:00Z', 40, NULL, 40, NULL, 40, 1, 3, 1, 2, NULL),
+('Instalación de herramientas de análisis de datos Power BI.', '2025-12-26T10:00:00Z', 43, 'Power BI instalado y conectado con bases de datos corporativas.', 43, 20, 43, 2, 6, 3, 3, '2025-12-27T13:30:00Z'),
+('Configuración de acceso remoto TeamViewer para soporte.', '2025-12-28T09:00:00Z', 46, NULL, 46, 3, 46, 2, 10, 2, 3, NULL),
+('Limpieza de archivos temporales y optimización de disco.', '2025-12-30T14:00:00Z', 49, 'Sistema optimizado, espacio liberado: 45GB.', 49, 7, 49, 2, 1, 3, 3, '2025-12-30T16:00:00Z'),
+
+-- Enero 2026 - Solicitudes de inicio de año (hasta el 19)
+('Actualización de sistema operativo y software de seguridad.', '2026-01-02T08:30:00Z', 2, 'Sistema actualizado con últimos parches de seguridad.', 2, 11, 2, 2, 8, 3, 2, '2026-01-03T12:00:00Z'),
+('El mouse inalámbrico no responde, cambio de baterías no resuelve.', '2026-01-03T10:00:00Z', 8, NULL, 8, NULL, 8, 1, 3, 1, 3, NULL),
+('Instalación de software de contabilidad SAP.', '2026-01-05T11:30:00Z', 13, NULL, 13, 3, 13, 2, 6, 2, 1, NULL),
+('Configuración de nuevo equipo para usuario recién incorporado.', '2026-01-06T09:00:00Z', 16, 'Equipo configurado con perfil corporativo y accesos.', 16, 17, 16, 2, 5, 3, 2, '2026-01-07T15:00:00Z'),
+('Problema con Microsoft Teams, no puede unirse a reuniones.', '2026-01-07T13:45:00Z', 21, NULL, 21, NULL, 21, 1, 10, 1, 2, NULL),
+('Solicitud de instalación de doble monitor para productividad.', '2026-01-08T10:30:00Z', 25, NULL, 25, 18, 25, 2, 5, 2, 3, NULL),
+('El equipo presenta mensaje de falta de memoria RAM.', '2026-01-09T14:00:00Z', 29, NULL, 29, 19, 29, 2, 7, 2, 1, NULL),
+('Instalación de licencias de Adobe Creative Cloud.', '2026-01-10T09:15:00Z', 33, 'Licencias instaladas y activadas correctamente.', 33, 20, 33, 1, 6, 3, 2, '2026-01-10T16:30:00Z'),
+('Problema con sincronización de OneDrive, archivos no se actualizan.', '2026-01-12T11:00:00Z', 36, NULL, 36, NULL, 36, 1, 10, 1, 2, NULL),
+('Actualización de firmware de router y configuración WiFi.', '2026-01-13T15:30:00Z', 41, NULL, 41, 3, NULL, NULL, 8, 2, 2, NULL),
+('El teclado presenta teclas pegajosas, necesita limpieza.', '2026-01-14T08:45:00Z', 44, 'Teclado limpiado y desinfectado correctamente.', 44, 7, 44, 2, 2, 3, 3, '2026-01-14T10:30:00Z'),
+('Instalación de software de gestión documental DocuWare.', '2026-01-15T10:00:00Z', 48, NULL, 48, 11, 48, 2, 6, 2, 2, NULL),
+('Problema con la unidad de CD/DVD, no lee discos.', '2026-01-16T13:00:00Z', 50, NULL, 50, NULL, 50, 2, 3, 1, 3, NULL),
+('Configuración de correo electrónico en dispositivo móvil.', '2026-01-17T09:30:00Z', 52, 'Correo configurado en iPhone con políticas de seguridad.', 52, 17, NULL, NULL, 10, 3, 3, '2026-01-17T11:00:00Z'),
+('Solicitud de cambio de batería de laptop, no mantiene carga.', '2026-01-18T14:30:00Z', 10, NULL, 10, NULL, 10, 1, 3, 1, 1, NULL),
+('Instalación de software de cifrado BitLocker en disco duro.', '2026-01-19T10:00:00Z', 14, NULL, 14, 18, 14, 2, 6, 2, 1, NULL);
 -------------------------------------------Fin del segundo-----------------------------
