@@ -3,8 +3,9 @@ import {prisma}  from "../../config/prisma";
 // Obtener solicitudes creadas y resueltas por mes
 export const getRequestsCreatedAndResolvedByMonthRepository = async () => {
   const currentYear = new Date().getFullYear();
+  const previousYear = currentYear - 1;
 
-  // Agrupar solicitudes creadas por mes
+  // Agrupar solicitudes creadas por mes (año actual)
   const created = await prisma.requests.groupBy({
     by: ["request_date"],
     where: {
@@ -16,7 +17,19 @@ export const getRequestsCreatedAndResolvedByMonthRepository = async () => {
     _count: { id: true },
   });
 
-  // Agrupar solicitudes resueltas por mes basado en el status_id = 3
+  // Agrupar solicitudes creadas en diciembre del año anterior
+  const createdPreviousDecember = await prisma.requests.groupBy({
+    by: ["request_date"],
+    where: {
+      request_date: {
+        gte: new Date(`${previousYear}-12-01`),
+        lt: new Date(`${currentYear}-01-01`),
+      },
+    },
+    _count: { id: true },
+  });
+
+  // Agrupar solicitudes resueltas por mes basado en el status_id = 3 (año actual)
   const resolved = await prisma.requests.groupBy({
     by: ["resolution_date"],
     where: {
@@ -25,6 +38,20 @@ export const getRequestsCreatedAndResolvedByMonthRepository = async () => {
         not: null,
         gte: new Date(`${currentYear}-01-01`),
         lt: new Date(`${currentYear + 1}-01-01`),
+      },
+    },
+    _count: { id: true },
+  });
+
+  // Agrupar solicitudes resueltas en diciembre del año anterior
+  const resolvedPreviousDecember = await prisma.requests.groupBy({
+    by: ["resolution_date"],
+    where: {
+      status_id: 3,
+      resolution_date: {
+        not: null,
+        gte: new Date(`${previousYear}-12-01`),
+        lt: new Date(`${currentYear}-01-01`),
       },
     },
     _count: { id: true },
@@ -46,20 +73,32 @@ export const getRequestsCreatedAndResolvedByMonthRepository = async () => {
     "december",
   ];
 
-  // Inicializar objetos con todos los meses en 0
-  const createdByMonth: Record<string, number> = {};
-  const resolvedByMonth: Record<string, number> = {};
+  // Inicializar objetos con todos los meses en 0 (incluyendo diciembre anterior)
+  const createdByMonth: Record<string, number> = { previous_december: 0 };
+  const resolvedByMonth: Record<string, number> = { previous_december: 0 };
   monthNames.forEach((name) => {
     createdByMonth[name] = 0;
     resolvedByMonth[name] = 0;
   });
 
+  // Procesar diciembre del año anterior para creadas
+  createdPreviousDecember.forEach((item) => {
+    createdByMonth["previous_december"] += item._count.id;
+  });
+
+  // Procesar meses del año actual para creadas
   created.forEach((item) => {
     const monthIdx = (item.request_date as Date).getMonth();
     const monthName = monthNames[monthIdx];
     createdByMonth[monthName] += item._count.id;
   });
 
+  // Procesar diciembre del año anterior para resueltas
+  resolvedPreviousDecember.forEach((item) => {
+    resolvedByMonth["previous_december"] += item._count.id;
+  });
+
+  // Procesar meses del año actual para resueltas
   resolved.forEach((item) => {
     const monthIdx = (item.resolution_date as Date).getMonth();
     const monthName = monthNames[monthIdx];

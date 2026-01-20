@@ -13,8 +13,8 @@ import {
   logEquipmentStatusChange 
 } from "../../middlewares/auditMiddleware";
 
-export const getAllEquipmentService = async () => {
-  return await getAllEquipmentRepository();
+export const getAllEquipmentService = async (filters?: { type_id?: number }) => {
+  return await getAllEquipmentRepository(filters);
 };
 
 export const getEquipmentByIdService = async (id: number) => {

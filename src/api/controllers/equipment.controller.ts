@@ -9,14 +9,28 @@ import {
 } from "../services/equipment.service";
 
 export const getAllEquipmentController = async (
-  _req: Request,
+  req: Request,
   res: Response
 ) => {
   try {
-    const equipment = await getAllEquipmentService();
-    res.json(equipment);
+    const { type } = req.query;
+    const typeId = type ? Number(type) : undefined;
+
+    // Validar que type sea un número válido si se proporciona
+    if (type && (isNaN(typeId as number) || typeId! <= 0)) {
+      return res.status(400).json({ message: "El parámetro 'type' debe ser un número entero positivo" });
+    }
+
+    const equipment = await getAllEquipmentService({ type_id: typeId });
+    
+    // Si se filtró por tipo y no hay resultados, devolver null
+    if (typeId && (!equipment || equipment.length === 0)) {
+      return res.json([]);
+    }
+
+    return res.json(equipment);
   } catch (error) {
-    res
+    return res
       .status(500)
       .json({
         message: "Error al obtener los equipos de cómputo",
