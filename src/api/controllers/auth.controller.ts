@@ -24,15 +24,15 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
     const cookieOptions = {
       httpOnly: true,
       secure: isProduction, // Solo HTTPS en producción
-      maxAge: 5 * 60 * 60 * 1000, // 5 horas
+      maxAge: 8 * 60 * 60 * 1000, // 8 horas en milisegundos
       sameSite: isProduction ? 'none' as const : 'lax' as const, // 'none' para cross-site en producción
       path: '/',
     };
     
-    console.log('🍪 Setting cookie with options:', cookieOptions);
-    console.log('🌍 NODE_ENV:', process.env.NODE_ENV);
-    console.log('🔒 Secure:', cookieOptions.secure);
-    console.log('🔗 SameSite:', cookieOptions.sameSite);
+    // console.log('🍪 Setting cookie with options:', cookieOptions);
+    // console.log('🌍 NODE_ENV:', process.env.NODE_ENV);
+    // console.log('🔒 Secure:', cookieOptions.secure);
+    // console.log('🔗 SameSite:', cookieOptions.sameSite);
     
     res.cookie('auth-token', token, cookieOptions);
 
