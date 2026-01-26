@@ -54,6 +54,9 @@ services:
       POSTGRES_DB: sigestei_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      # Montar el script de datos iniciales
+      # Este script se ejecutará automáticamente en la primera inicialización
+      - ./sigestei-backend/src/db/data.sql:/docker-entrypoint-initdb.d/02-data.sql:ro
     ports:
       - "5432:5432"
     networks:
@@ -179,6 +182,12 @@ docker compose up -d --build backend
 # Ejecutar migraciones manualmente (si es necesario)
 docker compose exec backend pnpm prisma migrate deploy
 
+# Ejecutar un script SQL en la base de datos
+docker compose exec -T postgres psql -U postgres -d sigestei_db < sigestei-backend/src/db/data.sql
+
+# Acceder al shell de PostgreSQL
+docker compose exec postgres psql -U postgres -d sigestei_db
+
 # Ver logs de un servicio específico
 docker compose logs -f backend
 
@@ -245,6 +254,34 @@ docker compose logs -f postgres
 - El puerto por defecto es 3000, ajústalo según necesites
 - Las migraciones de Prisma se aplican automáticamente al iniciar el contenedor
 - El volumen `postgres_data` persiste los datos de la base de datos entre reinicios
+
+### 🗄️ Gestión de Datos Iniciales (data.sql)
+
+**Primera Inicialización:**
+El archivo `data.sql` se ejecuta automáticamente cuando PostgreSQL se inicializa por primera vez (cuando el volumen está vacío). El orden de ejecución es:
+
+1. PostgreSQL crea la base de datos
+2. Prisma ejecuta las migraciones (esquema de tablas)
+3. PostgreSQL ejecuta `02-data.sql` (datos iniciales)
+
+**Actualizar datos después de la primera inicialización:**
+
+Cuando modifiques `data.sql` y necesites aplicar los cambios:
+
+```bash
+# Opción 1: Ejecutar el SQL actualizado manualmente
+docker compose exec -T postgres psql -U postgres -d sigestei_db < sigestei-backend/src/db/data.sql
+
+# Opción 2: Recrear completamente la base de datos (⚠️ ELIMINA TODOS LOS DATOS)
+docker compose down -v  # Elimina volúmenes
+docker compose up -d    # Recrea todo desde cero
+```
+
+**Recomendación para Producción:**
+Para actualizaciones de datos en producción, considera:
+- Crear scripts SQL separados para cada actualización (ej: `update-2026-01-27.sql`)
+- Ejecutarlos manualmente con registro de qué se aplicó
+- Mantener `data.sql` solo para inicialización de nuevos entornos
 
 ## 🔄 Workflow de Deployment
 
