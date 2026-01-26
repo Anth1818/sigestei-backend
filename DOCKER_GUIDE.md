@@ -54,9 +54,8 @@ services:
       POSTGRES_DB: sigestei_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      # Montar el script de datos iniciales
-      # Este script se ejecutará automáticamente en la primera inicialización
-      - ./sigestei-backend/src/db/data.sql:/docker-entrypoint-initdb.d/02-data.sql:ro
+      # NOTA: NO montar data.sql aquí porque se ejecutaría ANTES de las migraciones
+      # Los datos iniciales deben cargarse DESPUÉS de que el backend aplique las migraciones
     ports:
       - "5432:5432"
     networks:
@@ -95,7 +94,7 @@ services:
     container_name: sigestei-frontend
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:3000
+      NEXT_PUBLIC_API_URL: http://localhost:3001 
       # En producción, usa la URL pública de tu API
       # NEXT_PUBLIC_API_URL: https://api.tu-dominio.com
     ports:
@@ -242,6 +241,14 @@ docker compose exec backend pnpm prisma migrate deploy
 - Limpia el cache de Docker: `docker builder prune`
 - Reconstruye sin cache: `docker compose build --no-cache`
 
+### Error: "relation does not exist" al cargar datos:
+Esto significa que intentaste cargar `data.sql` antes de que las migraciones crearan las tablas.
+
+**Solución:**
+1. Espera a que el backend termine de aplicar las migraciones (ver logs: `docker compose logs -f backend`)
+2. Verifica que las tablas existen: `docker compose exec postgres psql -U postgres -d sigestei_db -c "\dt"`
+3. Luego carga los datos: `docker compose exec -T postgres psql -U postgres -d sigestei_db < sigestei-backend/src/db/data.sql`
+
 ### Ver logs detallados:
 ```bash
 docker compose logs -f backend
@@ -258,11 +265,18 @@ docker compose logs -f postgres
 ### 🗄️ Gestión de Datos Iniciales (data.sql)
 
 **Primera Inicialización:**
-El archivo `data.sql` se ejecuta automáticamente cuando PostgreSQL se inicializa por primera vez (cuando el volumen está vacío). El orden de ejecución es:
+El orden correcto de ejecución es:
 
-1. PostgreSQL crea la base de datos
-2. Prisma ejecuta las migraciones (esquema de tablas)
-3. PostgreSQL ejecuta `02-data.sql` (datos iniciales)
+1. PostgreSQL inicia y crea la base de datos
+2. Backend inicia y Prisma ejecuta las migraciones (crea las tablas)
+3. **Ejecutar manualmente** el script `data.sql` para insertar los datos iniciales
+
+```bash
+# Después de que todos los servicios estén corriendo:
+docker compose exec -T postgres psql -U postgres -d sigestei_db < sigestei-backend/src/db/data.sql
+```
+
+**⚠️ IMPORTANTE**: Debes ejecutar el comando anterior la primera vez que levantes los contenedores, después de que el backend haya aplicado las migraciones correctamente.
 
 **Actualizar datos después de la primera inicialización:**
 
