@@ -84,7 +84,7 @@ services:
     networks:
       - sigestei-network
 
-  # Frontend (ejemplo, ajusta según tu configuración)
+  # Frontend (Next.js)
   frontend:
     build:
       context: ./sigestei-frontend
@@ -92,10 +92,11 @@ services:
     container_name: sigestei-frontend
     restart: unless-stopped
     environment:
-      VITE_API_URL: http://backend:3000
-      # O la variable que uses en tu frontend
+      NEXT_PUBLIC_API_URL: http://localhost:3000
+      # En producción, usa la URL pública de tu API
+      # NEXT_PUBLIC_API_URL: https://api.tu-dominio.com
     ports:
-      - "80:80"
+      - "3001:3000"
     depends_on:
       - backend
     networks:
