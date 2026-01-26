@@ -76,10 +76,10 @@ services:
     environment:
       NODE_ENV: production
       DATABASE_URL: postgresql://postgres:sigestei1818@postgres:5432/sigestei_db?schema=public
-      PORT: 3000
+      PORT: 3001
       # Agrega aquí tus otras variables de entorno (JWT_SECRET, etc.)
     ports:
-      - "3000:3000"
+      - "3001:3001"
     depends_on:
       postgres:
         condition: service_healthy
@@ -98,7 +98,7 @@ services:
       # En producción, usa la URL pública de tu API
       # NEXT_PUBLIC_API_URL: https://api.tu-dominio.com
     ports:
-      - "3001:3000"
+      - "3000:3000"
     depends_on:
       - backend
     networks:
@@ -167,7 +167,44 @@ docker compose logs -f
 docker compose ps
 ```
 
-### 6. Comandos útiles:
+### 6. Cargar datos iniciales (Primera vez):
+
+**Opción A - Usando el script automático (Recomendado):**
+
+En Windows (PowerShell):
+```powershell
+# Copiar el script desde el repositorio backend
+cp sigestei-backend/init-data.ps1 .
+
+# Ejecutar el script
+.\init-data.ps1
+```
+
+En Linux/Mac:
+```bash
+# Copiar el script desde el repositorio backend
+cp sigestei-backend/init-data.sh .
+
+# Dar permisos de ejecución
+chmod +x init-data.sh
+
+# Ejecutar el script
+./init-data.sh
+```
+
+**Opción B - Manualmente:**
+```bash
+# Espera a que el backend termine de iniciar
+docker compose logs -f backend
+
+# En otra terminal, verifica las tablas
+docker compose exec postgres psql -U postgres -d sigestei_db -c "\dt"
+
+# Carga los datos
+docker compose exec -T postgres psql -U postgres -d sigestei_db < sigestei-backend/src/db/data.sql
+```
+
+### 7. Comandos útiles:
 ```bash
 # Detener servicios
 docker compose down
@@ -269,7 +306,27 @@ El orden correcto de ejecución es:
 
 1. PostgreSQL inicia y crea la base de datos
 2. Backend inicia y Prisma ejecuta las migraciones (crea las tablas)
-3. **Ejecutar manualmente** el script `data.sql` para insertar los datos iniciales
+3. **Ejecutar el script de inicialización** para insertar los datos iniciales
+
+**Usando el script automático (Recomendado):**
+
+Windows PowerShell:
+```powershell
+.\init-data.ps1
+```
+
+Linux/Mac:
+```bash
+./init-data.sh
+```
+
+El script automáticamente:
+- ✅ Espera a que PostgreSQL esté listo
+- ✅ Espera a que las migraciones se apliquen
+- ✅ Verifica que las tablas existan
+- ✅ Carga los datos desde `data.sql`
+
+**Manualmente (si prefieres hacerlo paso a paso):**
 
 ```bash
 # Después de que todos los servicios estén corriendo:
