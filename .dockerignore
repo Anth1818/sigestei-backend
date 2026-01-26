@@ -1,0 +1,79 @@
+# Dependencias
+node_modules
+npm-debug.log
+pnpm-debug.log
+yarn-error.log
+
+# Archivos de desarrollo
+.env
+.env.*
+*.env
+.env.local
+.env.development
+.env.test
+
+# Archivos compilados
+dist
+build
+*.tsbuildinfo
+
+# Archivos de configuración local
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Documentación y archivos de desarrollo
+README.md
+COOKIE_TROUBLESHOOTING.md
+*.md
+
+# Railway y deployment configs
+railway.json
+nixpacks.toml
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test files
+coverage
+.nyc_output
+*.test.ts
+*.spec.ts
+__tests__
+
+# Database files
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporales
+tmp
+temp
+*.tmp
+
+# Prisma
+# Solo ignoramos la carpeta de migraciones locales si no las necesitas
+# Si las necesitas para deploy, comenta la siguiente línea
+# prisma/migrations
