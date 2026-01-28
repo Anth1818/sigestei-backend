@@ -94,9 +94,7 @@ services:
     container_name: sigestei-frontend
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_URL: http://localhost:3001 
-      # En producción, usa la URL pública de tu API
-      # NEXT_PUBLIC_API_URL: https://api.tu-dominio.com
+      NEXT_PUBLIC_API_URL: http://181.225.45.133:3001 # URl del backend en producción
     ports:
       - "3000:3000"
     depends_on:
