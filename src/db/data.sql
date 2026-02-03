@@ -387,5 +387,25 @@ INSERT INTO requests (description, request_date, requester_id, comments_technici
 ('Problema con la unidad de CD/DVD, no lee discos.', '2026-01-16T13:00:00Z', 50, NULL, 50, NULL, 50, 2, 3, 1, 3, NULL),
 ('Configuración de correo electrónico en dispositivo móvil.', '2026-01-17T09:30:00Z', 52, 'Correo configurado en iPhone con políticas de seguridad.', 52, 17, NULL, NULL, 10, 3, 3, '2026-01-17T11:00:00Z'),
 ('Solicitud de cambio de batería de laptop, no mantiene carga.', '2026-01-18T14:30:00Z', 10, NULL, 10, NULL, 10, 1, 3, 1, 1, NULL),
-('Instalación de software de cifrado BitLocker en disco duro.', '2026-01-19T10:00:00Z', 14, NULL, 14, 18, 14, 2, 6, 2, 1, NULL);
+('Instalación de software de cifrado BitLocker en disco duro.', '2026-01-19T10:00:00Z', 14, NULL, 14, 18, 14, 2, 6, 2, 1, NULL),
+
+-- Enero 2026 - Solicitudes de cierre de mes (20 al 31)
+('Actualización de antivirus corporativo y escaneo completo.', '2026-01-20T09:15:00Z', 6, 'Antivirus actualizado y escaneo sin amenazas.', 6, 11, 6, 2, 8, 3, 2, '2026-01-20T13:40:00Z'),
+('Problema con impresora de red, no imprime documentos.', '2026-01-21T10:20:00Z', 18, NULL, 18, NULL, NULL, NULL, 5, 1, 2, NULL),
+('Solicitud de instalación de software de diseño Canva.', '2026-01-22T11:30:00Z', 22, NULL, 22, 7, 22, 2, 6, 2, 3, NULL),
+('El equipo no detecta la red WiFi corporativa.', '2026-01-23T15:00:00Z', 26, NULL, 26, 19, 26, 2, 9, 2, 1, NULL),
+('Cambio de teclado por teclas dañadas.', '2026-01-24T08:45:00Z', 30, 'Teclado reemplazado y probado.', 30, 3, 30, 2, 3, 3, 2, '2026-01-24T10:10:00Z'),
+('Instalación de cliente VPN para acceso remoto.', '2026-01-25T09:30:00Z', 34, NULL, 34, 17, 34, 2, 10, 2, 2, NULL),
+('El equipo muestra pantalla negra al encender.', '2026-01-26T13:00:00Z', 38, NULL, 38, NULL, 38, 2, 3, 1, 1, NULL),
+('Solicitud de aumento de memoria RAM a 16GB.', '2026-01-27T10:15:00Z', 41, 'RAM instalada y equipo estable.', 41, 20, 41, 1, 7, 3, 2, '2026-01-27T14:30:00Z'),
+('Problema con cámara web, imagen borrosa.', '2026-01-28T11:40:00Z', 45, NULL, 45, 18, 45, 2, 9, 2, 3, NULL),
+('Instalación de paquete de actualización Office 2021.', '2026-01-29T09:00:00Z', 48, 'Actualización aplicada sin incidentes.', 48, 11, 48, 2, 6, 3, 2, '2026-01-29T12:00:00Z'),
+('Solicitud de limpieza interna por sobrecalentamiento.', '2026-01-30T14:10:00Z', 52, NULL, 52, NULL, 52, 2, 1, 1, 2, NULL),
+('El mouse presenta doble clic involuntario.', '2026-01-31T08:20:00Z', 9, NULL, 9, 3, 9, 1, 3, 2, 3, NULL),
+
+-- Febrero 2026 - Solicitudes de inicio de mes (1 al 4)
+('Instalación de software de gestión de inventario.', '2026-02-01T10:00:00Z', 12, NULL, 12, 7, 12, 1, 6, 2, 2, NULL),
+('El sistema tarda mucho en iniciar, requiere optimización.', '2026-02-02T09:30:00Z', 16, NULL, 16, NULL, 16, 2, 2, 1, 2, NULL),
+('Configuración de firma digital en correo corporativo.', '2026-02-03T13:15:00Z', 20, 'Firma configurada y validada.', 20, 19, 20, 2, 10, 3, 3, '2026-02-03T15:00:00Z'),
+('Actualización de drivers de audio para mejorar sonido.', '2026-02-04T11:45:00Z', 24, NULL, 24, 17, 24, 2, 8, 2, 2, NULL);
 -------------------------------------------Fin del segundo-----------------------------
