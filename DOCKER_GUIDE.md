@@ -94,7 +94,7 @@ services:
     container_name: sigestei-frontend
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_URL: http://181.225.45.133:3001 # URl del backend en producción
+      NEXT_PUBLIC_API_BASE_URL: http://181.225.45.133:3001 # URl del backend en producción
     ports:
       - "3000:3000"
     depends_on:
