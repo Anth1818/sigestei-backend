@@ -9,7 +9,9 @@ const app = express();
 // Middlewares globales aquí
 const allowedOrigins = process.env.ALLOWED_ORIGINS 
 	? process.env.ALLOWED_ORIGINS.split(',') 
-	: ['http://localhost:3000'];
+	: ['http://localhost:3000',
+	   'http://181.225.45.133:3000'
+	];
 
 // console.log('🌐 Allowed Origins:', allowedOrigins);
 
