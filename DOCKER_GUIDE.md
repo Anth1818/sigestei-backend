@@ -40,8 +40,6 @@ docker run -p 3000:3000 \
 En el directorio raíz donde tendrás frontend + backend + db, tu `docker-compose.yml` debería verse así:
 
 ```yaml
-version: '3.8'
-
 services:
   # Base de datos PostgreSQL
   postgres:
@@ -50,8 +48,8 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: sigestei1818
-      POSTGRES_DB: sigestei_db
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-sigestei1818} # Usa una variable de entorno o un secreto en producción
+      POSTGRES_DB: ${DB_NAME:-sigestei_db}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # NOTA: NO montar data.sql aquí porque se ejecutaría ANTES de las migraciones
@@ -75,7 +73,7 @@ services:
     restart: unless-stopped
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgresql://postgres:sigestei1818@postgres:5432/sigestei_db?schema=public
+      DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@postgres:5432/${DB_NAME}?schema=public
       PORT: 3001
       # Agrega aquí tus otras variables de entorno (JWT_SECRET, etc.)
     ports:
@@ -94,7 +92,7 @@ services:
     container_name: sigestei-frontend
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_BASE_URL: http://181.225.45.133:3001 # URl del backend en producción
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL} # URl del backend en producción
     ports:
       - "3000:3000"
     depends_on:
@@ -142,6 +140,8 @@ git clone <url-frontend> sigestei-frontend
 # Crear archivo .env en la raíz
 cat > .env << EOF
 DB_PASSWORD=sigestei1818
+DB_NAME=sigestei_db
+NEXT_PUBLIC_API_BASE_URL=http://localhost:3001
 JWT_SECRET=tu_jwt_secret_super_seguro
 EOF
 
@@ -157,6 +157,12 @@ Usa el ejemplo de arriba en el directorio raíz
 ```bash
 # Construir e iniciar todos los servicios
 docker compose up -d --build
+
+# Rebuild de los servicios sin cache (si haces cambios en el Dockerfile o dependencias)
+docker compose build --no-cache
+
+# Iniciar sin reconstruir (si ya construiste antes) 
+docker compose up -d
 
 # Ver logs
 docker compose logs -f
