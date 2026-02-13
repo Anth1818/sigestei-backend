@@ -7,11 +7,7 @@ const app = express();
 
 
 // Middlewares globales aquí
-const allowedOrigins = process.env.ALLOWED_ORIGINS 
-	? process.env.ALLOWED_ORIGINS.split(',') 
-	: ['http://localhost:3000',
-	   'http://181.225.45.133:3000'
-	];
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',')
 
 // console.log('🌐 Allowed Origins:', allowedOrigins);
 
@@ -25,7 +21,7 @@ app.use(cors({
 		
 		// console.log('🔍 Checking origin:', origin);
 		
-		if (allowedOrigins.includes(origin)) {
+		if (allowedOrigins?.includes(origin)) {
 			// console.log('✅ Origin allowed:', origin);
 			callback(null, true);
 		} else {

@@ -48,8 +48,8 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-sigestei1818} # Usa una variable de entorno o un secreto en producción
-      POSTGRES_DB: ${DB_NAME:-sigestei_db}
+      POSTGRES_PASSWORD: ${DB_PASSWORD} # Usa una variable de entorno o un secreto en producción
+      POSTGRES_DB: ${DB_NAME}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       # NOTA: NO montar data.sql aquí porque se ejecutaría ANTES de las migraciones
@@ -72,12 +72,12 @@ services:
     container_name: sigestei-backend
     restart: unless-stopped
     environment:
+      ALLOWED_ORIGINS: http://localhost:8080 # URL del frontend en desarrollo (ajusta según tu configuración, en producción debería ser la URL real del frontend)
       NODE_ENV: production
       DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@postgres:5432/${DB_NAME}?schema=public
-      PORT: 3001
-      # Agrega aquí tus otras variables de entorno (JWT_SECRET, etc.)
+      PORT: 3000
     ports:
-      - "3001:3001"
+      - "3000:3000" # Exponemos el puerto 3000 para el backend
     depends_on:
       postgres:
         condition: service_healthy
@@ -92,9 +92,9 @@ services:
     container_name: sigestei-frontend
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL} # URl del backend en producción
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL} # URl del backend en producción por 
     ports:
-      - "3000:3000"
+      - "8080:3000" # Exponemos el puerto 8080 para el frontend (puedes cambiarlo)
     depends_on:
       - backend
     networks:

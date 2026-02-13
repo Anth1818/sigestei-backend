@@ -22,16 +22,15 @@ export const login = async (req: Request, res: Response): Promise<Response> => {
       userAgent,
     );
 
-    // Configuración de cookie para producción
+    const isSecureContext =
+      req.secure || req.get("X-Forwarded-Proto") === "https";
 
-    // Configuración de cookie optimizada para cross-origin
     const cookieOptions = {
       httpOnly: true,
-      secure: false, // false porque no usas HTTPS en desarrollo
+      secure: isSecureContext, // true solo si hay HTTPS
       maxAge: 8 * 60 * 60 * 1000,
-      sameSite: "lax" as const, // 'lax' funciona para same-site
+      sameSite: isSecureContext ? ("none" as const) : ("lax" as const),
       path: "/",
-
     };
 
     res.cookie("auth-token", token, cookieOptions);
