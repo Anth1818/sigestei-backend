@@ -224,7 +224,7 @@ pnpm prisma migrate deploy
 pnpm prisma migrate dev
 ```
 
-### 6. Inicializar Datos (Opcional)
+### 6. Inicializar Datos con el repo levantado en docker (Opcional) 
 
 ```bash
 # Windows
@@ -234,8 +234,11 @@ pnpm prisma migrate dev
 ./init-data.sh
 ```
 
-### 7. Iniciar el Servidor
+### 6.1 Inicializar datos en PostgreSQL local (Opcional)
 
+Copia el contenido de data.sql ubicado en el directorio src/db y ejecútalo en tu base de datos local usando psql o PgAdmin para insertar datos de prueba.  
+
+### 7. Iniciar el Servidor
 ```bash
 # Modo desarrollo (con hot-reload)
 pnpm dev
