@@ -64,7 +64,7 @@ RUN addgroup -g 1001 -S nodejs && \
 USER nodejs
 
 # Exponer el puerto (ajusta según tu configuración)
-EXPOSE 3000
+EXPOSE 3001
 
 # Variables de entorno por defecto (se pueden sobrescribir en docker-compose)
 ENV NODE_ENV=production

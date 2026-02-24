@@ -72,12 +72,12 @@ services:
     container_name: sigestei-backend
     restart: unless-stopped
     environment:
-      ALLOWED_ORIGINS: http://localhost:8080 # URL del frontend en desarrollo (ajusta según tu configuración, en producción debería ser la URL real del frontend)
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS} # URL del frontend en desarrollo (ajusta según tu configuración, en producción debería ser la URL real del frontend)
       NODE_ENV: production
       DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@postgres:5432/${DB_NAME}?schema=public
-      PORT: 3000
+      PORT: 3001
     ports:
-      - "3000:3000" # Exponemos el puerto 3000 para el backend
+      - "3001:3001" # Exponemos el puerto 3001 para el backend
     depends_on:
       postgres:
         condition: service_healthy
@@ -89,12 +89,14 @@ services:
     build:
       context: ./sigestei-frontend
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     container_name: sigestei-frontend
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL} # URl del backend en producción por 
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL} # URl del backend en producción por 
     ports:
-      - "8080:3000" # Exponemos el puerto 8080 para el frontend (puedes cambiarlo)
+      - "3000:3000" # Exponemos el puerto 3000 para el frontend (puedes cambiarlo)
     depends_on:
       - backend
     networks:
@@ -141,7 +143,7 @@ git clone <url-frontend> sigestei-frontend
 cat > .env << EOF
 DB_PASSWORD=sigestei1818
 DB_NAME=sigestei_db
-NEXT_PUBLIC_API_BASE_URL=http://localhost:3001
+NEXT_PUBLIC_API_URL=http://localhost:3001
 JWT_SECRET=tu_jwt_secret_super_seguro
 EOF
 
