@@ -165,17 +165,17 @@ INSERT INTO users (full_name, identity_card, email, password_hash, is_active, ro
 ('Samuel Tecnico', 11111113, 'samuel.tecnico@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 16, 1, 9, '2025-08-03T09:00:00Z'),
 ('Samuel Usuario', 11111114, 'samuel.usuario@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 19, 2, 10, '2025-08-04T12:00:00Z'),
 
--- ========= PERFILES DE FRANLLELYS (IDs 5-8) =========
-('Franllelys Admin', 21111111, 'franllelys.admin@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 1, 4, 2, 3, '2025-08-05T08:30:00Z'),
-('Franllelys Coordinador', 21111112, 'franllelys.coordinador@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 2, 13, 2, 8, '2025-09-01T09:00:00Z'),
-('Franllelys Tecnico', 21111113, 'franllelys.tecnico@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 16, 2, 9, '2025-09-01T09:00:00Z'),
-('Franllelys Usuario', 21111114, 'franllelys.usuario@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 19, 2, 10, '2025-09-01T09:00:00Z'),
+-- ========= PERFILES DE NICOLAS (IDs 5-8) =========
+(' Nicolas Admin', 21111111, 'nicolas.admin@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 1, 4, 2, 3, '2025-08-05T08:30:00Z'),
+(' Nicolas Coordinador', 21111112, 'nicolas.coordinador@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 2, 13, 2, 8, '2025-09-01T09:00:00Z'),
+(' Nicolas Tecnico', 21111113, 'nicolas.tecnico@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 16, 2, 9, '2025-09-01T09:00:00Z'),
+(' Nicolas Usuario', 21111114, 'nicolas.usuario@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 19, 2, 10, '2025-09-01T09:00:00Z'),
 
--- ========= PERFILES DE ISAAC (IDs 9-12) =========
-('Isaac Admin', 31111111, 'isaac.admin@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 1, 1, 1, 1, '2025-09-02T10:00:00Z'),
-('Isaac Coordinador', 31111112, 'isaac.coordinador@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 2, 11, 1, 7, '2025-09-02T10:00:00Z'),
-('Isaac Tecnico', 31111113, 'isaac.tecnico@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 16, 1, 9, '2025-09-02T10:00:00Z'),
-('Isaac Usuario', 31111114, 'isaac.usuario@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 21, 1, 11, '2025-09-02T10:00:00Z'),
+-- ========= PERFILES DE SALAZAR (IDs 9-12) =========
+('Salazar Admin', 31111111, 'salazar.admin@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 1, 1, 1, 1, '2025-09-02T10:00:00Z'),
+('Salazar Coordinador', 31111112, 'salazar.coordinador@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 2, 11, 1, 7, '2025-09-02T10:00:00Z'),
+('Salazar Tecnico', 31111113, 'salazar.tecnico@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 3, 16, 1, 9, '2025-09-02T10:00:00Z'),
+('Salazar Usuario', 31111114, 'salazar.usuario@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 21, 1, 9, '2025-09-02T10:00:00Z'),
 
 -- ========= PERFILES DE ANTHONY (IDs 13-16) =========
 ('Anthony Admin', 27451286, 'anthony.admin@gmail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 1, 3, 1, 3, '2025-08-01T10:00:00Z'),
@@ -222,6 +222,7 @@ INSERT INTO users (full_name, identity_card, email, password_hash, is_active, ro
 ('Usuario Depto 16-B', 10000030, 'usuario.depto16.b@mail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 29, 2, 16, '2025-09-05T09:00:00Z'),
 ('Usuario Depto 17-A', 10000031, 'usuario.depto17.a@mail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 30, 1, 17, '2025-09-05T09:00:00Z'),
 ('Usuario Depto 17-B', 10000032, 'usuario.depto17.b@mail.com','$2a$12$zsg/NmEsaTarWsfTm7ar3expazqfZdf8alFMV/JbpmbcorxiyxvBi', true, 4, 30, 2, 17, '2025-09-05T09:00:00Z');
+
 
 -- Insertar equipos después de los usuarios.
 INSERT INTO equipment (asset_number, serial_number, model, location, specifications, assigned_user_id, type_id, brand_id, status_id, department_id) VALUES
